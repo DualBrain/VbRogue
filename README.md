@@ -75,4 +75,5 @@ Logo by TBD.
 Additional Resource
 ========
 
+* http://www.old-games.com/download/4041/rogue-epyx-
 * http://coredumpcentral.org
