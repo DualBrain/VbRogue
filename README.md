@@ -1,10 +1,22 @@
 # VbRogue
 A Rogue clone written in Visual Basic.
 
+The purpose of this project is as a learning device to...
+
+* learn fundamental programming techniques.
+* write a game.
+* use Visual Basic.
+* work as a team (OSS).
+* and do so using http://github.com.
+
+This project is for those with little to no knowledge of programming, for those who have tons of experience and everyone in between.  The idea is to have fun while both learning and lending knowledge along the way.
+
+Some of this collaboration is taking place in-person through http://basicsig.com monthly meetings while other interactions will be completely over the web.
+
 # Folder Structure
 
 * Documents - Contains reference materials for writing a rogue clone.
-* Rogue-likes - Contains examples I've come across that demonstrate a "rogue-like" experience; including these examples for information purposes.
+* Rogue-likes - Contains several examples I've come across that demonstrate a "rogue-like" experience; including these examples for information purposes.
 
 # Found a bug?
 
