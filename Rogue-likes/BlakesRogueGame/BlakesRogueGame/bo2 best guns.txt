@@ -1,0 +1,8 @@
+smg:MSMC,pdw,Mp7
+lmg:Mk48,lsat
+AR:Fal,an94,m27.scar-h
+shotguns:r870,s12
+snipers:DSR,SVU
+Pistols:b23r,Tac-45
+
+Black Ops 2
