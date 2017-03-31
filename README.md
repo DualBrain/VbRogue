@@ -71,3 +71,8 @@ Technology references:
   * TBD
  
 Logo by TBD.
+
+Additional Resource
+========
+
+* http://coredumpcentral.org
