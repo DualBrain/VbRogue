@@ -15,6 +15,8 @@ This project is for those with little to no knowledge of programming, for those 
 
 Some of this collaboration is taking place in-person through http://basicsig.com monthly meetings while other interactions will be completely over the web.
 
+NOTE: The purpose of this project is not to create a "rogue-like"; rather, we are using the original Rogue for inspiration and as a target design to build a project for the purposes of learning.  Once we have a "finished product"; where it goes from there is anyones guess... until then, we have a target that can be held steady. ;-)
+
 # Folder Structure
 
 * Documents - Contains reference materials for writing a rogue clone.
