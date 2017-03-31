@@ -16,6 +16,7 @@ Some of this collaboration is taking place in-person through http://basicsig.com
 # Folder Structure
 
 * Documents - Contains reference materials for writing a rogue clone.
+* Prototyping - Contains various prototypes that serve to experiment with ideas/techniques that can be leveraged to write the actual game.
 * Rogue-likes - Contains several examples I've come across that demonstrate a "rogue-like" experience; including these examples for information purposes.
 
 # Found a bug?
