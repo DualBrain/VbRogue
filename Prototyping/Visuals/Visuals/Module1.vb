@@ -12,6 +12,8 @@ Module Module1
     '               This means that drawing of the walls and other special characters needs to be handled
     '               using the unicode table and there isn't (AFAIK) a 1:1 mapping between ASCII and unicode.
 
+    NearestConsoleColor.Main()
+    Console.ReadLine()
   End Sub
 
 End Module
