@@ -68,6 +68,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lib\ConsoleController.vb" />
+    <Compile Include="Lib\EnumsAndConsts.vb" />
+    <Compile Include="Lib\LevelMap.vb" />
+    <Compile Include="Lib\PlayerInfo.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
