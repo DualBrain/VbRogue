@@ -37,13 +37,14 @@ Public Class ConsoleController
       End If
       aCurrentTimeString = aCurrentHour.ToString & ":" & Now.Minute.ToString
       aCurrentTimeString = "11:11" 'TODO for prototype just make it 11:11
-
-      aCurrentData.Append("Level:" & (whatUser.CurrentMapLevel.ToString & Space(5)).Substring(0, 5))
-      aCurrentData.Append("Hits:" & (whatUser.CurrentHitPoints.ToString & "(" & whatUser.HitPoints.ToString & ")" & Space(9)).Substring(0, 9))
-      aCurrentData.Append("Str:" & (whatUser.CurrentStrength.ToString & "(" & whatUser.Strength.ToString & ")" & Space(9)).Substring(0, 9))
-      aCurrentData.Append("Gold:" & (whatUser.Gold.ToString & Space(7)).Substring(0, 7))
-      aCurrentData.Append("Armor:" & (whatUser.Armor.ToString & Space(4)).Substring(0, 4))
-      aCurrentData.Append(whatUser.CharacterClass)
+      'TODO replace info on bottom with test string for now to help figure if random rooms are showing at the correct locations
+      aCurrentData.Append("123456789012345678901234567890123456789012345678901234567890123456789012345678")
+      'aCurrentData.Append("Level:" & (whatUser.CurrentMapLevel.ToString & Space(5)).Substring(0, 5))
+      'aCurrentData.Append("Hits:" & (whatUser.CurrentHitPoints.ToString & "(" & whatUser.HitPoints.ToString & ")" & Space(9)).Substring(0, 9))
+      'aCurrentData.Append("Str:" & (whatUser.CurrentStrength.ToString & "(" & whatUser.Strength.ToString & ")" & Space(9)).Substring(0, 9))
+      'aCurrentData.Append("Gold:" & (whatUser.Gold.ToString & Space(7)).Substring(0, 7))
+      'aCurrentData.Append("Armor:" & (whatUser.Armor.ToString & Space(4)).Substring(0, 4))
+      'aCurrentData.Append(whatUser.CharacterClass)
       Console.SetCursorPosition(0, 23)
       Console.ForegroundColor = ConsoleColor.Yellow
       Console.BackgroundColor = ConsoleColor.Black

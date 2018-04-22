@@ -50,6 +50,8 @@ Module Module1
   Private Sub InitializeGame()
 
     Dim m_levelMap As New LevelMap
+    m_levelMap.EntryStairGrid = "1831" 'TODO testing only
+    m_levelMap.ExitStairGrid = "0470" 'TODO testing only
     m_levelMap.Initialize(True)
     m_levelMap.DrawScreen()
 
@@ -61,7 +63,8 @@ Module Module1
     aChar = m_consoleController.GetKeyBoardInput()
 
     'TODO just quit for now
-    aReturnValue = False
+    'aReturnValue = False
+    InitializeGame() ' for testing show new random level for each move
 
     Return aReturnValue
   End Function

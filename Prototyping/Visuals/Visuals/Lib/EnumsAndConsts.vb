@@ -1,8 +1,12 @@
 ﻿Public Class EnumsAndConsts
 
-  Public Const MapLevelsMax As Integer = 99
-  Public Const MapHeight As Integer = 24
-  Public Const MapWidth As Integer = 80
+  Public Const MapLevelGridMax As Integer = 3 ' The highest number of level grid sections height and width
+  Public Const MapLevelsMax As Integer = 99 'The maximum number of levels in the dungeon
+  Public Const MapHeight As Integer = 24 'The maximum number of rows on the CRT display
+  Public Const MapWidth As Integer = 80 'The maximum number of columns on the CRT display
+  Public Const MapGridCellHeight As Integer = 7 'The maximum number of rows in a level map grid cell
+  Public Const MapGridCellWidth As Integer = 26 'The maximum number of columns in a level map grid cell
+  Public Const MinHasRoomPercentage As Integer = 70 'Any random number out of 100 less or equal will have room
 
   Public Enum CellType As Integer
     StructureSolidStone = 0
