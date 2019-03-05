@@ -44,47 +44,95 @@ Module Module1
 #End Region
 
   Sub Main()
-    '==========================================Prevent Resize
-    Dim handle As IntPtr
-    handle = Process.GetCurrentProcess.MainWindowHandle ' Get the handle to the console window
 
-    Dim sysMenu As IntPtr
-    sysMenu = GetSystemMenu(handle, False) ' Get the handle to the system menu of the console window
+    ''==========================================Prevent Resize
+    'Dim handle As IntPtr
+    'handle = Process.GetCurrentProcess.MainWindowHandle ' Get the handle to the console window
 
-    If handle <> IntPtr.Zero Then
-      'DeleteMenu(sysMenu, SC_CLOSE, MF_BYCOMMAND) ' To prevent user from closing console window
-      DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND) 'To prevent user from minimizing console window
-      DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND) 'To prevent user from maximizing console window
-      DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND) 'To prevent the use from re-sizing console window
-    End If
-    '==========================================end prevent resize
-    Console.SetBufferSize(80, 25) ' or whatever size you're using...
-    Console.SetWindowSize(80, 25)
-    Console.BufferWidth = 80
-    Console.BufferHeight = 25
+    'Dim sysMenu As IntPtr
+    'sysMenu = GetSystemMenu(handle, False) ' Get the handle to the system menu of the console window
+
+    'If handle <> IntPtr.Zero Then
+    '  'DeleteMenu(sysMenu, SC_CLOSE, MF_BYCOMMAND) ' To prevent user from closing console window
+    '  DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND) 'To prevent user from minimizing console window
+    '  DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND) 'To prevent user from maximizing console window
+    '  DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND) 'To prevent the use from re-sizing console window
+    'End If
+    ''==========================================end prevent resize
+    'Try
+    '  Console.SetBufferSize(80, 25) ' or whatever size you're using...
+    'Catch ex As exception
+    'End Try
+    'Try
+    '  Console.SetWindowSize(80, 25)
+    'Catch ex As exception
+    'End Try
+    'Try
+    '  Console.BufferWidth = 80
+    'Catch ex As Exception
+    'End Try
+    'Try
+    '  Console.BufferHeight = 25
+    'Catch ex As Exception
+    'End Try
+
+    Dim OrgBufferHeight%, OrgBufferWidth%, OrgWindowHeight%, OrgWindowWidth%
+
+    OrgBufferHeight = Console.BufferHeight
+    OrgBufferWidth = Console.BufferWidth
+    OrgWindowHeight = Console.WindowHeight
+    OrgWindowWidth = Console.WindowWidth
+
+    Console.OutputEncoding = System.Text.Encoding.UTF8
+    ConsoleEx.Resize(80, 26)
+    ConsoleEx.DisableMinimize()
+    ConsoleEx.DisableMaximize()
+    ConsoleEx.DisableResize()
+    ConsoleEx.DisableQuickEditMode()
+    Console.CursorVisible = False
+
+    ConsoleEx.SetColor(ConsoleColor.DarkYellow, 170, 85, 0)
+
+    Try
+
+      ' Challenge #1: The colors in Windows 10 console applications doesn't match exactly with those in MS-DOS.
+      '               Specifically, the color orange is actually orange in Windows 10 where the color orange is 
+      '               more of a brown color in MS-DOS.  This color is used for the walls in the original Rogue.
+
+      ' Challenge #2: .NET is unicode based; where as original Rogue used ASCII and (possibly) ANSI.
+      '               This means that drawing of the walls and other special characters needs to be handled
+      '               using the unicode table and there isn't (AFAIK) a 1:1 mapping between ASCII and unicode.
 
 
-
-    ' Challenge #1: The colors in Windows 10 console applications doesn't match exactly with those in MS-DOS.
-    '               Specifically, the color orange is actually orange in Windows 10 where the color orange is 
-    '               more of a brown color in MS-DOS.  This color is used for the walls in the original Rogue.
-
-    ' Challenge #2: .NET is unicode based; where as original Rogue used ASCII and (possibly) ANSI.
-    '               This means that drawing of the walls and other special characters needs to be handled
-    '               using the unicode table and there isn't (AFAIK) a 1:1 mapping between ASCII and unicode.
+      'Notes:
+      '1 - I'm not much of a color person so I just went with DarkYellow for the brown
+      '2 - Could not get the unicode to work out but did find the some of the ASCII characters
 
 
-    'Notes:
-    '1 - I'm not much of a color person so I just went with DarkYellow for the brown
-    '2 - Could not get the unicode to work out but did find the some of the ASCII characters
+      InitializeGame()
 
+      While m_canContinue = True
+        m_canContinue = ProcessGameLoop()
+      End While
+      End
 
-    InitializeGame()
+    Finally
 
-    While m_canContinue = True
-      m_canContinue = ProcessGameLoop()
-    End While
-    End
+      ConsoleEx.EnableMinimize()
+      ConsoleEx.EnableMaximize()
+      ConsoleEx.EnableResize()
+      Console.ForegroundColor = ConsoleColor.Gray
+      Console.BackgroundColor = ConsoleColor.Black
+
+      Console.SetBufferSize(OrgBufferWidth, OrgBufferHeight)
+      Console.SetWindowSize(OrgWindowWidth, OrgWindowHeight)
+
+      ConsoleEx.EnableQuickEditMode()
+
+    End Try
+
+    Console.ResetColor()
+    Console.Clear()
 
   End Sub
 

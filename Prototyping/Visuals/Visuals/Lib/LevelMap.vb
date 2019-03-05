@@ -18,7 +18,7 @@ Namespace Rogue.Lib
   ''' 
   ''' </summary>
   Public Class LevelMap
-    Dim m_localRandom As New Random()
+    ReadOnly m_localRandom As New Random()
 
 
 #Region "Public Properties"
@@ -28,7 +28,7 @@ Namespace Rogue.Lib
     ''' <summary>
     ''' Set this value to true to test displaying a sample screen
     ''' </summary>
-    Private m_TestMode As Boolean = False
+    Private ReadOnly m_TestMode As Boolean = False
 
     Private m_EntryStairGrid As String
     Private m_ExitStairGrid As String
@@ -40,7 +40,7 @@ Namespace Rogue.Lib
     Private m_Rooms As List(Of LevelRoom)
     Private m_RoomConnections As List(Of String) = New List(Of String)  ' keep track of which rooms this room is connected to
 
-    Private m_ErrorHandler As New ErrorHandler
+    Private ReadOnly m_ErrorHandler As New ErrorHandler
     Private m_CurrentObject As String = "LevelMap"
 
 #End Region
@@ -53,10 +53,10 @@ Namespace Rogue.Lib
     ''' <returns></returns>
     Public Property CurrentMapLevel() As Integer
       Get
-        Return m_CurrentMapLevel
+        Return Me.m_CurrentMapLevel
       End Get
       Set(ByVal value As Integer)
-        m_CurrentMapLevel = value
+        Me.m_CurrentMapLevel = value
       End Set
     End Property
 
@@ -69,51 +69,51 @@ Namespace Rogue.Lib
     ''' <returns></returns>
     Public Property EntryStairGrid() As String
       Get
-        If m_EntryStairLocation.Length > 3 Then
-          m_Row = -1
-          m_Column = -1
-          Integer.TryParse(m_EntryStairLocation.Substring(0, 2), m_Row)
-          Integer.TryParse(m_EntryStairLocation.Substring(2, 2), m_Column)
+        If Me.m_EntryStairLocation.Length > 3 Then
+          Me.m_Row = -1
+          Me.m_Column = -1
+          Integer.TryParse(Me.m_EntryStairLocation.Substring(0, 2), Me.m_Row)
+          Integer.TryParse(Me.m_EntryStairLocation.Substring(2, 2), Me.m_Column)
 
-          If m_Row <= 6 Then
-            If m_Column < 26 Then
-              m_EntryStairGrid = "11"
+          If Me.m_Row <= 6 Then
+            If Me.m_Column < 26 Then
+              Me.m_EntryStairGrid = "11"
             End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_EntryStairGrid = "12"
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_EntryStairGrid = "12"
             End If
-            If m_Column >= 53 Then
-              m_EntryStairGrid = "13"
-            End If
-          End If
-          If m_Row >= 7 AndAlso m_Row <= 13 Then
-            If m_Column < 26 Then
-              m_EntryStairGrid = "21"
-            End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_EntryStairGrid = "22"
-            End If
-            If m_Column >= 53 Then
-              m_EntryStairGrid = "23"
+            If Me.m_Column >= 53 Then
+              Me.m_EntryStairGrid = "13"
             End If
           End If
-          If m_Row >= 14 Then
-            If m_Column < 26 Then
-              m_EntryStairGrid = "31"
+          If Me.m_Row >= 7 AndAlso Me.m_Row <= 13 Then
+            If Me.m_Column < 26 Then
+              Me.m_EntryStairGrid = "21"
             End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_EntryStairGrid = "32"
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_EntryStairGrid = "22"
             End If
-            If m_Column >= 53 Then
-              m_EntryStairGrid = "33"
+            If Me.m_Column >= 53 Then
+              Me.m_EntryStairGrid = "23"
+            End If
+          End If
+          If Me.m_Row >= 14 Then
+            If Me.m_Column < 26 Then
+              Me.m_EntryStairGrid = "31"
+            End If
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_EntryStairGrid = "32"
+            End If
+            If Me.m_Column >= 53 Then
+              Me.m_EntryStairGrid = "33"
             End If
           End If
 
         End If
-        Return m_EntryStairGrid
+        Return Me.m_EntryStairGrid
       End Get
       Set(ByVal value As String)
-        m_EntryStairGrid = value
+        Me.m_EntryStairGrid = value
       End Set
     End Property
 
@@ -126,51 +126,51 @@ Namespace Rogue.Lib
     ''' <returns></returns>
     Public Property ExitStairGrid() As String
       Get
-        If m_ExitStairLocation.Length > 3 Then
-          m_Row = -1
-          m_Column = -1
-          Integer.TryParse(m_ExitStairLocation.Substring(0, 2), m_Row)
-          Integer.TryParse(m_ExitStairLocation.Substring(2, 2), m_Column)
+        If Me.m_ExitStairLocation.Length > 3 Then
+          Me.m_Row = -1
+          Me.m_Column = -1
+          Integer.TryParse(Me.m_ExitStairLocation.Substring(0, 2), Me.m_Row)
+          Integer.TryParse(Me.m_ExitStairLocation.Substring(2, 2), Me.m_Column)
 
-          If m_Row <= 6 Then
-            If m_Column < 26 Then
-              m_ExitStairGrid = "11"
+          If Me.m_Row <= 6 Then
+            If Me.m_Column < 26 Then
+              Me.m_ExitStairGrid = "11"
             End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_ExitStairGrid = "12"
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_ExitStairGrid = "12"
             End If
-            If m_Column >= 53 Then
-              m_ExitStairGrid = "13"
-            End If
-          End If
-          If m_Row >= 7 AndAlso m_Row <= 13 Then
-            If m_Column < 26 Then
-              m_ExitStairGrid = "21"
-            End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_ExitStairGrid = "22"
-            End If
-            If m_Column >= 53 Then
-              m_ExitStairGrid = "23"
+            If Me.m_Column >= 53 Then
+              Me.m_ExitStairGrid = "13"
             End If
           End If
-          If m_Row >= 14 Then
-            If m_Column < 26 Then
-              m_ExitStairGrid = "31"
+          If Me.m_Row >= 7 AndAlso Me.m_Row <= 13 Then
+            If Me.m_Column < 26 Then
+              Me.m_ExitStairGrid = "21"
             End If
-            If m_Column >= 27 AndAlso m_Column < 52 Then
-              m_ExitStairGrid = "32"
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_ExitStairGrid = "22"
             End If
-            If m_Column >= 53 Then
-              m_ExitStairGrid = "33"
+            If Me.m_Column >= 53 Then
+              Me.m_ExitStairGrid = "23"
+            End If
+          End If
+          If Me.m_Row >= 14 Then
+            If Me.m_Column < 26 Then
+              Me.m_ExitStairGrid = "31"
+            End If
+            If Me.m_Column >= 27 AndAlso Me.m_Column < 52 Then
+              Me.m_ExitStairGrid = "32"
+            End If
+            If Me.m_Column >= 53 Then
+              Me.m_ExitStairGrid = "33"
             End If
           End If
 
         End If
-        Return m_ExitStairGrid
+        Return Me.m_ExitStairGrid
       End Get
       Set(ByVal value As String)
-        m_ExitStairGrid = value
+        Me.m_ExitStairGrid = value
       End Set
     End Property
 
@@ -184,10 +184,10 @@ Namespace Rogue.Lib
     ''' <returns></returns>
     Public Property EntryStairLocation() As String
       Get
-        Return m_EntryStairLocation
+        Return Me.m_EntryStairLocation
       End Get
       Set(ByVal value As String)
-        m_EntryStairLocation = value
+        Me.m_EntryStairLocation = value
       End Set
     End Property
 
@@ -201,10 +201,10 @@ Namespace Rogue.Lib
     ''' <returns></returns>
     Public Property ExitStairLocation() As String
       Get
-        Return m_ExitStairLocation
+        Return Me.m_ExitStairLocation
       End Get
       Set(ByVal value As String)
-        m_ExitStairLocation = value
+        Me.m_ExitStairLocation = value
       End Set
     End Property
 
@@ -233,19 +233,19 @@ Namespace Rogue.Lib
 
     Public Property Rooms() As List(Of LevelRoom)
       Get
-        Return m_Rooms
+        Return Me.m_Rooms
       End Get
       Set(ByVal value As List(Of LevelRoom))
-        m_Rooms = value
+        Me.m_Rooms = value
       End Set
     End Property
 
     Public Property RoomConnections() As List(Of String)
       Get
-        Return m_RoomConnections
+        Return Me.m_RoomConnections
       End Get
       Set(ByVal value As List(Of String))
-        m_RoomConnections = value
+        Me.m_RoomConnections = value
       End Set
     End Property
 
@@ -255,19 +255,19 @@ Namespace Rogue.Lib
 #Region "Public Methods"
 
     Public Sub New()
-      Initialize(False) 'Sets the level to empty
+      Me.Initialize(False) 'Sets the level to empty
     End Sub
 
     Public Sub New(ByVal whatTestMode As Boolean)
-      m_TestMode = whatTestMode
-      Initialize(whatTestMode) 'Sets the level to default map
-      LoadDefaultMap()
+      Me.m_TestMode = whatTestMode
+      Me.Initialize(whatTestMode) 'Sets the level to default map
+      Me.LoadDefaultMap()
     End Sub
 
     Public Sub New(ByVal whatEntryStairLocation As String, ByVal whatExitStairLocation As String)
-      Initialize(False) 'Sets the level to empty
-      EntryStairLocation = whatEntryStairLocation
-      ExitStairLocation = whatExitStairLocation
+      Me.Initialize(False) 'Sets the level to empty
+      Me.EntryStairLocation = whatEntryStairLocation
+      Me.ExitStairLocation = whatExitStairLocation
     End Sub
 
     ''' <summary>
@@ -285,12 +285,12 @@ Namespace Rogue.Lib
         For rowPointer As Integer = 0 To EnumsAndConsts.MapHeight - 1
           For columnPointer As Integer = 0 To EnumsAndConsts.MapWidth - 1
             'If the map cell has been made visible then display proper character
-            If MapCellVisibility(rowPointer, columnPointer) = True Then
-              Select Case MapCellData(rowPointer, columnPointer)
+            If Me.MapCellVisibility(rowPointer, columnPointer) = True Then
+              Select Case Me.MapCellData(rowPointer, columnPointer)
                 Case 0
                   m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.Black, ConsoleColor.Black, " ")
                 Case 1
-                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkGray, ConsoleColor.Black, "▓")
+                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkGray, ConsoleColor.Black, "▒") '"░") '"▒")
                 Case 2
                   m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkYellow, ConsoleColor.Black, "═")
                 Case 3
@@ -308,9 +308,9 @@ Namespace Rogue.Lib
                 Case 9
                   m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkYellow, ConsoleColor.Black, "╬")
                 Case 10
-                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkYellow, ConsoleColor.Black, ".")
+                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.DarkGreen, ConsoleColor.Black, ".")
                 Case 11
-                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.Yellow, ConsoleColor.Black, "▒")
+                  m_consoleController.WriteAt(columnPointer, rowPointer, ConsoleColor.Green, ConsoleColor.Black, "▓")
                 Case 100 'TODO could not find the proper happy face for the user
                   'Dim b As Byte = Convert.ToByte(1)
                   'Dim c As Char = Encoding.GetEncoding(437).GetChars(New Byte() {b})(0)
@@ -336,7 +336,7 @@ Namespace Rogue.Lib
         m_consoleController.DisplayPlayerStats(currentPlayer)
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
     End Sub
@@ -355,18 +355,18 @@ Namespace Rogue.Lib
       Dim aCurrentY As Integer = 0
       Dim aGridX As Integer = 0
       Dim aGridY As Integer = 0
-      Dim m_randomNumber As Integer = m_localRandom.Next(0, 100)
+      Dim m_randomNumber As Integer = Me.m_localRandom.Next(0, 100)
 
       Try
         'TODO for testing set these values
         'normally they will be set by the calling routine prior to creating the random level
-        EntryStairLocation = "1831"
-        ExitStairLocation = "0470"
+        Me.EntryStairLocation = "1831"
+        Me.ExitStairLocation = "0470"
 
-        m_Row = 0
-        m_Column = 0
-        m_Rooms = New List(Of LevelRoom)
-        m_RoomConnections = New List(Of String)
+        Me.m_Row = 0
+        Me.m_Column = 0
+        Me.m_Rooms = New List(Of LevelRoom)
+        Me.m_RoomConnections = New List(Of String)
 
         If whatGenerateRandomMapFlag = True Then
           'TODO following not yet working to randomly create entry and exit rooms
@@ -439,12 +439,12 @@ Namespace Rogue.Lib
 
 
           'End If
-          CreateRandomLevel()
+          Me.CreateRandomLevel()
         Else
-          ClearMapData()
+          Me.ClearMapData()
         End If
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
     End Sub
 
@@ -475,7 +475,7 @@ Namespace Rogue.Lib
           If whatCurrentRow > 1 Then
             aSeekXPtr = whatCurrentColumn
             aSeekYPtr = whatCurrentRow - 1 'up
-            aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+            aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
             If aCellType = EnumsAndConsts.CellType.StructureTunnel OrElse aCellType = EnumsAndConsts.CellType.StructureSolidStone Then
               aUpString = "U"
             End If
@@ -484,7 +484,7 @@ Namespace Rogue.Lib
           If whatCurrentRow < EnumsAndConsts.MapHeight - 2 Then
             aSeekXPtr = whatCurrentColumn
             aSeekYPtr = whatCurrentRow + 1 'down
-            aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+            aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
             If aCellType = EnumsAndConsts.CellType.StructureTunnel OrElse aCellType = EnumsAndConsts.CellType.StructureSolidStone Then
               aDownString = "D"
             End If
@@ -493,7 +493,7 @@ Namespace Rogue.Lib
           If whatCurrentColumn > 1 Then
             aSeekXPtr = whatCurrentColumn - 1 'left
             aSeekYPtr = whatCurrentRow
-            aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+            aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
             If aCellType = EnumsAndConsts.CellType.StructureTunnel OrElse aCellType = EnumsAndConsts.CellType.StructureSolidStone Then
               aLeftString = "L"
             End If
@@ -502,7 +502,7 @@ Namespace Rogue.Lib
           If whatCurrentColumn < EnumsAndConsts.MapWidth - 1 Then
             aSeekXPtr = whatCurrentColumn + 1 'right
             aSeekYPtr = whatCurrentRow
-            aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+            aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
             If aCellType = EnumsAndConsts.CellType.StructureTunnel OrElse aCellType = EnumsAndConsts.CellType.StructureSolidStone Then
               aRightString = "R"
             End If
@@ -511,7 +511,7 @@ Namespace Rogue.Lib
 
         aReturnValue = aUpString & aDownString & aLeftString & aRightString
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -534,7 +534,7 @@ Namespace Rogue.Lib
       Dim m_roomWidth As Integer = 0
       Dim m_roomRowOffset As Integer = 0 'offset from top side of cell
       Dim m_roomColumnOffset As Integer = 0 'offset from left side of cell
-      Dim m_randomNumber As Integer = m_localRandom.Next(0, 100)
+      Dim m_randomNumber As Integer = Me.m_localRandom.Next(0, 100)
       Dim m_ISOK As Boolean = False
       Dim m_ISEntryCell As Boolean = False
       Dim m_ISExitCell As Boolean = False
@@ -551,22 +551,22 @@ Namespace Rogue.Lib
 
         'NOTE; MUST MAKE SURE TO INITIALIZE EntryStairGrid
 
-        Integer.TryParse(EntryStairGrid.Substring(0, 1), m_entryRow)
-        Integer.TryParse(EntryStairGrid.Substring(1, 1), m_entryColumn)
-        Integer.TryParse(ExitStairGrid.Substring(0, 1), m_exitRow)
-        Integer.TryParse(ExitStairGrid.Substring(1, 1), m_exitColumn)
-        Integer.TryParse(EntryStairLocation.Substring(0, 2), m_entryRowPointer)
-        Integer.TryParse(EntryStairLocation.Substring(2, 2), m_entryColumnPointer)
-        Integer.TryParse(ExitStairLocation.Substring(0, 2), m_exitRowPointer)
-        Integer.TryParse(ExitStairLocation.Substring(2, 2), m_exitColumnPointer)
+        Integer.TryParse(Me.EntryStairGrid.Substring(0, 1), m_entryRow)
+        Integer.TryParse(Me.EntryStairGrid.Substring(1, 1), m_entryColumn)
+        Integer.TryParse(Me.ExitStairGrid.Substring(0, 1), m_exitRow)
+        Integer.TryParse(Me.ExitStairGrid.Substring(1, 1), m_exitColumn)
+        Integer.TryParse(Me.EntryStairLocation.Substring(0, 2), m_entryRowPointer)
+        Integer.TryParse(Me.EntryStairLocation.Substring(2, 2), m_entryColumnPointer)
+        Integer.TryParse(Me.ExitStairLocation.Substring(0, 2), m_exitRowPointer)
+        Integer.TryParse(Me.ExitStairLocation.Substring(2, 2), m_exitColumnPointer)
 
         ' If a room has an entry or exit point, then the room must surround that point
         ' else it can be anywhere in the grid cell
         'Minimum room size if 4x4 so can have border with 2x2 inside
 
 
-        m_roomWidth = m_localRandom.Next(0, EnumsAndConsts.MapGridCellWidth) + 2 'make sure there is room on the side for a corridor
-        m_roomHeight = m_localRandom.Next(0, EnumsAndConsts.MapGridCellHeight - 2) + 1       'top and bottom can only be 6 vice 7 to make room for corridors
+        m_roomWidth = Me.m_localRandom.Next(0, EnumsAndConsts.MapGridCellWidth) + 2 'make sure there is room on the side for a corridor
+        m_roomHeight = Me.m_localRandom.Next(0, EnumsAndConsts.MapGridCellHeight - 2) + 1       'top and bottom can only be 6 vice 7 to make room for corridors
         'm_roomHeight = 4 ' testing
         'm_roomWidth = 4 ' testing
         If m_roomHeight < 4 Then
@@ -585,12 +585,12 @@ Namespace Rogue.Lib
 
 
         If m_entryRow = whatMapGridRow AndAlso m_entryColumn = whatMapGridColumn Then
-          aReturnValue = aReturnValue & CreateRandomEntryRoom(whatMapGridRow, whatMapGridColumn, m_entryRowPointer, m_entryColumnPointer, m_roomHeight, m_roomWidth)
+          aReturnValue = aReturnValue & Me.CreateRandomEntryRoom(whatMapGridRow, whatMapGridColumn, m_entryRowPointer, m_entryColumnPointer, m_roomHeight, m_roomWidth)
 
           m_ISOK = True 'this is the cell for the entry into the level
         End If
         If m_exitRow = whatMapGridRow AndAlso m_exitColumn = whatMapGridColumn Then
-          aReturnValue = aReturnValue & CreateRandomExitRoom(whatMapGridRow, whatMapGridColumn, m_exitRowPointer, m_exitColumnPointer, m_roomHeight, m_roomWidth)
+          aReturnValue = aReturnValue & Me.CreateRandomExitRoom(whatMapGridRow, whatMapGridColumn, m_exitRowPointer, m_exitColumnPointer, m_roomHeight, m_roomWidth)
           m_ISOK = True 'this is the cell for the exit from the level
         End If
         If m_ISOK = False Then
@@ -598,9 +598,9 @@ Namespace Rogue.Lib
 
           Randomize()
           'generate a number from 1 to 100
-          m_randomNumber = m_localRandom.Next(0, 100) + 1
+          m_randomNumber = Me.m_localRandom.Next(0, 100) + 1
           If m_randomNumber <= EnumsAndConsts.MinHasRoomPercentage Then
-            aReturnValue = aReturnValue & CreateRandomRoom(whatMapGridRow, whatMapGridColumn, m_roomHeight, m_roomWidth)
+            aReturnValue = aReturnValue & Me.CreateRandomRoom(whatMapGridRow, whatMapGridColumn, m_roomHeight, m_roomWidth)
             m_ISOK = True
           End If
 
@@ -610,7 +610,7 @@ Namespace Rogue.Lib
         End If
         'MsgBox(aString)
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -624,8 +624,8 @@ Namespace Rogue.Lib
         'Clear out the map variables
         For rowPointer As Integer = 0 To EnumsAndConsts.MapHeight
           For columnPointer As Integer = 0 To EnumsAndConsts.MapWidth
-            MapCellData(rowPointer, columnPointer) = 0
-            MapCellVisibility(rowPointer, columnPointer) = False
+            Me.MapCellData(rowPointer, columnPointer) = 0
+            Me.MapCellVisibility(rowPointer, columnPointer) = False
             ' testing -- make all the blank space tunnel character so it is easy to see
             'MapCellData(rowPointer, columnPointer) = EnumsAndConsts.CellType.StructureTunnel
             'MapCellVisibility(rowPointer, columnPointer) = True
@@ -633,7 +633,7 @@ Namespace Rogue.Lib
         Next
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
     End Sub
@@ -656,14 +656,14 @@ Namespace Rogue.Lib
 
         aRoom = aRoom.CreateRandomEntryRoom(whatMapGridRow, whatMapGridColumn, whatEntryRow, whatEntryColumn, whatHeight, whatWidth)
         If aRoom.CurrentHeight > 0 Then
-          Rooms.Add(aRoom)
+          Me.Rooms.Add(aRoom)
           aReturnValue = aRoom.ToString
         End If
-        UpdateMap(aRoom)
-        MapCellData(whatEntryRow, whatEntryColumn) = EnumsAndConsts.CellType.StructureStairsDown
-        MapCellVisibility(whatEntryRow, whatEntryColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
+        Me.UpdateMap(aRoom)
+        Me.MapCellData(whatEntryRow, whatEntryColumn) = EnumsAndConsts.CellType.StructureStairsDown
+        Me.MapCellVisibility(whatEntryRow, whatEntryColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -687,14 +687,14 @@ Namespace Rogue.Lib
 
         aRoom = aRoom.CreateRandomExitRoom(whatMapGridRow, whatMapGridColumn, whatExitRow, whatExitColumn, whatHeight, whatWidth)
         If aRoom.CurrentHeight > 0 Then
-          Rooms.Add(aRoom)
+          Me.Rooms.Add(aRoom)
           aReturnValue = aRoom.ToString
         End If
-        UpdateMap(aRoom)
-        MapCellData(whatExitRow, whatExitColumn) = EnumsAndConsts.CellType.StructureStairsDown
-        MapCellVisibility(whatExitRow, whatExitColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
+        Me.UpdateMap(aRoom)
+        Me.MapCellData(whatExitRow, whatExitColumn) = EnumsAndConsts.CellType.StructureStairsDown
+        Me.MapCellVisibility(whatExitRow, whatExitColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -731,7 +731,7 @@ Namespace Rogue.Lib
       Dim m_roomWidth As Integer = 0
       Dim m_roomRowOffset As Integer = 0 'offset from top side of cell
       Dim m_roomColumnOffset As Integer = 0 'offset from left side of cell
-      Dim m_randomNumber As Integer = m_localRandom.Next()
+      Dim m_randomNumber As Integer = Me.m_localRandom.Next()
       Dim m_mapCharacterValue As Integer = 0
       Dim m_ISOK As Boolean = False
       Dim m_ISEntryCell As Boolean = False
@@ -744,37 +744,37 @@ Namespace Rogue.Lib
 
       Try
 
-        ClearMapData()
+        Me.ClearMapData()
         ' m_TestMode = True
-        If m_TestMode = False Then
+        If Me.m_TestMode = False Then
           'NOTE; MUST MAKE SURE TO INITIALIZE EntryStairGrid
 
-          Integer.TryParse(EntryStairGrid.Substring(0, 1), m_entryRow)
-          Integer.TryParse(EntryStairGrid.Substring(1, 1), m_entryColumn)
-          Integer.TryParse(ExitStairGrid.Substring(0, 1), m_exitRow)
-          Integer.TryParse(ExitStairGrid.Substring(1, 1), m_exitColumn)
-          Integer.TryParse(EntryStairLocation.Substring(0, 2), m_entryRowPointer)
-          Integer.TryParse(EntryStairLocation.Substring(2, 2), m_entryColumnPointer)
-          Integer.TryParse(ExitStairLocation.Substring(0, 2), m_exitRowPointer)
-          Integer.TryParse(ExitStairLocation.Substring(2, 2), m_exitColumnPointer)
+          Integer.TryParse(Me.EntryStairGrid.Substring(0, 1), m_entryRow)
+          Integer.TryParse(Me.EntryStairGrid.Substring(1, 1), m_entryColumn)
+          Integer.TryParse(Me.ExitStairGrid.Substring(0, 1), m_exitRow)
+          Integer.TryParse(Me.ExitStairGrid.Substring(1, 1), m_exitColumn)
+          Integer.TryParse(Me.EntryStairLocation.Substring(0, 2), m_entryRowPointer)
+          Integer.TryParse(Me.EntryStairLocation.Substring(2, 2), m_entryColumnPointer)
+          Integer.TryParse(Me.ExitStairLocation.Substring(0, 2), m_exitRowPointer)
+          Integer.TryParse(Me.ExitStairLocation.Substring(2, 2), m_exitColumnPointer)
 
           For m_gridRowPtr = 1 To EnumsAndConsts.MapLevelGridRowMax
             For m_gridColumnPtr = 1 To EnumsAndConsts.MapLevelGridColumnMax
-              aString = CheckIfRandomRoomExists(m_gridRowPtr, m_gridColumnPtr)
+              aString = Me.CheckIfRandomRoomExists(m_gridRowPtr, m_gridColumnPtr)
               'Keep track of which grid cells have rooms for tunnel creation
               'astring will in the form of height-width|top-left or BLANK if no room exists
-              MapCellHasRoom(m_gridRowPtr, m_gridColumnPtr) = aString
+              Me.MapCellHasRoom(m_gridRowPtr, m_gridColumnPtr) = aString
             Next
           Next
           'Create the tunnels between rooms.
           'Expects that there are at least two rooms (entry and exit)
-          CreateRandomTunnels()
+          Me.CreateRandomTunnels()
           'MsgBox(aString)
         Else
-          LoadDefaultMap()
+          Me.LoadDefaultMap()
         End If
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
     End Sub
@@ -797,12 +797,12 @@ Namespace Rogue.Lib
         'aReturnValue = Y.ToString & "-" & X.ToString
         aRoom = aRoom.CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
         If aRoom.CurrentHeight > 0 Then
-          Rooms.Add(aRoom)
+          Me.Rooms.Add(aRoom)
           aReturnValue = aRoom.ToString
         End If
-        UpdateMap(aRoom)
+        Me.UpdateMap(aRoom)
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -866,8 +866,8 @@ Namespace Rogue.Lib
         ' DrawScreen()
         'GetKeyBoardInput()
 
-        For roomCtr As Integer = 0 To Rooms.Count - 1
-          aRoom = Rooms(roomCtr)
+        For roomCtr As Integer = 0 To Me.Rooms.Count - 1
+          aRoom = Me.Rooms(roomCtr)
           For doorCtr As Integer = 0 To aRoom.RoomDoors.Count - 1
             aDoor = aRoom.RoomDoors(doorCtr)
             aDataArray = aDoor.Split("|")
@@ -877,7 +877,7 @@ Namespace Rogue.Lib
 
             End If
             ' currentData = FindClosestDoor(m_RowPtr, m_ColumnPtr, m_RowPtr, m_ColumnPtr)
-            currentData = FindClosestDoor(aRoom, aDoor)
+            currentData = Me.FindClosestDoor(aRoom, aDoor)
             aDataArray = currentData.Split("|")
             If aDataArray.Length > 1 Then
               Integer.TryParse(aDataArray(0), aToRowPtr)
@@ -886,17 +886,17 @@ Namespace Rogue.Lib
             End If
             Debug.Print(aRoom.ToString & "==" & aDoor & "===" & currentData)
             'set to tunnel to start just outside of the from door and to end just outside of the target door
-            currentData = FindCellOutsideDoor(m_RowPtr, m_ColumnPtr)
+            currentData = Me.FindCellOutsideDoor(m_RowPtr, m_ColumnPtr)
             aDataArray = currentData.Split("|")
             If aDataArray.Length > 1 Then
               Integer.TryParse(aDataArray(0), aFromRowPtr)
               Integer.TryParse(aDataArray(1), aFromColumnPtr)
 
             End If
-            DigNextTunnelSection(aFromRowPtr, aFromColumnPtr, 0)
+            Me.DigNextTunnelSection(aFromRowPtr, aFromColumnPtr, 0)
 
             'set tunnel to end just outside target door
-            currentData = FindCellOutsideDoor(aToRowPtr, aToColumnPtr)
+            currentData = Me.FindCellOutsideDoor(aToRowPtr, aToColumnPtr)
             aDataArray = currentData.Split("|")
             If aDataArray.Length > 1 Then
               Integer.TryParse(aDataArray(0), aDoorRowPtr)
@@ -907,13 +907,13 @@ Namespace Rogue.Lib
             ' aDoorRowPtr = aToRowPtr
             ' aDoorColumnPtr = aToColumnPtr
             Debug.Print(aFromRowPtr.ToString & "-" & aFromColumnPtr & " to " & aDoorRowPtr.ToString & "-" & aDoorColumnPtr.ToString)
-            aCreatedStepCount = CreateUtilityTunnel(aFromColumnPtr, aFromRowPtr, aDoorColumnPtr, aDoorRowPtr, False)
+            aCreatedStepCount = Me.CreateUtilityTunnel(aFromColumnPtr, aFromRowPtr, aDoorColumnPtr, aDoorRowPtr, False)
             If aCreatedStepCount <= 0 Then
               aCreatedStepCount = aCreatedStepCount
             Else
               'Add tunnel to room connections
               currentData = aRoom.GetConnectionNumber(m_RowPtr, m_ColumnPtr, aDoorRowPtr, aDoorColumnPtr)
-              RoomConnections.Add(currentData)
+              Me.RoomConnections.Add(currentData)
 
             End If
 
@@ -929,10 +929,10 @@ Namespace Rogue.Lib
 
         'DrawScreen()
         'GetKeyBoardInput()
-        VerifyAllRoomsAccessible()
+        Me.VerifyAllRoomsAccessible()
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -985,7 +985,7 @@ Namespace Rogue.Lib
         aCurrentColumn = whatFromColumnPtr
 
         For aReturnValue = 1 To (EnumsAndConsts.MapHeight * EnumsAndConsts.MapWidth)
-          currentData = CanDigNextTunnelSection(aCurrentRow, aCurrentColumn)
+          currentData = Me.CanDigNextTunnelSection(aCurrentRow, aCurrentColumn)
           If aCurrentRow = whatToRowPtr Then
             If aCurrentColumn - whatToColumnPtr > 0 Then
               aCurrentDirection = "L"
@@ -1019,7 +1019,7 @@ Namespace Rogue.Lib
           Else
             If aCurrentDirection = aAvoidanceDirection Then
               'need to tunnel around object
-              currentData = TunnelAroundObstacle(aCurrentRow, aCurrentColumn, whatToRowPtr, whatToColumnPtr, aCurrentDirection)
+              currentData = Me.TunnelAroundObstacle(aCurrentRow, aCurrentColumn, whatToRowPtr, whatToColumnPtr, aCurrentDirection)
               currentData = currentData
               Dim aDataArray() As String
               aDataArray = currentData.Split("|")
@@ -1053,7 +1053,7 @@ Namespace Rogue.Lib
               End If
             End If
           End If
-          currentData = DigNextTunnelSection(aSeekRow, aSeekColumn, 0)
+          currentData = Me.DigNextTunnelSection(aSeekRow, aSeekColumn, 0)
           aCurrentColumn = aSeekColumn
           aCurrentRow = aSeekRow
 
@@ -1114,7 +1114,7 @@ Namespace Rogue.Lib
 
         ' aReturnValue = 1
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
         aReturnValue = -1
       End Try
 
@@ -1128,8 +1128,8 @@ Namespace Rogue.Lib
 
       Try
         If (whatRow > -1 AndAlso whatRow < EnumsAndConsts.MapHeight) AndAlso (whatColumn > -1 AndAlso whatColumn < EnumsAndConsts.MapWidth) Then
-          MapCellData(whatRow, whatColumn) = EnumsAndConsts.CellType.StructureTunnel
-          MapCellVisibility(whatRow, whatColumn) = True
+          Me.MapCellData(whatRow, whatColumn) = EnumsAndConsts.CellType.StructureTunnel
+          Me.MapCellVisibility(whatRow, whatColumn) = True
           aReturnValue = whatRow.ToString & "|" & whatColumn.ToString
           Debug.Print("Stepping to " & aReturnValue)
         Else
@@ -1141,7 +1141,7 @@ Namespace Rogue.Lib
         'need to be able to use whatVisibilityRange to set visibility based on what may be in way
       Catch ex As Exception
         aReturnValue = ""
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1170,7 +1170,7 @@ Namespace Rogue.Lib
         'check each direction, only one will be tunnel/stone, others will be wall/floor
         aSeekXPtr = aCurrentX - 1 'left
         aSeekYPtr = aCurrentY
-        aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+        aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
 
         If aCellType = EnumsAndConsts.CellType.StructureTunnel Then
           'already a tunnel there so exit
@@ -1188,7 +1188,7 @@ Namespace Rogue.Lib
           Else
             aSeekXPtr = aCurrentX + 1 'right
             aSeekYPtr = aCurrentY
-            aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+            aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
             If aCellType = EnumsAndConsts.CellType.StructureTunnel Then
               'already a tunnel there so exit
               aReturnValue = aSeekYPtr.ToString & "|" & aSeekXPtr.ToString
@@ -1205,7 +1205,7 @@ Namespace Rogue.Lib
               Else
                 aSeekXPtr = aCurrentX
                 aSeekYPtr = aCurrentY - 1 'up
-                aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+                aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
                 If aCellType = EnumsAndConsts.CellType.StructureTunnel Then
                   'already a tunnel there so exit
                   aReturnValue = aSeekYPtr.ToString & "|" & aSeekXPtr.ToString
@@ -1222,7 +1222,7 @@ Namespace Rogue.Lib
                   Else
                     aSeekXPtr = aCurrentX
                     aSeekYPtr = aCurrentY + 1 'down
-                    aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+                    aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
                     If aCellType = EnumsAndConsts.CellType.StructureTunnel Then
                       'already a tunnel there so exit
                       aReturnValue = aSeekYPtr.ToString & "|" & aSeekXPtr.ToString
@@ -1246,7 +1246,7 @@ Namespace Rogue.Lib
         End If
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1298,20 +1298,20 @@ Namespace Rogue.Lib
               Else
                 canLookUp = True
                 aToRoomPtr = ((aRowPtr - 2) * EnumsAndConsts.MapLevelGridColumnMax) + aColumnPtr
-                For rPtr As Integer = 0 To Rooms.Count - 1
-                  If aToRoomPtr = Rooms(rPtr).RoomNumber Then
-                    currentData = whatRoom.RoomNumber.ToString & "|" & Rooms(rPtr).RoomNumber.ToString
-                    reverseConnection = Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
+                For rPtr As Integer = 0 To Me.Rooms.Count - 1
+                  If aToRoomPtr = Me.Rooms(rPtr).RoomNumber Then
+                    currentData = whatRoom.RoomNumber.ToString & "|" & Me.Rooms(rPtr).RoomNumber.ToString
+                    reverseConnection = Me.Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
                     isFound = False
-                    For cPtr As Integer = 0 To RoomConnections.Count - 1
-                      If currentData = RoomConnections(cPtr) OrElse reverseConnection = RoomConnections(cPtr) Then
+                    For cPtr As Integer = 0 To Me.RoomConnections.Count - 1
+                      If currentData = Me.RoomConnections(cPtr) OrElse reverseConnection = Me.RoomConnections(cPtr) Then
                         isFound = True
                         Exit For
                       End If
                     Next
                     If isFound = False Then
                       'do not use room if already has a connection
-                      aFoundRoomsList.Add(Rooms(rPtr))
+                      aFoundRoomsList.Add(Me.Rooms(rPtr))
                     End If
                     Exit For
                   End If
@@ -1322,20 +1322,20 @@ Namespace Rogue.Lib
               Else
                 canLookDown = True
                 aToRoomPtr = ((aRowPtr - 0) * EnumsAndConsts.MapLevelGridColumnMax) + aColumnPtr
-                For rPtr As Integer = 0 To Rooms.Count - 1
-                  If aToRoomPtr = Rooms(rPtr).RoomNumber Then
-                    currentData = whatRoom.RoomNumber.ToString & "|" & Rooms(rPtr).RoomNumber.ToString
-                    reverseConnection = Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
+                For rPtr As Integer = 0 To Me.Rooms.Count - 1
+                  If aToRoomPtr = Me.Rooms(rPtr).RoomNumber Then
+                    currentData = whatRoom.RoomNumber.ToString & "|" & Me.Rooms(rPtr).RoomNumber.ToString
+                    reverseConnection = Me.Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
                     isFound = False
-                    For cPtr As Integer = 0 To RoomConnections.Count - 1
-                      If currentData = RoomConnections(cPtr) OrElse reverseConnection = RoomConnections(cPtr) Then
+                    For cPtr As Integer = 0 To Me.RoomConnections.Count - 1
+                      If currentData = Me.RoomConnections(cPtr) OrElse reverseConnection = Me.RoomConnections(cPtr) Then
                         isFound = True
                         Exit For
                       End If
                     Next
                     If isFound = False Then
                       'do not use room if already has a connection
-                      aFoundRoomsList.Add(Rooms(rPtr))
+                      aFoundRoomsList.Add(Me.Rooms(rPtr))
                     End If
                     Exit For
                   End If
@@ -1346,20 +1346,20 @@ Namespace Rogue.Lib
               Else
                 canLookLeft = True
                 aToRoomPtr = ((aRowPtr - 1) * EnumsAndConsts.MapLevelGridColumnMax) + aColumnPtr - 1
-                For rPtr As Integer = 0 To Rooms.Count - 1
-                  If aToRoomPtr = Rooms(rPtr).RoomNumber Then
-                    currentData = whatRoom.RoomNumber.ToString & "|" & Rooms(rPtr).RoomNumber.ToString
-                    reverseConnection = Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
+                For rPtr As Integer = 0 To Me.Rooms.Count - 1
+                  If aToRoomPtr = Me.Rooms(rPtr).RoomNumber Then
+                    currentData = whatRoom.RoomNumber.ToString & "|" & Me.Rooms(rPtr).RoomNumber.ToString
+                    reverseConnection = Me.Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
                     isFound = False
-                    For cPtr As Integer = 0 To RoomConnections.Count - 1
-                      If currentData = RoomConnections(cPtr) OrElse reverseConnection = RoomConnections(cPtr) Then
+                    For cPtr As Integer = 0 To Me.RoomConnections.Count - 1
+                      If currentData = Me.RoomConnections(cPtr) OrElse reverseConnection = Me.RoomConnections(cPtr) Then
                         isFound = True
                         Exit For
                       End If
                     Next
                     If isFound = False Then
                       'do not use room if already has a connection
-                      aFoundRoomsList.Add(Rooms(rPtr))
+                      aFoundRoomsList.Add(Me.Rooms(rPtr))
                     End If
                     Exit For
                   End If
@@ -1370,20 +1370,20 @@ Namespace Rogue.Lib
               Else
                 canLookRight = True
                 aToRoomPtr = ((aRowPtr - 1) * EnumsAndConsts.MapLevelGridColumnMax) + aColumnPtr + 1
-                For rPtr As Integer = 0 To Rooms.Count - 1
-                  If aToRoomPtr = Rooms(rPtr).RoomNumber Then
-                    currentData = whatRoom.RoomNumber.ToString & "|" & Rooms(rPtr).RoomNumber.ToString
-                    reverseConnection = Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
+                For rPtr As Integer = 0 To Me.Rooms.Count - 1
+                  If aToRoomPtr = Me.Rooms(rPtr).RoomNumber Then
+                    currentData = whatRoom.RoomNumber.ToString & "|" & Me.Rooms(rPtr).RoomNumber.ToString
+                    reverseConnection = Me.Rooms(rPtr).RoomNumber.ToString & "|" & whatRoom.RoomNumber.ToString
                     isFound = False
-                    For cPtr As Integer = 0 To RoomConnections.Count - 1
-                      If currentData = RoomConnections(cPtr) OrElse reverseConnection = RoomConnections(cPtr) Then
+                    For cPtr As Integer = 0 To Me.RoomConnections.Count - 1
+                      If currentData = Me.RoomConnections(cPtr) OrElse reverseConnection = Me.RoomConnections(cPtr) Then
                         isFound = True
                         Exit For
                       End If
                     Next
                     If isFound = False Then
                       'do not use room if already has a connection
-                      aFoundRoomsList.Add(Rooms(rPtr))
+                      aFoundRoomsList.Add(Me.Rooms(rPtr))
                     End If
                     Exit For
                   End If
@@ -1396,14 +1396,14 @@ Namespace Rogue.Lib
         'now we know what ways we can look
         If aFoundRoomsList.Count > 0 Then
           'aReturnValue = aFoundRoomsList(0).RoomDoors(0).ToString ' need to actually pick one of these
-          aToRoomPtr = m_localRandom.Next(aFoundRoomsList.Count - 1) '+ 1 do not need +1 because list is zero based
+          aToRoomPtr = Me.m_localRandom.Next(aFoundRoomsList.Count - 1) '+ 1 do not need +1 because list is zero based
           aReturnValue = aFoundRoomsList(aToRoomPtr).RoomDoors(0).ToString
         Else
           'need to pick any random room
           For tryPtr As Integer = 0 To 10
-            aToRoomPtr = m_localRandom.Next(Rooms.Count - 1) + 1
-            If Not Rooms(aToRoomPtr).RoomNumber = whatRoom.RoomNumber Then
-              aReturnValue = Rooms(aToRoomPtr).RoomDoors(0).ToString
+            aToRoomPtr = Me.m_localRandom.Next(Me.Rooms.Count - 1) + 1
+            If Not Me.Rooms(aToRoomPtr).RoomNumber = whatRoom.RoomNumber Then
+              aReturnValue = Me.Rooms(aToRoomPtr).RoomDoors(0).ToString
               Exit For
             End If
           Next
@@ -1411,7 +1411,7 @@ Namespace Rogue.Lib
 
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
         aReturnValue = aReturnValue
       End Try
 
@@ -1430,7 +1430,7 @@ Namespace Rogue.Lib
         aReturnValue = aReturnValue & currentData.Substring(currentData.Length - 2)
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1442,13 +1442,13 @@ Namespace Rogue.Lib
       Dim aReturnValue As New LevelRoom
 
       Try
-        For Each foundRoom As LevelRoom In Rooms
+        For Each foundRoom As LevelRoom In Me.Rooms
           If foundRoom.RoomNumber = whatRoomNumber Then
             aReturnValue = foundRoom
           End If
         Next
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1491,7 +1491,7 @@ Namespace Rogue.Lib
 
       Catch ex As Exception
         'MsgBox(ex.Message)
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1536,46 +1536,46 @@ Namespace Rogue.Lib
           For columnPtr As Integer = 0 To m(rowPtr).Length - 1
             Select Case m(rowPtr).Substring(columnPtr, 1)
               Case "0"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureSolidStone
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureSolidStone
               Case "1"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureTunnel
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureTunnel
               Case "2"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopBottom
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopBottom
               Case "3"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallSide
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallSide
               Case "4"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopLeftCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopLeftCorner
               Case "5"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopRightCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopRightCorner
               Case "6"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomLeftCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomLeftCorner
               Case "7"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomRightCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomRightCorner
               Case "8"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorTopBottom
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorTopBottom
               Case "9"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorSide
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorSide
               Case "@"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.UserSelf
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.UserSelf
               Case "#"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureStairsDown
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureStairsDown
               Case "*"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemGold
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemGold
               Case "!"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemPotion
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemPotion
               Case "O"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemRing
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemRing
               Case "K"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterKestrel
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterKestrel
               Case "I"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterInvisibleStalker
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterInvisibleStalker
               Case Else
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureFloor
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureFloor
 
             End Select
             'If rowPtr < 12 Then
             ' NOTE: Can test map visibility by uncommenting IF and ENDIF
-            MapCellVisibility(rowPtr, columnPtr) = True
+            Me.MapCellVisibility(rowPtr, columnPtr) = True
             'End If
           Next
         Next
@@ -1583,7 +1583,7 @@ Namespace Rogue.Lib
         'need to initialize Rooms array
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
     End Sub
@@ -1627,51 +1627,51 @@ Namespace Rogue.Lib
           For columnPtr As Integer = 0 To m(rowPtr).Length - 1
             Select Case m(rowPtr).Substring(columnPtr, 1)
               Case "0"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureSolidStone
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureSolidStone
               Case "1"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureTunnel
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureTunnel
               Case "2"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopBottom
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopBottom
               Case "3"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallSide
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallSide
               Case "4"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopLeftCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopLeftCorner
               Case "5"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopRightCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallTopRightCorner
               Case "6"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomLeftCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomLeftCorner
               Case "7"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomRightCorner
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureWallBottomRightCorner
               Case "8"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorTopBottom
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorTopBottom
               Case "9"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorSide
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureDoorSide
               Case "@"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.UserSelf
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.UserSelf
               Case "#"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureStairsDown
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureStairsDown
               Case "*"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemGold
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemGold
               Case "!"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemPotion
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemPotion
               Case "O"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemRing
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.ItemRing
               Case "K"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterKestrel
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterKestrel
               Case "I"
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterInvisibleStalker
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.MonsterInvisibleStalker
               Case Else
-                MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureFloor
+                Me.MapCellData(rowPtr, columnPtr) = EnumsAndConsts.CellType.StructureFloor
 
             End Select
             'If rowPtr < 12 Then
             ' NOTE: Can test map visibility by uncommenting IF and ENDIF
-            MapCellVisibility(rowPtr, columnPtr) = True
+            Me.MapCellVisibility(rowPtr, columnPtr) = True
             'End If
           Next
         Next
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
     End Sub
@@ -1707,7 +1707,7 @@ Namespace Rogue.Lib
 
       Try
         Debug.Print("TunnelAroundObstacle From: " & whatCurrentRow.ToString & "-" & whatCurrentColumn.ToString & " to " & whatTargetRow.ToString & "-" & whatTargetColumn.ToString & " Direction = " & whatCurrentDirection)
-        aAvailableDirections = CanDigNextTunnelSection(whatCurrentRow, whatCurrentColumn)
+        aAvailableDirections = Me.CanDigNextTunnelSection(whatCurrentRow, whatCurrentColumn)
 
         aCurrentY = whatCurrentRow
         aCurrentX = whatCurrentColumn
@@ -1726,10 +1726,10 @@ Namespace Rogue.Lib
             aSeekYPtr = aCurrentY
             aSeekXPtr = aCurrentX + 1
         End Select
-        aCellType = MapCellData(aSeekYPtr, aSeekXPtr)
+        aCellType = Me.MapCellData(aSeekYPtr, aSeekXPtr)
         If aCellType = EnumsAndConsts.CellType.StructureSolidStone OrElse aCellType = EnumsAndConsts.CellType.StructureTunnel Then
           'original direction clear
-          DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
+          Me.DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
 
           'MapCellData(aSeekYPtr, aSeekXPtr) = EnumsAndConsts.CellType.StructureTunnel
           'MapCellVisibility(aSeekYPtr, aSeekXPtr) = True
@@ -1739,9 +1739,9 @@ Namespace Rogue.Lib
           aCurrentX = aSeekXPtr
           aReturnValue = aCurrentY.ToString & "|" & aCurrentX.ToString
         Else
-          aBlockingRoomNumber = GetRoomNumberFromXY(aSeekXPtr, aSeekYPtr)
+          aBlockingRoomNumber = Me.GetRoomNumberFromXY(aSeekXPtr, aSeekYPtr)
           If aBlockingRoomNumber > 0 Then
-            aBlockingRoom = GetRoomFromNumber(aBlockingRoomNumber)
+            aBlockingRoom = Me.GetRoomFromNumber(aBlockingRoomNumber)
           End If
           'find out the shortest side of the blocking room and go that way
           If whatCurrentDirection = "D" OrElse whatCurrentDirection = "U" Then
@@ -1764,7 +1764,7 @@ Namespace Rogue.Lib
 
           isFound = True
           Do While isFound = True AndAlso aStepCtr < EnumsAndConsts.MapHeight * EnumsAndConsts.MapWidth
-            aAvailableDirections = CanDigNextTunnelSection(aCurrentY, aCurrentX)
+            aAvailableDirections = Me.CanDigNextTunnelSection(aCurrentY, aCurrentX)
             If aAvailableDirections.Trim.Length > 0 Then
               'there are available moves from here
               If aAvailableDirections.Contains(whatCurrentDirection) Then
@@ -1818,7 +1818,7 @@ Namespace Rogue.Lib
                     aSeekYPtr = aCurrentY
                     aSeekXPtr = aCurrentX + 1
                   End If
-                  DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
+                  Me.DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
                   aCurrentX = aSeekXPtr
                   aCurrentY = aSeekYPtr
                 End If
@@ -1840,7 +1840,7 @@ Namespace Rogue.Lib
                   aSeekYPtr = aCurrentY
                   aSeekXPtr = aCurrentX + 1
                 End If
-                DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
+                Me.DigNextTunnelSection(aSeekYPtr, aSeekXPtr, 0)
                 aCurrentX = aSeekXPtr
                 aCurrentY = aSeekYPtr
               End If
@@ -1853,7 +1853,7 @@ Namespace Rogue.Lib
           isFound = isFound
         End If
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -1927,8 +1927,8 @@ Namespace Rogue.Lib
             ''ensure that pointer into map data takes into account which grid cell is being processed
             yPtr = (rPtr + whatRoom.MapTopLocation + ((whatRoom.MapGridRowLocation - 1) * 7)) - 1
             xPtr = (cPtr + whatRoom.MapLeftLocation + ((whatRoom.MapGridColumnLocation - 1) * 26)) - 1
-            MapCellData(yPtr, xPtr) = m_mapCharacterValue
-            MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
+            Me.MapCellData(yPtr, xPtr) = m_mapCharacterValue
+            Me.MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
             If yPtr < aTopPtr Then
               aTopPtr = yPtr
             End If
@@ -1945,14 +1945,14 @@ Namespace Rogue.Lib
             Integer.TryParse(aDataArray(1), xPtr)
             Integer.TryParse(aDataArray(2), m_mapCharacterValue)
           End If
-          MapCellData(yPtr, xPtr) = m_mapCharacterValue
-          MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
+          Me.MapCellData(yPtr, xPtr) = m_mapCharacterValue
+          Me.MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
 
         Next
 
         aReturnValue = aTopPtr.ToString & "-" & aLeftPtr.ToString
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
         aReturnValue = ""
       End Try
 
@@ -2010,7 +2010,7 @@ Namespace Rogue.Lib
 
       Try
         'Build list of connections between rooms
-        For Each currentData In RoomConnections
+        For Each currentData In Me.RoomConnections
           aDataArray = currentData.Split("|")
           If aDataArray.Length > 1 Then
             Integer.TryParse(aDataArray(0), aFromPtr)
@@ -2025,7 +2025,7 @@ Namespace Rogue.Lib
 
         'DEBUGGING DATA
         Debug.Print("Room Connections")
-        For Each currentData In RoomConnections
+        For Each currentData In Me.RoomConnections
           Debug.Print(currentData)
         Next
         Debug.Print("ConnectionList")
@@ -2034,7 +2034,7 @@ Namespace Rogue.Lib
         Next
 
         Debug.Print("Doors in Rooms")
-        For Each foundRoom As LevelRoom In Rooms
+        For Each foundRoom As LevelRoom In Me.Rooms
           For Each existingDoor As String In foundRoom.RoomDoors
             Debug.Print(foundRoom.RoomNumber.ToString & "=" & existingDoor)
           Next
@@ -2087,8 +2087,9 @@ Namespace Rogue.Lib
           'createutilitytunnel
           'Then go through this process again until steplist is empty at the end of the run.
           If aStepList.Count > 0 Then
-            aTunnelStepList = New List(Of String)
-            aTunnelStepList.Add(aStepList(0))
+            aTunnelStepList = New List(Of String) From {
+              aStepList(0)
+            }
             aStepList.RemoveAt(0)
             aStepCtr = 0
 
@@ -2150,7 +2151,7 @@ Namespace Rogue.Lib
               aToDoorRowPtr = 0
               Integer.TryParse(aStepList(0), aFromRoomPtr)
               aToRoomPtr = 0
-              For Each foundRoom As LevelRoom In Rooms
+              For Each foundRoom As LevelRoom In Me.Rooms
                 If foundRoom.RoomNumber = aFromRoomPtr Then
                   'get a door in this room to start from
                   currentData = foundRoom.RoomDoors(0)
@@ -2166,7 +2167,7 @@ Namespace Rogue.Lib
               'now find a room not in asteplist to connect to
               'try rooms next door first
 
-              For Each foundRoom As LevelRoom In Rooms
+              For Each foundRoom As LevelRoom In Me.Rooms
                 isFound = False
                 For Each foundString As String In aStepList
                   If foundString = foundRoom.RoomNumber.ToString Then
@@ -2191,7 +2192,7 @@ Namespace Rogue.Lib
               Next
               If aToRoomPtr = 0 Then
                 'if could not find room next door then take any room
-                For Each foundRoom As LevelRoom In Rooms
+                For Each foundRoom As LevelRoom In Me.Rooms
                   isFound = False
                   For Each foundString As String In aStepList
                     If foundString = foundRoom.RoomNumber.ToString Then
@@ -2214,7 +2215,7 @@ Namespace Rogue.Lib
                 Next
               End If
 
-              aCreatedStepCount = CreateUtilityTunnel(aFromDoorColumnPtr, aFromDoorRowPtr, aToDoorColumnPtr, aToDoorRowPtr, True)
+              aCreatedStepCount = Me.CreateUtilityTunnel(aFromDoorColumnPtr, aFromDoorRowPtr, aToDoorColumnPtr, aToDoorRowPtr, True)
               If aCreatedStepCount > 0 Then
                 'add new tunnel to connectionslist and continue
                 aConnectionList.Add(aFromRoomPtr.ToString & "|" & aToRoomPtr.ToString)
@@ -2247,7 +2248,7 @@ Namespace Rogue.Lib
 
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -2264,8 +2265,8 @@ Namespace Rogue.Lib
     Public Function CallFindClosestDoor(ByVal whatRoom As LevelRoom, ByVal whatDoor As String) As String
       Dim aReturnValue As String = ""
 
-      LoadDefaultMap() 'test against the default map
-      aReturnValue = FindClosestDoor(whatRoom, whatDoor)
+      Me.LoadDefaultMap() 'test against the default map
+      aReturnValue = Me.FindClosestDoor(whatRoom, whatDoor)
 
       Return aReturnValue
     End Function
@@ -2299,7 +2300,7 @@ Namespace Rogue.Lib
     Public Function CallGetCoordinateString(ByVal whatRow As Integer, ByVal whatColumn As Integer) As String
       Dim aReturnValue As String = ""
 
-      aReturnValue = GetCoordinateString(whatRow, whatColumn)
+      aReturnValue = Me.GetCoordinateString(whatRow, whatColumn)
 
       Return aReturnValue
     End Function
@@ -2307,7 +2308,7 @@ Namespace Rogue.Lib
     Public Function CallGetRoomNumberFromXY(ByVal whatXPtr As Integer, ByVal whatYPtr As Integer) As Integer
       Dim aReturnValue As Integer = 0
 
-      aReturnValue = GetRoomNumberFromXY(whatXPtr, whatYPtr)
+      aReturnValue = Me.GetRoomNumberFromXY(whatXPtr, whatYPtr)
 
       Return aReturnValue
     End Function
@@ -2316,8 +2317,8 @@ Namespace Rogue.Lib
       Dim aReturnValue As String = ""
       Dim aCellType As Integer = 0
 
-      LoadEmptyMap() 'test against the empty map
-      aReturnValue = UpdateMap(whatRoom)
+      Me.LoadEmptyMap() 'test against the empty map
+      aReturnValue = Me.UpdateMap(whatRoom)
 
       Return aReturnValue
     End Function
@@ -2327,7 +2328,7 @@ Namespace Rogue.Lib
     Public Function GetKeyBoardInput() As Char
       Dim aReturnValue As Char
       Dim aConsoleInfo As New ConsoleKeyInfo
-      If m_TestMode = False Then
+      If Me.m_TestMode = False Then
         'TODO this needs work, just returning any character for now
         aConsoleInfo = Console.ReadKey
         aReturnValue = aConsoleInfo.KeyChar
