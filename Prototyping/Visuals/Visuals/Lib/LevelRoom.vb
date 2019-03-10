@@ -13,9 +13,9 @@ Namespace Rogue.Lib
   ''' 
   ''' </summary>
   Public Class LevelRoom
-  Dim m_localRandom As New Random()
+    ReadOnly m_localRandom As New Random()
 
-    Private m_ErrorHandler As New ErrorHandler
+    Private ReadOnly m_ErrorHandler As New ErrorHandler
     Private m_CurrentObject As String = "LevelRoom"
 
 #Region "Public Properties"
@@ -25,9 +25,9 @@ Namespace Rogue.Lib
     ''' <summary>
     ''' Set this value to true to test displaying a sample screen
     ''' </summary>
-    Private m_TestMode As Boolean = False
+    Private ReadOnly m_TestMode As Boolean = False
 
-  Private m_EntryStairLocation As String
+    Private m_EntryStairLocation As String
   Private m_ExitStairLocation As String
   Private m_CurrentMapLevel As Integer
   Private m_MapGridRowLocation As Integer
@@ -53,184 +53,184 @@ Namespace Rogue.Lib
   ''' <returns></returns>
   Public Property CurrentMapLevel() As Integer
     Get
-      Return m_CurrentMapLevel
-    End Get
-    Set(ByVal value As Integer)
-      m_CurrentMapLevel = value
-    End Set
-  End Property
+        Return Me.m_CurrentMapLevel
+      End Get
+      Set(ByVal value As Integer)
+        Me.m_CurrentMapLevel = value
+      End Set
+    End Property
 
-  Public Property MapGridRowLocation() As Integer
-    Get
-      Return m_MapGridRowLocation
-    End Get
-    Set(ByVal value As Integer)
-      m_MapGridRowLocation = value
-    End Set
-  End Property
+    Public Property MapGridRowLocation() As Integer
+      Get
+        Return Me.m_MapGridRowLocation
+      End Get
+      Set(ByVal value As Integer)
+        Me.m_MapGridRowLocation = value
+      End Set
+    End Property
 
-  Public Property MapGridColumnLocation() As Integer
-    Get
-      Return m_MapGridColumnLocation
-    End Get
-    Set(ByVal value As Integer)
-      m_MapGridColumnLocation = value
-    End Set
-  End Property
+    Public Property MapGridColumnLocation() As Integer
+      Get
+        Return Me.m_MapGridColumnLocation
+      End Get
+      Set(ByVal value As Integer)
+        Me.m_MapGridColumnLocation = value
+      End Set
+    End Property
 
     Public Property MapTopLocation() As Integer
       Get
-        Return m_MapTopLocation
+        Return Me.m_MapTopLocation
       End Get
       Set(ByVal value As Integer)
-        m_MapTopLocation = value
+        Me.m_MapTopLocation = value
       End Set
     End Property
 
     Public Property MapLeftLocation() As Integer
       Get
-        Return m_MapLeftLocation
+        Return Me.m_MapLeftLocation
       End Get
       Set(ByVal value As Integer)
-        m_MapLeftLocation = value
+        Me.m_MapLeftLocation = value
       End Set
     End Property
 
     Public Property ActualMapTopLocation() As Integer
       Get
-        m_ActualMapTopLocation = m_MapTopLocation + ((m_MapGridRowLocation - 1) * EnumsAndConsts.MapGridCellHeight)
-        Return m_ActualMapTopLocation
+        Me.m_ActualMapTopLocation = Me.m_MapTopLocation + ((Me.m_MapGridRowLocation - 1) * EnumsAndConsts.MapGridCellHeight)
+        Return Me.m_ActualMapTopLocation
       End Get
       Set(ByVal value As Integer)
-        m_ActualMapTopLocation = value
+        Me.m_ActualMapTopLocation = value
       End Set
     End Property
 
     Public Property ActualMapLeftLocation() As Integer
       Get
-        m_ActualMapLeftLocation = m_MapLeftLocation + ((m_MapGridColumnLocation - 1) * EnumsAndConsts.MapGridCellWidth)
-        Return m_ActualMapLeftLocation
+        Me.m_ActualMapLeftLocation = Me.m_MapLeftLocation + ((Me.m_MapGridColumnLocation - 1) * EnumsAndConsts.MapGridCellWidth)
+        Return Me.m_ActualMapLeftLocation
       End Get
       Set(ByVal value As Integer)
-        m_ActualMapLeftLocation = value
+        Me.m_ActualMapLeftLocation = value
       End Set
     End Property
 
     Public Property CurrentHeight() As Integer
       Get
-        Return m_CurrentHeight
+        Return Me.m_CurrentHeight
       End Get
       Set(ByVal value As Integer)
-        m_CurrentHeight = value
+        Me.m_CurrentHeight = value
       End Set
     End Property
 
     Public Property CurrentWidth() As Integer
-    Get
-      Return m_CurrentWidth
-    End Get
-    Set(ByVal value As Integer)
-      m_CurrentWidth = value
-    End Set
-  End Property
+      Get
+        Return Me.m_CurrentWidth
+      End Get
+      Set(ByVal value As Integer)
+        Me.m_CurrentWidth = value
+      End Set
+    End Property
 
-  ''' <summary>
-  ''' Hold a pointer to where on the level the player will come down the stairs
-  ''' There must be a room here when level is generated
-  ''' Number is YYXX 
-  ''' YY being the row as two digits which may be zero padded
-  ''' XX being the column as two digits which may be zero padded
-  ''' </summary>
-  ''' <returns></returns>
-  Public Property EntryStairLocation() As String
-    Get
-      Return m_EntryStairLocation
-    End Get
-    Set(ByVal value As String)
-      m_EntryStairLocation = value
-    End Set
-  End Property
+    ''' <summary>
+    ''' Hold a pointer to where on the level the player will come down the stairs
+    ''' There must be a room here when level is generated
+    ''' Number is YYXX 
+    ''' YY being the row as two digits which may be zero padded
+    ''' XX being the column as two digits which may be zero padded
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property EntryStairLocation() As String
+      Get
+        Return Me.m_EntryStairLocation
+      End Get
+      Set(ByVal value As String)
+        Me.m_EntryStairLocation = value
+      End Set
+    End Property
 
-  ''' <summary>
-  ''' Hold a pointer to where on the level the player will go down to the next level
-  ''' There must be a room here when level is generated
-  ''' Number is YYXX 
-  ''' YY being the row as two digits which may be zero padded
-  ''' XX being the column as two digits which may be zero padded
-  ''' </summary>
-  ''' <returns></returns>
-  Public Property ExitStairLocation() As String
-    Get
-      Return m_ExitStairLocation
-    End Get
-    Set(ByVal value As String)
-      m_ExitStairLocation = value
-    End Set
-  End Property
+    ''' <summary>
+    ''' Hold a pointer to where on the level the player will go down to the next level
+    ''' There must be a room here when level is generated
+    ''' Number is YYXX 
+    ''' YY being the row as two digits which may be zero padded
+    ''' XX being the column as two digits which may be zero padded
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ExitStairLocation() As String
+      Get
+        Return Me.m_ExitStairLocation
+      End Get
+      Set(ByVal value As String)
+        Me.m_ExitStairLocation = value
+      End Set
+    End Property
 
 
-  Public Property RoomNumber() As Integer
-    Get
-      Return m_RoomNumber
-    End Get
-    Set(ByVal value As Integer)
-      m_RoomNumber = value
-    End Set
-  End Property
+    Public Property RoomNumber() As Integer
+      Get
+        Return Me.m_RoomNumber
+      End Get
+      Set(ByVal value As Integer)
+        Me.m_RoomNumber = value
+      End Set
+    End Property
 
-  Public Property RoomDoors() As List(Of String)
-    Get
-      Return m_RoomDoors
-    End Get
-    Set(ByVal value As List(Of String))
-      m_RoomDoors = value
-    End Set
-  End Property
+    Public Property RoomDoors() As List(Of String)
+      Get
+        Return Me.m_RoomDoors
+      End Get
+      Set(ByVal value As List(Of String))
+        Me.m_RoomDoors = value
+      End Set
+    End Property
 
 
 #End Region
 
 #Region "Public Methods"
 
-  Public Sub New()
-    Initialize() 'Sets the room to empty
-  End Sub
+    Public Sub New()
+      Me.Initialize() 'Sets the room to empty
+    End Sub
 
-  Public Sub New(ByVal whatEntryStairLocation As String, ByVal whatExitStairLocation As String)
-    Initialize() 'Sets the room to empty
-    EntryStairLocation = whatEntryStairLocation
-    ExitStairLocation = whatExitStairLocation
-  End Sub
+    Public Sub New(ByVal whatEntryStairLocation As String, ByVal whatExitStairLocation As String)
+      Me.Initialize() 'Sets the room to empty
+      Me.EntryStairLocation = whatEntryStairLocation
+      Me.ExitStairLocation = whatExitStairLocation
+    End Sub
 
-  ''' <summary>
-  ''' Load all properties and variables with default values
-  ''' </summary>
-  Public Sub Initialize()
-    Dim currentMethod As String = "Initialize"
-    Dim currentData As String = ""
+    ''' <summary>
+    ''' Load all properties and variables with default values
+    ''' </summary>
+    Public Sub Initialize()
+      Dim currentMethod As String = "Initialize"
+      Dim currentData As String = ""
 
-    Try
-      'TODO for testing set these values
-      'normally they will be set by the calling routine prior to creating the random level
-      EntryStairLocation = "1831"
-      ExitStairLocation = "0470"
+      Try
+        'TODO for testing set these values
+        'normally they will be set by the calling routine prior to creating the random level
+        Me.EntryStairLocation = "1831"
+        Me.ExitStairLocation = "0470"
 
-      m_CurrentMapLevel = 0
-      m_MapGridRowLocation = 0
-      m_MapGridColumnLocation = 0
-        m_MapTopLocation = 0
-        m_MapLeftLocation = 0
-        m_ActualMapTopLocation = 0
-        m_ActualMapLeftLocation = 0
-        m_CurrentHeight = 0
-        m_CurrentWidth = 0
-      m_Row = 0
-      m_Column = 0
-      m_RoomNumber = 0
-      m_RoomDoors = New List(Of String)
+        Me.m_CurrentMapLevel = 0
+        Me.m_MapGridRowLocation = 0
+        Me.m_MapGridColumnLocation = 0
+        Me.m_MapTopLocation = 0
+        Me.m_MapLeftLocation = 0
+        Me.m_ActualMapTopLocation = 0
+        Me.m_ActualMapLeftLocation = 0
+        Me.m_CurrentHeight = 0
+        Me.m_CurrentWidth = 0
+        Me.m_Row = 0
+        Me.m_Column = 0
+        Me.m_RoomNumber = 0
+        Me.m_RoomDoors = New List(Of String)
 
-    Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
     End Sub
 
@@ -252,38 +252,58 @@ Namespace Rogue.Lib
       Dim newType As Integer = 0
 
       Try
-        aReturnValue = CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
+        aReturnValue = Me.CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
 
-        X1 = (whatWidth) - 1
-        X = m_localRandom.Next(X1) + xOFF + 1
-
-        If X >= entryX Then
-          X = entryX - 1
-        End If
-        If X <= (entryX - (whatWidth - 1)) Then
-          X = (entryX - (whatWidth - 1)) + 1
-        End If
-        If X < 2 Then
-          X = 2
-        End If
-        If X > EnumsAndConsts.MapGridCellWidth - whatWidth Then
-          X = EnumsAndConsts.MapGridCellWidth - whatWidth
-        End If
-        Y1 = (whatHeight) - 1
-        Y = m_localRandom.Next(Y1) + xOFF + 1
-
-        If Y >= entryY Then
+        X = aReturnValue.m_MapLeftLocation
+        Y = aReturnValue.m_MapTopLocation
+        If aReturnValue.m_MapTopLocation > entryY - 1 Then
+          'aReturnValue.m_MapTopLocation = entryY - 1
           Y = entryY - 1
         End If
-        If Y <= (entryY - (whatHeight - 1)) Then
-          Y = (entryY - (whatHeight - 1)) + 1
+        If aReturnValue.m_MapTopLocation + aReturnValue.m_CurrentHeight < entryY + 2 Then
+          'aReturnValue.m_MapTopLocation = (entryY - aReturnValue.m_CurrentHeight) + 2
+          Y = (entryY - aReturnValue.m_CurrentHeight) + 2
         End If
-        If Y < 2 Then
-          Y = 2
+        If aReturnValue.m_MapLeftLocation > entryX - 1 Then
+          'aReturnValue.m_MapLeftLocation = entryX - 1
+          X = entryX - 1
         End If
-        If Y > EnumsAndConsts.MapGridCellHeight - whatHeight Then
-          Y = EnumsAndConsts.MapGridCellHeight - whatHeight
+        If aReturnValue.m_MapLeftLocation + aReturnValue.m_CurrentWidth < entryX + 2 Then
+          'aReturnValue.m_MapLeftLocation = (entryX - aReturnValue.m_CurrentWidth) + 2
+          X = (entryX - aReturnValue.m_CurrentWidth) + 2
         End If
+
+
+        'X1 = (whatWidth) - 1
+        'X = Me.m_localRandom.Next(X1) + xOFF + 1
+
+        'If X >= entryX Then
+        '  X = entryX - 1
+        'End If
+        'If X <= (entryX - (whatWidth - 1)) Then
+        '  X = (entryX - (whatWidth - 1)) + 1
+        'End If
+        'If X < 2 Then
+        '  X = 2
+        'End If
+        'If X > EnumsAndConsts.MapGridCellWidth - whatWidth Then
+        '  X = EnumsAndConsts.MapGridCellWidth - whatWidth
+        'End If
+        'Y1 = (whatHeight) - 1
+        'Y = Me.m_localRandom.Next(Y1) + xOFF + 1
+
+        'If Y >= entryY Then
+        '  Y = entryY - 1
+        'End If
+        'If Y <= (entryY - (whatHeight - 1)) Then
+        '  Y = (entryY - (whatHeight - 1)) + 1
+        'End If
+        'If Y < 2 Then
+        '  Y = 2
+        'End If
+        'If Y > EnumsAndConsts.MapGridCellHeight - whatHeight Then
+        '  Y = EnumsAndConsts.MapGridCellHeight - whatHeight
+        'End If
 
         xOFF = aReturnValue.MapLeftLocation - X
         yOFF = aReturnValue.MapTopLocation - Y
@@ -312,7 +332,7 @@ Namespace Rogue.Lib
         ' aReturnValue.CreateRandomDoors()
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -336,10 +356,10 @@ Namespace Rogue.Lib
       Dim newType As Integer = 0
 
       Try
-        aReturnValue = CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
+        aReturnValue = Me.CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
 
         X1 = (whatWidth) - 1
-        X = m_localRandom.Next(X1) + xOFF + 1
+        X = Me.m_localRandom.Next(X1) + xOFF + 1
 
         If X >= exitX Then
           X = exitX - 1
@@ -390,7 +410,7 @@ Namespace Rogue.Lib
         '   aReturnValue.CreateRandomDoors()
 
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
@@ -417,15 +437,15 @@ Namespace Rogue.Lib
       Try
 
         'determine offset of top left corner of room based on size of room and random distance from top left of map grid
-        X = m_localRandom.Next(EnumsAndConsts.MapGridCellWidth - whatWidth) + 1
-        Y = m_localRandom.Next(EnumsAndConsts.MapGridCellHeight - whatHeight) + 1
+        X = Me.m_localRandom.Next(EnumsAndConsts.MapGridCellWidth - whatWidth) + 1
+        Y = Me.m_localRandom.Next(EnumsAndConsts.MapGridCellHeight - whatHeight) + 1
         If whatMapGridRow = 3 AndAlso Y < 2 Then
           Y = 2
         End If
         'see if there is a door on the top
-        rNumber = m_localRandom.Next(10) + 1
+        rNumber = Me.m_localRandom.Next(10) + 1
         If rNumber < 3 Then
-          xNumber = m_localRandom.Next(whatWidth - 2) + 1
+          xNumber = Me.m_localRandom.Next(whatWidth - 2) + 1
           isDoorTop = True
           isAnyDoor = True
           aCellType = EnumsAndConsts.CellType.StructureDoorTopBottom
@@ -443,9 +463,9 @@ Namespace Rogue.Lib
         End If
 
         'see if there is a door on the left
-        rNumber = m_localRandom.Next(10) + 1
+        rNumber = Me.m_localRandom.Next(10) + 1
         If rNumber < 3 Then
-          xNumber = m_localRandom.Next(whatHeight - 2) + 1
+          xNumber = Me.m_localRandom.Next(whatHeight - 2) + 1
           isDoorLeft = True
           isAnyDoor = True
           aCellType = EnumsAndConsts.CellType.StructureDoorSide
@@ -463,9 +483,9 @@ Namespace Rogue.Lib
         End If
 
         'see if there is a door on the right
-        rNumber = m_localRandom.Next(10) + 1
+        rNumber = Me.m_localRandom.Next(10) + 1
         If rNumber < 3 Then
-          xNumber = m_localRandom.Next(whatHeight - 2) + 1
+          xNumber = Me.m_localRandom.Next(whatHeight - 2) + 1
           isDoorRight = True
           isAnyDoor = True
           aCellType = EnumsAndConsts.CellType.StructureDoorSide
@@ -483,9 +503,9 @@ Namespace Rogue.Lib
         End If
 
         'see if there is a door on the bottom
-        rNumber = m_localRandom.Next(10) + 1
+        rNumber = Me.m_localRandom.Next(10) + 1
         If rNumber < 3 Then
-          xNumber = m_localRandom.Next(whatWidth - 2) + 1
+          xNumber = Me.m_localRandom.Next(whatWidth - 2) + 1
           isDoorBottom = True
           isAnyDoor = True
           aCellType = EnumsAndConsts.CellType.StructureDoorTopBottom
@@ -503,10 +523,10 @@ Namespace Rogue.Lib
         End If
 
         If isAnyDoor = False Then
-          rNumber = m_localRandom.Next(4) + 1
+          rNumber = Me.m_localRandom.Next(4) + 1
           Select Case rNumber
             Case 1 'top
-              xNumber = m_localRandom.Next(whatWidth - 2) + 1
+              xNumber = Me.m_localRandom.Next(whatWidth - 2) + 1
               isDoorTop = True
               isAnyDoor = True
               aCellType = EnumsAndConsts.CellType.StructureDoorTopBottom
@@ -521,7 +541,7 @@ Namespace Rogue.Lib
               currentData = rPtr.ToString & "|" & cPtr.ToString & "|" & aCellType.ToString & "|" & "T"
               aReturnValue.RoomDoors.Add(currentData)
             Case 2 'left
-              xNumber = m_localRandom.Next(whatHeight - 2) + 1
+              xNumber = Me.m_localRandom.Next(whatHeight - 2) + 1
               isDoorLeft = True
               isAnyDoor = True
               aCellType = EnumsAndConsts.CellType.StructureDoorSide
@@ -536,7 +556,7 @@ Namespace Rogue.Lib
               currentData = rPtr.ToString & "|" & cPtr.ToString & "|" & aCellType.ToString & "|" & "L"
               aReturnValue.RoomDoors.Add(currentData)
             Case 3 'right
-              xNumber = m_localRandom.Next(whatHeight - 2) + 1
+              xNumber = Me.m_localRandom.Next(whatHeight - 2) + 1
               isDoorRight = True
               isAnyDoor = True
               aCellType = EnumsAndConsts.CellType.StructureDoorSide
@@ -551,7 +571,7 @@ Namespace Rogue.Lib
               currentData = rPtr.ToString & "|" & cPtr.ToString & "|" & aCellType.ToString & "|" & "R"
               aReturnValue.RoomDoors.Add(currentData)
             Case Else 'bottom
-              xNumber = m_localRandom.Next(whatWidth - 2) + 1
+              xNumber = Me.m_localRandom.Next(whatWidth - 2) + 1
               isDoorBottom = True
               isAnyDoor = True
               aCellType = EnumsAndConsts.CellType.StructureDoorTopBottom
@@ -581,70 +601,70 @@ Namespace Rogue.Lib
 
         '     aReturnValue.CreateRandomDoors()
       Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
       Return aReturnValue
-  End Function
+    End Function
 
-  Public Function GetConnectionNumber(ByVal whatFromDoorRow As Integer, ByVal whatFromDoorColumn As Integer, ByVal whatToDoorRow As Integer, ByVal whatToDoorColumn As Integer) As String
-    Dim currentMethod As String = "GetConnectionNumber"
-    Dim currentData As String = ""
-    Dim aReturnValue As String = ""
-    Dim X As Integer = 0 ' left to right
-    Dim Y As Integer = 0 ' top to bottom
-    Dim aGridRowCtr As Integer = 0
-    Dim aGridColumnCtr As Integer = 0
-    Dim aCellPtr As Integer = 0
+    Public Function GetConnectionNumber(ByVal whatFromDoorRow As Integer, ByVal whatFromDoorColumn As Integer, ByVal whatToDoorRow As Integer, ByVal whatToDoorColumn As Integer) As String
+      Dim currentMethod As String = "GetConnectionNumber"
+      Dim currentData As String = ""
+      Dim aReturnValue As String = ""
+      Dim X As Integer = 0 ' left to right
+      Dim Y As Integer = 0 ' top to bottom
+      Dim aGridRowCtr As Integer = 0
+      Dim aGridColumnCtr As Integer = 0
+      Dim aCellPtr As Integer = 0
 
-    Try
-      'Determine the mapgridNumber from the row/column information
-      Y = whatFromDoorRow
-      aGridRowCtr = 1
-      Do While Y > EnumsAndConsts.MapGridCellHeight
-        Y = Y - EnumsAndConsts.MapGridCellHeight
-        aGridRowCtr = aGridRowCtr + 1
-      Loop
-      X = whatFromDoorColumn
-      aGridColumnCtr = 1
-      Do While X > EnumsAndConsts.MapGridCellWidth
-        X = X - EnumsAndConsts.MapGridCellWidth
-        aGridColumnCtr = aGridColumnCtr + 1
-      Loop
-      'now agridxx will point to proper grid cell
-      aCellPtr = (aGridRowCtr - 1) * EnumsAndConsts.MapLevelGridRowMax + aGridColumnCtr
+      Try
+        'Determine the mapgridNumber from the row/column information
+        Y = whatFromDoorRow
+        aGridRowCtr = 1
+        Do While Y > EnumsAndConsts.MapGridCellHeight
+          Y = Y - EnumsAndConsts.MapGridCellHeight
+          aGridRowCtr = aGridRowCtr + 1
+        Loop
+        X = whatFromDoorColumn
+        aGridColumnCtr = 1
+        Do While X > EnumsAndConsts.MapGridCellWidth
+          X = X - EnumsAndConsts.MapGridCellWidth
+          aGridColumnCtr = aGridColumnCtr + 1
+        Loop
+        'now agridxx will point to proper grid cell
+        aCellPtr = (aGridRowCtr - 1) * EnumsAndConsts.MapLevelGridRowMax + aGridColumnCtr
 
-      aReturnValue = aCellPtr.ToString & "|"
+        aReturnValue = aCellPtr.ToString & "|"
 
-      Y = whatToDoorRow
-      aGridRowCtr = 1
-      Do While Y > EnumsAndConsts.MapGridCellHeight
-        Y = Y - EnumsAndConsts.MapGridCellHeight
-        aGridRowCtr = aGridRowCtr + 1
-      Loop
-      X = whatToDoorColumn
-      aGridColumnCtr = 1
-      Do While X > EnumsAndConsts.MapGridCellWidth
-        X = X - EnumsAndConsts.MapGridCellWidth
-        aGridColumnCtr = aGridColumnCtr + 1
-      Loop
-      'now agridxx will point to proper grid cell
-      aCellPtr = (aGridRowCtr - 1) * EnumsAndConsts.MapLevelGridRowMax + aGridColumnCtr
+        Y = whatToDoorRow
+        aGridRowCtr = 1
+        Do While Y > EnumsAndConsts.MapGridCellHeight
+          Y = Y - EnumsAndConsts.MapGridCellHeight
+          aGridRowCtr = aGridRowCtr + 1
+        Loop
+        X = whatToDoorColumn
+        aGridColumnCtr = 1
+        Do While X > EnumsAndConsts.MapGridCellWidth
+          X = X - EnumsAndConsts.MapGridCellWidth
+          aGridColumnCtr = aGridColumnCtr + 1
+        Loop
+        'now agridxx will point to proper grid cell
+        aCellPtr = (aGridRowCtr - 1) * EnumsAndConsts.MapLevelGridRowMax + aGridColumnCtr
 
-      aReturnValue = aReturnValue & aCellPtr.ToString
+        aReturnValue = aReturnValue & aCellPtr.ToString
 
-    Catch ex As Exception
-        m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
 
 
       Return aReturnValue
-  End Function
+    End Function
 
-  Public Overrides Function ToString() As String
-    Dim aReturnValue As String = ""
+    Public Overrides Function ToString() As String
+      Dim aReturnValue As String = ""
 
-      aReturnValue = RoomNumber.ToString & "=" & MapTopLocation.ToString & "-" & MapLeftLocation.ToString & "|" & CurrentHeight.ToString & "-" & CurrentWidth.ToString
+      aReturnValue = Me.RoomNumber.ToString & "=" & Me.MapTopLocation.ToString & "-" & Me.MapLeftLocation.ToString & "|" & Me.CurrentHeight.ToString & "-" & Me.CurrentWidth.ToString
 
       Return aReturnValue
   End Function

@@ -17,73 +17,73 @@
 
     Public Property Armor As Integer
       Get
-        Return m_Armor
+        Return Me.m_Armor
       End Get
       Set(value As Integer)
-        m_HitPoints = value
+        Me.m_HitPoints = value
       End Set
     End Property
 
     Public Property CharacterClass As String
       Get
-        Return m_CharacterClass
+        Return Me.m_CharacterClass
       End Get
       Set(value As String)
-        m_CharacterClass = value
+        Me.m_CharacterClass = value
       End Set
     End Property
 
     Public Property CurrentHitPoints As Integer
       Get
-        Return m_CurrentHitPoints
+        Return Me.m_CurrentHitPoints
       End Get
       Set(value As Integer)
-        m_CurrentHitPoints = value
+        Me.m_CurrentHitPoints = value
       End Set
     End Property
 
     Public Property CurrentMapLevel As Integer
       Get
-        Return m_CurrentMapLevel
+        Return Me.m_CurrentMapLevel
       End Get
       Set(value As Integer)
-        m_CurrentMapLevel = value
+        Me.m_CurrentMapLevel = value
       End Set
     End Property
 
     Public Property CurrentStrength As Integer
       Get
-        Return m_CurrentStrength
+        Return Me.m_CurrentStrength
       End Get
       Set(value As Integer)
-        m_CurrentHitPoints = value
+        Me.m_CurrentHitPoints = value
       End Set
     End Property
 
     Public Property Gold As Integer
       Get
-        Return m_Gold
+        Return Me.m_Gold
       End Get
       Set(value As Integer)
-        m_HitPoints = value
+        Me.m_HitPoints = value
       End Set
     End Property
 
     Public Property HitPoints As Integer
       Get
-        Return m_HitPoints
+        Return Me.m_HitPoints
       End Get
       Set(value As Integer)
-        m_HitPoints = value
+        Me.m_HitPoints = value
       End Set
     End Property
 
     Public Property Strength As Integer
       Get
-        Return m_Strength
+        Return Me.m_Strength
       End Get
       Set(value As Integer)
-        m_HitPoints = value
+        Me.m_HitPoints = value
       End Set
     End Property
 
@@ -93,7 +93,7 @@
 #Region "Public Methods"
 
     Public Sub New()
-      Initialize()
+      Me.Initialize()
     End Sub
 
 
@@ -103,24 +103,24 @@
 #Region "Private Methods"
 
     Private Sub Initialize()
-      m_Armor = 0
-      m_CharacterClass = ""
-      m_CurrentHitPoints = 0
-      m_CurrentMapLevel = 0
-      m_CurrentStrength = 0
-      m_Gold = 0
-      m_HitPoints = 0
-      m_Strength = 0
+      Me.m_Armor = 0
+      Me.m_CharacterClass = ""
+      Me.m_CurrentHitPoints = 0
+      Me.m_CurrentMapLevel = 0
+      Me.m_CurrentStrength = 0
+      Me.m_Gold = 0
+      Me.m_HitPoints = 0
+      Me.m_Strength = 0
 
       'for prototype set the variables that will be displayed
-      m_Armor = 5
-      m_CharacterClass = "Apprentice"
-      m_CurrentHitPoints = 21
-      m_CurrentMapLevel = 1
-      m_CurrentStrength = 16
-      m_Gold = 50
-      m_HitPoints = 21
-      m_Strength = 16
+      Me.m_Armor = 5
+      Me.m_CharacterClass = "Apprentice"
+      Me.m_CurrentHitPoints = 21
+      Me.m_CurrentMapLevel = 1
+      Me.m_CurrentStrength = 16
+      Me.m_Gold = 50
+      Me.m_HitPoints = 21
+      Me.m_Strength = 16
 
 
     End Sub

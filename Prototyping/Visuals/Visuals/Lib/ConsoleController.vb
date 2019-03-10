@@ -16,7 +16,7 @@ Namespace Rogue.Lib
 #Region "Public Methods"
 
     Public Sub New()
-      Initialize()
+      Me.Initialize()
     End Sub
 
     Public Sub Initialize()

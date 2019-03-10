@@ -40,53 +40,151 @@ Module Module1
 #Region "Local Variables"
   Dim m_consoleController As New ConsoleController
   Dim m_canContinue As Boolean = True
+  Dim m_levelMap As New LevelMap()
+  Dim m_localRandom As New Random()
 
 #End Region
 
   Sub Main()
-    '==========================================Prevent Resize
-    Dim handle As IntPtr
-    handle = Process.GetCurrentProcess.MainWindowHandle ' Get the handle to the console window
 
-    Dim sysMenu As IntPtr
-    sysMenu = GetSystemMenu(handle, False) ' Get the handle to the system menu of the console window
+    ''==========================================Prevent Resize
+    'Dim handle As IntPtr
+    'handle = Process.GetCurrentProcess.MainWindowHandle ' Get the handle to the console window
 
-    If handle <> IntPtr.Zero Then
-      'DeleteMenu(sysMenu, SC_CLOSE, MF_BYCOMMAND) ' To prevent user from closing console window
-      DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND) 'To prevent user from minimizing console window
-      DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND) 'To prevent user from maximizing console window
-      DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND) 'To prevent the use from re-sizing console window
-    End If
-    '==========================================end prevent resize
-    Console.SetBufferSize(80, 25) ' or whatever size you're using...
-    Console.SetWindowSize(80, 25)
-    Console.BufferWidth = 80
-    Console.BufferHeight = 25
+    'Dim sysMenu As IntPtr
+    'sysMenu = GetSystemMenu(handle, False) ' Get the handle to the system menu of the console window
+
+    'If handle <> IntPtr.Zero Then
+    '  'DeleteMenu(sysMenu, SC_CLOSE, MF_BYCOMMAND) ' To prevent user from closing console window
+    '  DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND) 'To prevent user from minimizing console window
+    '  DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND) 'To prevent user from maximizing console window
+    '  DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND) 'To prevent the use from re-sizing console window
+    'End If
+    ''==========================================end prevent resize
+    'Try
+    '  Console.SetBufferSize(80, 25) ' or whatever size you're using...
+    'Catch ex As exception
+    'End Try
+    'Try
+    '  Console.SetWindowSize(80, 25)
+    'Catch ex As exception
+    'End Try
+    'Try
+    '  Console.BufferWidth = 80
+    'Catch ex As Exception
+    'End Try
+    'Try
+    '  Console.BufferHeight = 25
+    'Catch ex As Exception
+    'End Try
+
+    Dim OrgBufferHeight%, OrgBufferWidth%, OrgWindowHeight%, OrgWindowWidth%
+
+    OrgBufferHeight = Console.BufferHeight
+    OrgBufferWidth = Console.BufferWidth
+    OrgWindowHeight = Console.WindowHeight
+    OrgWindowWidth = Console.WindowWidth
+
+    Console.OutputEncoding = System.Text.Encoding.UTF8
+    ConsoleEx.Resize(80, 26)
+    ConsoleEx.DisableMinimize()
+    ConsoleEx.DisableMaximize()
+    ConsoleEx.DisableResize()
+    ConsoleEx.DisableQuickEditMode()
+    Console.CursorVisible = False
+
+    ConsoleEx.SetColor(ConsoleColor.DarkYellow, 170, 85, 0)
+
+    Try
+
+      ' Challenge #1: The colors in Windows 10 console applications doesn't match exactly with those in MS-DOS.
+      '               Specifically, the color orange is actually orange in Windows 10 where the color orange is 
+      '               more of a brown color in MS-DOS.  This color is used for the walls in the original Rogue.
+
+      ' Challenge #2: .NET is unicode based; where as original Rogue used ASCII and (possibly) ANSI.
+      '               This means that drawing of the walls and other special characters needs to be handled
+      '               using the unicode table and there isn't (AFAIK) a 1:1 mapping between ASCII and unicode.
 
 
-
-    ' Challenge #1: The colors in Windows 10 console applications doesn't match exactly with those in MS-DOS.
-    '               Specifically, the color orange is actually orange in Windows 10 where the color orange is 
-    '               more of a brown color in MS-DOS.  This color is used for the walls in the original Rogue.
-
-    ' Challenge #2: .NET is unicode based; where as original Rogue used ASCII and (possibly) ANSI.
-    '               This means that drawing of the walls and other special characters needs to be handled
-    '               using the unicode table and there isn't (AFAIK) a 1:1 mapping between ASCII and unicode.
+      'Notes:
+      '1 - I'm not much of a color person so I just went with DarkYellow for the brown
+      '2 - Could not get the unicode to work out but did find the some of the ASCII characters
 
 
-    'Notes:
-    '1 - I'm not much of a color person so I just went with DarkYellow for the brown
-    '2 - Could not get the unicode to work out but did find the some of the ASCII characters
+      InitializeGame("", "")
 
+      While m_canContinue = True
+        m_canContinue = ProcessGameLoop()
+      End While
+      End
 
-    InitializeGame()
+    Finally
 
-    While m_canContinue = True
-      m_canContinue = ProcessGameLoop()
-    End While
-    End
+      ConsoleEx.EnableMinimize()
+      ConsoleEx.EnableMaximize()
+      ConsoleEx.EnableResize()
+      Console.ForegroundColor = ConsoleColor.Gray
+      Console.BackgroundColor = ConsoleColor.Black
+
+      Console.SetBufferSize(OrgBufferWidth, OrgBufferHeight)
+      Console.SetWindowSize(OrgWindowWidth, OrgWindowHeight)
+
+      ConsoleEx.EnableQuickEditMode()
+
+    End Try
+
+    Console.ResetColor()
+    Console.Clear()
 
   End Sub
+
+  Private Function GetRandomStairLocation() As String
+    Dim aReturnValue As String = ""
+    Dim xLoc As Integer = 0
+    Dim yLoc As Integer = 0
+    Dim m_randomNumber As Integer = m_localRandom.Next(0, Now.Second)
+
+    xLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapWidth - 6)
+    yLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapHeight - 6)
+
+    'need to ensure that location is not near edge of a grid cell
+    For xPtr As Integer = 1 To EnumsAndConsts.MapLevelGridColumnMax
+      If xLoc <= ((xPtr - 1) * EnumsAndConsts.MapGridCellWidth) + 2 Then
+        xLoc = ((xPtr - 1) * EnumsAndConsts.MapGridCellWidth) + 2 'too close to left edge
+        Exit For
+      End If
+      If xLoc < ((xPtr) * EnumsAndConsts.MapGridCellWidth) AndAlso xLoc >= ((xPtr) * EnumsAndConsts.MapGridCellWidth) - 2 Then
+        xLoc = ((xPtr) * EnumsAndConsts.MapGridCellWidth) - 2 'too close to right edge
+        Exit For
+      End If
+    Next
+
+    For yPtr As Integer = 1 To EnumsAndConsts.MapLevelGridRowMax
+      If yLoc <= ((yPtr - 1) * EnumsAndConsts.MapGridCellHeight) + 2 Then
+        yLoc = ((yPtr - 1) * EnumsAndConsts.MapGridCellHeight) + 2 'too close to top edge
+        Exit For
+      End If
+      If yLoc < ((yPtr) * EnumsAndConsts.MapGridCellHeight) AndAlso yLoc >= ((yPtr) * EnumsAndConsts.MapGridCellHeight) - 2 Then
+        yLoc = ((yPtr) * EnumsAndConsts.MapGridCellHeight) - 2 'too close to bottom edge
+        Exit For
+      End If
+    Next
+
+
+    If yLoc > 9 Then
+      aReturnValue = yLoc.ToString
+    Else
+      aReturnValue = "0" & yLoc.ToString
+    End If
+    If xLoc > 9 Then
+      aReturnValue = aReturnValue & xLoc.ToString
+    Else
+      aReturnValue = aReturnValue & "0" & xLoc.ToString
+    End If
+
+    Return aReturnValue
+  End Function
+
 
   Private Sub InitializeGame()
 
@@ -98,14 +196,79 @@ Module Module1
 
   End Sub
 
+  Private Sub InitializeGame(ByVal whatEntryStairLocation As String, ByVal whatExitStairLocation As String)
+    Dim aEntryString As String = "" & whatEntryStairLocation
+    Dim aExitString As String = "" & whatExitStairLocation
+    Dim xLoc As Integer = 0
+    Dim yLoc As Integer = 0
+    Dim m_randomNumber As Integer = m_localRandom.Next(0, 100)
+    Dim isGoodStair As Boolean = False
+    Dim aTryCounter As Integer = 0
+
+    If aEntryString = "" Then
+      aEntryString = GetRandomStairLocation()
+
+      'xLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapWidth - 6)
+      'yLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapHeight - 6)
+      'If yLoc > 9 Then
+      '  aEntryString = yLoc.ToString
+      'Else
+      '  aEntryString = "0" & yLoc.ToString
+      'End If
+      'If xLoc > 9 Then
+      '  aEntryString = aEntryString & xLoc.ToString
+      'Else
+      '  aEntryString = aEntryString & "0" & xLoc.ToString
+      'End If
+    End If
+    m_levelMap.EntryStairLocation = aEntryString
+    m_levelMap.ExitStairLocation = aExitString
+    If m_levelMap.EntryStairGrid = m_levelMap.ExitStairGrid Then
+      aExitString = ""
+    End If
+    If aExitString = "" Then
+      'Need to ensure that exitstair not in same map grid as entrystair
+      Do While isGoodStair = False And aTryCounter < 10
+        aExitString = GetRandomStairLocation()
+        m_levelMap.ExitStairLocation = aExitString
+        aTryCounter = aTryCounter + 1
+        If Not m_levelMap.EntryStairGrid = m_levelMap.ExitStairGrid Then
+          isGoodStair = True
+        End If
+      Loop
+
+      'xLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapWidth - 6)
+      'yLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapHeight - 6)
+      'If yLoc > 9 Then
+      '  aExitString = yLoc.ToString
+      'Else
+      '  aExitString = "0" & yLoc.ToString
+      'End If
+      'If xLoc > 9 Then
+      '  aExitString = aExitString & xLoc.ToString
+      'Else
+      '  aExitString = aExitString & "0" & xLoc.ToString
+      'End If
+    End If
+    m_levelMap = New LevelMap(aEntryString, aExitString)
+    'm_levelMap.EntryStairGrid = "1831" 'TODO testing only
+    'm_levelMap.ExitStairGrid = "0470" 'TODO testing only
+    'm_levelMap.Initialize(True)
+    m_levelMap.DrawScreen()
+
+  End Sub
+
   Private Function ProcessGameLoop() As Boolean
     Dim aReturnValue As Boolean = True
     Dim aChar As New Char
+    Dim aString As String = GetRandomStairLocation()
+
     aChar = m_consoleController.GetKeyBoardInput()
 
     'TODO just quit for now
     'aReturnValue = False
-    InitializeGame() ' for testing show new random level for each move
+    'InitializeGame() ' for testing show new random level for each move
+    InitializeGame(m_levelMap.ExitStairLocation, aString) ' for testing show new random level for each move
 
 
     Return aReturnValue

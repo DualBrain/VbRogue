@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,6 +69,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleEx.vb" />
     <Compile Include="Lib\ConsoleController.vb" />
     <Compile Include="Lib\EnumsAndConsts.vb" />
     <Compile Include="Lib\ErrorHandler.vb" />
