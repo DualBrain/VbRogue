@@ -19,7 +19,7 @@ Namespace Rogue.Lib
   ''' </summary>
   Public Class LevelMap
     ReadOnly m_localRandom As New Random()
-
+    Private m_CellTypeBeforeCharacterEntered As Integer = -1 'The cell type value of the square the character is currently location at
 
 #Region "Public Properties"
 
@@ -29,7 +29,7 @@ Namespace Rogue.Lib
     ''' Set this value to true to test displaying a sample screen
     ''' </summary>
     Private ReadOnly m_TestMode As Boolean = False
-
+    Private ReadOnly m_IsFogOfWarActive As Boolean = True
     Private m_EntryStairGrid As String
     Private m_ExitStairGrid As String
     Private m_EntryStairLocation As String = ""
@@ -442,6 +442,7 @@ Namespace Rogue.Lib
 
           'End If
           Me.CreateRandomLevel()
+
         Else
           Me.ClearMapData()
         End If
@@ -449,6 +450,217 @@ Namespace Rogue.Lib
         Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
     End Sub
+
+    Public Function IsEntryCell(ByVal whatToX As Integer, ByVal whatToY As Integer) As Boolean
+      Dim currentMethod As String = "IsEntryCell"
+      Dim currentData As String = ""
+      Dim aReturnValue As Boolean = False
+
+      Try
+        If Me.MapCellData(whatToY, whatToX) = EnumsAndConsts.CellType.StructureStairsUp Then
+          aReturnValue = True
+        End If
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      End Try
+
+      Return aReturnValue
+    End Function
+
+    Public Function IsExitCell(ByVal whatToX As Integer, ByVal whatToY As Integer) As Boolean
+      Dim currentMethod As String = "IsExitCell"
+      Dim currentData As String = ""
+      Dim aReturnValue As Boolean = False
+
+      Try
+        If Me.MapCellData(whatToY, whatToX) = EnumsAndConsts.CellType.StructureStairsUp Then
+          aReturnValue = True
+        End If
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      End Try
+
+      Return aReturnValue
+    End Function
+
+    ''' <summary>
+    ''' Move the character from one XY location to another
+    ''' Replace the location which is being left with proper character that was saved when entered location.
+    ''' Save character of location moving to for later restore.
+    ''' </summary>
+    ''' <param name="whatPlayer"></param>
+    ''' <param name="whatFromX"></param>
+    ''' <param name="whatFromY"></param>
+    ''' <param name="whatToX"></param>
+    ''' <param name="whatToY"></param>
+    Public Function MoveCharacter(ByRef whatPlayer As PlayerInfo, ByVal whatFromX As Integer, ByVal whatFromY As Integer, ByVal whatToX As Integer, ByVal whatToY As Integer) As String
+      Dim currentMethod As String = "MoveCharacter"
+      Dim currentData As String = ""
+      Dim aReturnValue As String = ""
+      Dim aHoldCellType As Integer = 0 ' store the cell type of the location the character is moving to so it can be put into memory after restoring prior location
+      Dim aBlockedViewFlag As Boolean = False
+
+      Try
+        'see if player CAN move to desired location
+        If IsBlockingCell(whatToX, whatToY) = True Then
+          aReturnValue = "Bonk"
+        End If
+        'Select Case Me.MapCellData(whatToY, whatToX)
+        '  Case EnumsAndConsts.CellType.StructureSolidStone
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallBottomLeftCorner
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallBottomRightCorner
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallSide
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallTopBottom
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallBottomLeftCorner
+        '    aReturnValue = "Bonk"
+        '  Case EnumsAndConsts.CellType.StructureWallBottomRightCorner
+        '    aReturnValue = "Bonk"
+        'End Select
+        If aReturnValue = "" Then
+          aHoldCellType = Me.MapCellData(whatToY, whatToX)
+          Me.MapCellData(whatToY, whatToX) = EnumsAndConsts.CellType.UserSelf
+          'restore cell type to location departed
+          If whatFromY >= 0 AndAlso whatFromX >= 0 AndAlso m_CellTypeBeforeCharacterEntered > -1 Then
+            Me.MapCellData(whatFromY, whatFromX) = m_CellTypeBeforeCharacterEntered
+          End If
+          m_CellTypeBeforeCharacterEntered = aHoldCellType
+          whatPlayer.CurrentMapX = whatToX
+          whatPlayer.CurrentMapY = whatToY
+
+          'FOG OF WAR
+          'Determine which cells are visible from cell entered
+
+          'TODO need to make this smarter since it allows seeing through stone
+          'For xLoc As Integer = whatPlayer.CurrentMapX - whatPlayer.SightDistance To whatPlayer.CurrentMapX + whatPlayer.SightDistance
+          '  For yLoc As Integer = whatPlayer.CurrentMapY - whatPlayer.SightDistance To whatPlayer.CurrentMapY + whatPlayer.SightDistance
+          '    Me.MapCellVisibility(yLoc, xLoc) = True
+          '  Next
+          'Next
+
+          'all cells within one distance are always visible if SightDistance>0
+          If whatPlayer.SightDistance > 0 Then
+            For xLoc As Integer = -1 To 1
+              For yLoc As Integer = -1 To 1
+                Me.MapCellVisibility(whatPlayer.CurrentMapY + yLoc, whatPlayer.CurrentMapX + xLoc) = True
+              Next
+            Next
+            'determine if cells between player and a location are blocking view of this cell
+            For xLoc As Integer = -whatPlayer.SightDistance To whatPlayer.SightDistance
+              For yLoc As Integer = -whatPlayer.SightDistance To whatPlayer.SightDistance
+                aBlockedViewFlag = False
+                'TODO There aught to be a formula for this but I am not seeing it
+                'This hard coding does not work at sightdistance>2
+                'Up
+                If xLoc = -2 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY - 1)
+                End If
+                If xLoc = -1 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY - 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY - 1)
+                  End If
+                End If
+                If xLoc = 0 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY - 1)
+                End If
+                If xLoc = 1 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY - 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY - 1)
+                  End If
+                End If
+                If xLoc = 2 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY - 1)
+                End If
+                'down
+                If xLoc = -2 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY + 1)
+                End If
+                If xLoc = -1 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY + 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY + 1)
+                  End If
+                End If
+                If xLoc = 0 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY + 1)
+                End If
+                If xLoc = 1 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY + 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX, whatPlayer.CurrentMapY + 1)
+                  End If
+                End If
+                If xLoc = 2 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY + 1)
+                End If
+                'Left
+                If xLoc = -2 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY - 1)
+                End If
+                If xLoc = -2 AndAlso yLoc = -1 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY - 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY)
+                  End If
+                End If
+                If xLoc = -2 AndAlso yLoc = 0 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY)
+                End If
+                If xLoc = -2 AndAlso yLoc = 1 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY + 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY)
+                  End If
+                End If
+                If xLoc = -2 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX - 1, whatPlayer.CurrentMapY + 1)
+                End If
+                'right
+                If xLoc = 2 AndAlso yLoc = -2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY - 1)
+                End If
+                If xLoc = 2 AndAlso yLoc = -1 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY - 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY)
+                  End If
+                End If
+                If xLoc = 2 AndAlso yLoc = 0 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY)
+                End If
+                If xLoc = 2 AndAlso yLoc = 1 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY + 1)
+                  If aBlockedViewFlag = True Then
+                    aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY)
+                  End If
+                End If
+                If xLoc = 2 AndAlso yLoc = 2 Then
+                  aBlockedViewFlag = IsBlockingCell(whatPlayer.CurrentMapX + 1, whatPlayer.CurrentMapY + 1)
+                End If
+
+                If aBlockedViewFlag = False Then
+                  Me.MapCellVisibility(whatPlayer.CurrentMapY + yLoc, whatPlayer.CurrentMapX + xLoc) = True
+                End If
+              Next
+            Next
+
+          End If
+
+
+        End If
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      End Try
+
+      Return aReturnValue
+    End Function
+
 
 #End Region
 
@@ -664,7 +876,7 @@ Namespace Rogue.Lib
         End If
         Me.UpdateMap(aRoom)
         Me.MapCellData(whatEntryRow, whatEntryColumn) = EnumsAndConsts.CellType.StructureStairsDown
-        Me.MapCellVisibility(whatEntryRow, whatEntryColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
+        Me.MapCellVisibility(whatEntryRow, whatEntryColumn) = Not Me.m_IsFogOfWarActive 'TODO testing m_TestMode 'testing true makes all visible
       Catch ex As Exception
         Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
@@ -695,7 +907,7 @@ Namespace Rogue.Lib
         End If
         Me.UpdateMap(aRoom)
         Me.MapCellData(whatExitRow, whatExitColumn) = EnumsAndConsts.CellType.StructureStairsDown
-        Me.MapCellVisibility(whatExitRow, whatExitColumn) = True 'TODO testing m_TestMode 'testing true makes all visible
+        Me.MapCellVisibility(whatExitRow, whatExitColumn) = Not Me.m_IsFogOfWarActive 'TODO testing m_TestMode 'testing true makes all visible
       Catch ex As Exception
         Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
       End Try
@@ -1132,7 +1344,7 @@ Namespace Rogue.Lib
       Try
         If (whatRow > -1 AndAlso whatRow < EnumsAndConsts.MapHeight) AndAlso (whatColumn > -1 AndAlso whatColumn < EnumsAndConsts.MapWidth) Then
           Me.MapCellData(whatRow, whatColumn) = EnumsAndConsts.CellType.StructureTunnel
-          Me.MapCellVisibility(whatRow, whatColumn) = True
+          Me.MapCellVisibility(whatRow, whatColumn) = Not Me.m_IsFogOfWarActive
           aReturnValue = whatRow.ToString & "|" & whatColumn.ToString
           'Debug.Print("Stepping to " & aReturnValue)
         Else
@@ -1500,6 +1712,38 @@ Namespace Rogue.Lib
       Return aReturnValue
     End Function
 
+    Private Function IsBlockingCell(ByVal whatToX As Integer, ByVal whatToY As Integer) As Boolean
+      Dim currentMethod As String = "IsBlockingCell"
+      Dim currentData As String = ""
+      Dim aReturnValue As Boolean = False
+
+      Try
+        If whatToX >= 0 AndAlso whatToX <= EnumsAndConsts.MapWidth AndAlso whatToY >= 0 AndAlso whatToY < EnumsAndConsts.MapHeight Then
+          Select Case Me.MapCellData(whatToY, whatToX)
+            Case EnumsAndConsts.CellType.StructureSolidStone
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallTopLeftCorner
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallTopRightCorner
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallSide
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallTopBottom
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallBottomLeftCorner
+              aReturnValue = True
+            Case EnumsAndConsts.CellType.StructureWallBottomRightCorner
+              aReturnValue = True
+          End Select
+        End If
+
+      Catch ex As Exception
+        Me.m_ErrorHandler.NotifyError(Me.m_CurrentObject, currentMethod, ex.Message, Now, ex)
+      End Try
+
+      Return aReturnValue
+    End Function
+
     Private Sub LoadDefaultMap()
       Dim currentMethod As String = "LoadDefaultMap"
       Dim currentData As String = ""
@@ -1578,7 +1822,7 @@ Namespace Rogue.Lib
             End Select
             'If rowPtr < 12 Then
             ' NOTE: Can test map visibility by uncommenting IF and ENDIF
-            Me.MapCellVisibility(rowPtr, columnPtr) = True
+            Me.MapCellVisibility(rowPtr, columnPtr) = Not Me.m_IsFogOfWarActive
             'End If
           Next
         Next
@@ -1669,7 +1913,7 @@ Namespace Rogue.Lib
             End Select
             'If rowPtr < 12 Then
             ' NOTE: Can test map visibility by uncommenting IF and ENDIF
-            Me.MapCellVisibility(rowPtr, columnPtr) = True
+            Me.MapCellVisibility(rowPtr, columnPtr) = Not Me.m_IsFogOfWarActive
             'End If
           Next
         Next
@@ -1935,7 +2179,7 @@ Namespace Rogue.Lib
             yPtr = (rPtr + whatRoom.MapTopLocation + ((whatRoom.MapGridRowLocation - 1) * 7)) - 1
             xPtr = (cPtr + whatRoom.MapLeftLocation + ((whatRoom.MapGridColumnLocation - 1) * 26)) - 1
             Me.MapCellData(yPtr, xPtr) = m_mapCharacterValue
-            Me.MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
+            Me.MapCellVisibility(yPtr, xPtr) = Not Me.m_IsFogOfWarActive ' testing m_TestMode 'testing true makes all visible
             If yPtr < aTopPtr Then
               aTopPtr = yPtr
             End If
@@ -1953,7 +2197,7 @@ Namespace Rogue.Lib
             Integer.TryParse(aDataArray(2), m_mapCharacterValue)
           End If
           Me.MapCellData(yPtr, xPtr) = m_mapCharacterValue
-          Me.MapCellVisibility(yPtr, xPtr) = True ' testing m_TestMode 'testing true makes all visible
+          Me.MapCellVisibility(yPtr, xPtr) = Not Me.m_IsFogOfWarActive ' testing m_TestMode 'testing true makes all visible
 
         Next
 

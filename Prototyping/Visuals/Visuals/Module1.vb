@@ -5,8 +5,6 @@ Imports Visuals.Rogue.Lib
 
 ''' <summary>
 ''' TODO List
-''' Create random entry and exit rooms to replace hard coded test locations
-''' Create movement actions to character can move around level
 ''' Start level with visibility set off everywhere and create method making visibility on following character
 ''' Randomly place objects on level and have character able to pick up or drop them
 ''' Randomly place creatures on level and have character interact with them
@@ -34,6 +32,8 @@ Module Module1
   Public currentPlayer As New PlayerInfo
   Public gameMap(EnumsAndConsts.MapHeight, EnumsAndConsts.MapWidth, EnumsAndConsts.MapLevelsMax) As String
 
+  Private ReadOnly m_ErrorHandler As New ErrorHandler
+  Private m_CurrentObject As String = "Module1"
 
 #End Region
 
@@ -185,7 +185,6 @@ Module Module1
     Return aReturnValue
   End Function
 
-
   Private Sub InitializeGame()
 
     Dim m_levelMap As New LevelMap
@@ -207,19 +206,6 @@ Module Module1
 
     If aEntryString = "" Then
       aEntryString = GetRandomStairLocation()
-
-      'xLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapWidth - 6)
-      'yLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapHeight - 6)
-      'If yLoc > 9 Then
-      '  aEntryString = yLoc.ToString
-      'Else
-      '  aEntryString = "0" & yLoc.ToString
-      'End If
-      'If xLoc > 9 Then
-      '  aEntryString = aEntryString & xLoc.ToString
-      'Else
-      '  aEntryString = aEntryString & "0" & xLoc.ToString
-      'End If
     End If
     m_levelMap.EntryStairLocation = aEntryString
     m_levelMap.ExitStairLocation = aExitString
@@ -228,7 +214,7 @@ Module Module1
     End If
     If aExitString = "" Then
       'Need to ensure that exitstair not in same map grid as entrystair
-      Do While isGoodStair = False And aTryCounter < 10
+      Do While isGoodStair = False And aTryCounter < 100
         aExitString = GetRandomStairLocation()
         m_levelMap.ExitStairLocation = aExitString
         aTryCounter = aTryCounter + 1
@@ -236,39 +222,90 @@ Module Module1
           isGoodStair = True
         End If
       Loop
+      'TODO need to handle if comes out of above loop and did not get a good random exitstairlocation
 
-      'xLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapWidth - 6)
-      'yLoc = 4 + m_localRandom.Next(0, EnumsAndConsts.MapHeight - 6)
-      'If yLoc > 9 Then
-      '  aExitString = yLoc.ToString
-      'Else
-      '  aExitString = "0" & yLoc.ToString
-      'End If
-      'If xLoc > 9 Then
-      '  aExitString = aExitString & xLoc.ToString
-      'Else
-      '  aExitString = aExitString & "0" & xLoc.ToString
-      'End If
     End If
     m_levelMap = New LevelMap(aEntryString, aExitString)
     'm_levelMap.EntryStairGrid = "1831" 'TODO testing only
     'm_levelMap.ExitStairGrid = "0470" 'TODO testing only
     'm_levelMap.Initialize(True)
+    Integer.TryParse(aEntryString.Substring(0, 2), yLoc)
+    Integer.TryParse(aEntryString.Substring(2, 2), xLoc)
+
+    currentPlayer = New PlayerInfo()
+    currentPlayer.CurrentMapLevel = m_levelMap.CurrentMapLevel
+    currentPlayer.CurrentMapX = xLoc
+    currentPlayer.CurrentMapY = yLoc
+    m_levelMap.MoveCharacter(currentPlayer, -1, -1, xLoc, yLoc)
     m_levelMap.DrawScreen()
 
   End Sub
 
   Private Function ProcessGameLoop() As Boolean
+    Dim currentMethod As String = "ProcessGameLoop"
+    Dim currentData As String = ""
     Dim aReturnValue As Boolean = True
     Dim aChar As New Char
-    Dim aString As String = GetRandomStairLocation()
+    Dim aNewExitStairLocation As String = GetRandomStairLocation()
+    Dim isGood As Boolean = False
 
-    aChar = m_consoleController.GetKeyBoardInput()
+    Try
+      aChar = m_consoleController.GetKeyBoardInput()
+      Select Case aChar
+        Case "h" 'left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY)
+        Case "j" 'down
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY + 1)
+        Case "l" 'right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY)
+        Case "k" 'up
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY - 1)
+        Case "y" 'up and left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY - 1)
+        Case "b" 'down and left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY + 1)
+        Case "u" ' up and right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY - 1)
+        Case "n" 'down and right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY + 1)
+        Case "4" 'left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY)
+        Case "2" 'down
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY + 1)
+        Case "6" 'right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY)
+        Case "8" 'up
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY - 1)
+        Case "7" 'up and left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY - 1)
+        Case "1" 'down and left
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX - 1, currentPlayer.CurrentMapY + 1)
+        Case "9" ' up and right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY - 1)
+        Case "3" 'down and right
+          currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY + 1)
+        Case "<" 'up stairs
+          If currentPlayer.CurrentMapLevel > 1 Then
+            isGood = m_levelMap.IsEntryCell(currentPlayer.CurrentMapX, currentPlayer.CurrentMapY)
+            If isGood = True Then
+              'create a random level above this one unless it is being remembered
 
-    'TODO just quit for now
-    'aReturnValue = False
-    'InitializeGame() ' for testing show new random level for each move
-    InitializeGame(m_levelMap.ExitStairLocation, aString) ' for testing show new random level for each move
+              currentData = m_levelMap.MoveCharacter(currentPlayer, currentPlayer.CurrentMapX, currentPlayer.CurrentMapY, currentPlayer.CurrentMapX + 1, currentPlayer.CurrentMapY + 1)
+            End If
+          Else
+            currentPlayer.Message = "Cannot go up out of dungeon!"
+          End If
+      End Select
+
+      currentPlayer.Message = currentData
+      m_levelMap.DrawScreen()
+      'TODO just quit for now
+      'aReturnValue = False
+      'InitializeGame() ' for testing show new random level for each move
+      '      InitializeGame(m_levelMap.ExitStairLocation, aNewExitStairLocation) ' for testing show new random level for each move
+    Catch ex As Exception
+      m_ErrorHandler.NotifyError(m_CurrentObject, currentMethod, ex.Message, Now, ex)
+    End Try
 
 
     Return aReturnValue
