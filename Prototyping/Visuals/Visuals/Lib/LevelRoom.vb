@@ -254,36 +254,56 @@ Namespace Rogue.Lib
       Try
         aReturnValue = Me.CreateRandomRoom(whatMapGridRow, whatMapGridColumn, whatHeight, whatWidth)
 
-        X1 = (whatWidth) - 1
-        X = Me.m_localRandom.Next(X1) + xOFF + 1
-
-        If X >= entryX Then
-          X = entryX - 1
-        End If
-        If X <= (entryX - (whatWidth - 1)) Then
-          X = (entryX - (whatWidth - 1)) + 1
-        End If
-        If X < 2 Then
-          X = 2
-        End If
-        If X > EnumsAndConsts.MapGridCellWidth - whatWidth Then
-          X = EnumsAndConsts.MapGridCellWidth - whatWidth
-        End If
-        Y1 = (whatHeight) - 1
-        Y = Me.m_localRandom.Next(Y1) + xOFF + 1
-
-        If Y >= entryY Then
+        X = aReturnValue.m_MapLeftLocation
+        Y = aReturnValue.m_MapTopLocation
+        If aReturnValue.m_MapTopLocation > entryY - 1 Then
+          'aReturnValue.m_MapTopLocation = entryY - 1
           Y = entryY - 1
         End If
-        If Y <= (entryY - (whatHeight - 1)) Then
-          Y = (entryY - (whatHeight - 1)) + 1
+        If aReturnValue.m_MapTopLocation + aReturnValue.m_CurrentHeight < entryY + 2 Then
+          'aReturnValue.m_MapTopLocation = (entryY - aReturnValue.m_CurrentHeight) + 2
+          Y = (entryY - aReturnValue.m_CurrentHeight) + 2
         End If
-        If Y < 2 Then
-          Y = 2
+        If aReturnValue.m_MapLeftLocation > entryX - 1 Then
+          'aReturnValue.m_MapLeftLocation = entryX - 1
+          X = entryX - 1
         End If
-        If Y > EnumsAndConsts.MapGridCellHeight - whatHeight Then
-          Y = EnumsAndConsts.MapGridCellHeight - whatHeight
+        If aReturnValue.m_MapLeftLocation + aReturnValue.m_CurrentWidth < entryX + 2 Then
+          'aReturnValue.m_MapLeftLocation = (entryX - aReturnValue.m_CurrentWidth) + 2
+          X = (entryX - aReturnValue.m_CurrentWidth) + 2
         End If
+
+
+        'X1 = (whatWidth) - 1
+        'X = Me.m_localRandom.Next(X1) + xOFF + 1
+
+        'If X >= entryX Then
+        '  X = entryX - 1
+        'End If
+        'If X <= (entryX - (whatWidth - 1)) Then
+        '  X = (entryX - (whatWidth - 1)) + 1
+        'End If
+        'If X < 2 Then
+        '  X = 2
+        'End If
+        'If X > EnumsAndConsts.MapGridCellWidth - whatWidth Then
+        '  X = EnumsAndConsts.MapGridCellWidth - whatWidth
+        'End If
+        'Y1 = (whatHeight) - 1
+        'Y = Me.m_localRandom.Next(Y1) + xOFF + 1
+
+        'If Y >= entryY Then
+        '  Y = entryY - 1
+        'End If
+        'If Y <= (entryY - (whatHeight - 1)) Then
+        '  Y = (entryY - (whatHeight - 1)) + 1
+        'End If
+        'If Y < 2 Then
+        '  Y = 2
+        'End If
+        'If Y > EnumsAndConsts.MapGridCellHeight - whatHeight Then
+        '  Y = EnumsAndConsts.MapGridCellHeight - whatHeight
+        'End If
 
         xOFF = aReturnValue.MapLeftLocation - X
         yOFF = aReturnValue.MapTopLocation - Y

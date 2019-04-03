@@ -12,6 +12,10 @@
     Private m_Gold As Integer
     Private m_Armor As Integer
     Private m_CharacterClass As String
+    Private m_CurrentMapX As Integer
+    Private m_CurrentMapY As Integer
+    Private m_Message As String
+    Private m_SightDistance As Integer
 
 #Region "Properties"
 
@@ -20,7 +24,7 @@
         Return Me.m_Armor
       End Get
       Set(value As Integer)
-        Me.m_HitPoints = value
+        Me.m_Armor = value
       End Set
     End Property
 
@@ -56,7 +60,7 @@
         Return Me.m_CurrentStrength
       End Get
       Set(value As Integer)
-        Me.m_CurrentHitPoints = value
+        Me.m_CurrentStrength = value
       End Set
     End Property
 
@@ -65,11 +69,7 @@
         Return Me.m_Gold
       End Get
       Set(value As Integer)
-        Me.m_HitPoints = value
-      End Set
-    End Property
-
-    Public Property HitPoints As Integer
+        Me.m_Gold = value
       Get
         Return Me.m_HitPoints
       End Get
@@ -83,9 +83,46 @@
         Return Me.m_Strength
       End Get
       Set(value As Integer)
-        Me.m_HitPoints = value
+        Me.m_Strength = value
       End Set
     End Property
+
+    Public Property CurrentMapX As Integer
+      Get
+        Return Me.m_CurrentMapX
+      End Get
+      Set(value As Integer)
+        Me.m_CurrentMapX = value
+      End Set
+    End Property
+
+    Public Property CurrentMapY As Integer
+      Get
+        Return Me.m_CurrentMapY
+      End Get
+      Set(value As Integer)
+        Me.m_CurrentMapY = value
+      End Set
+    End Property
+
+    Public Property Message As String
+      Get
+        Return Me.m_Message
+      End Get
+      Set(value As String)
+        Me.m_Message = value
+      End Set
+    End Property
+
+    Public Property SightDistance As Integer
+      Get
+        Return Me.m_SightDistance
+      End Get
+      Set(value As Integer)
+        Me.m_SightDistance = value
+      End Set
+    End Property
+
 
 
 #End Region
@@ -111,6 +148,10 @@
       Me.m_Gold = 0
       Me.m_HitPoints = 0
       Me.m_Strength = 0
+      Me.m_CurrentMapX = -1
+      Me.m_CurrentMapY = -1
+      Me.m_Message = ""
+      m_SightDistance = 2
 
       'for prototype set the variables that will be displayed
       Me.m_Armor = 5

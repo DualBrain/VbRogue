@@ -29,6 +29,7 @@ Namespace Rogue.Lib
       Dim aCurrentData As New StringBuilder
       Dim aCurrentTimeString As String
       Dim aCurrentHour As Integer = 0
+      Dim aMessageString As String = ""
 
       Try
         If Now.Hour > 12 Then
@@ -39,7 +40,7 @@ Namespace Rogue.Lib
         aCurrentTimeString = aCurrentHour.ToString & ":" & Now.Minute.ToString
 
         'TODO replace info on bottom with test string for now to help figure if random rooms are showing at the correct locations
-        aCurrentTimeString = "11:11" 'TODO for prototype just make it 11:11
+        ' aCurrentTimeString = "11:11" 'TODO for prototype just make it 11:11
         aCurrentData.Append("0123456789012345678901234567890123456789012345678901234567890123456789012345678")
 
         'debug - the following creates a line number list down the side to see positioning during debugging
@@ -69,7 +70,14 @@ Namespace Rogue.Lib
         Console.Write(aCurrentData.ToString)
         Console.ResetColor()
 
-        Console.SetCursorPosition(74, 24)
+        aMessageString = whatUser.Message & StrDup(74, " ")
+        Console.SetCursorPosition(0, 24)
+        Console.ForegroundColor = ConsoleColor.Yellow
+        Console.BackgroundColor = ConsoleColor.Black
+        Console.Write(aMessageString.Substring(0, 73))
+        Console.ResetColor()
+
+        Console.SetCursorPosition(73, 24)
         Console.ForegroundColor = ConsoleColor.Black
         Console.BackgroundColor = ConsoleColor.DarkGray
         Console.Write(aCurrentTimeString)
