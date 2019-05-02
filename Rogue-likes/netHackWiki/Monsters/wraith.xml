@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>wraith</Name>
+  <Attack1>Touch 1d6 drain life</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>120</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>15</BaseMR>
+  <Alignment>-6 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>0</Weight>
+  <NutritionalValue>0</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Gain level</Resistances>
+  <ResistancesConveyed>Gain level</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>does not breathe. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not have a solid form. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>doppelganger</Name>
+  <Attack1>Weapon 1d12</Attack1>
+  <Difficulty>11</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>191</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Human</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

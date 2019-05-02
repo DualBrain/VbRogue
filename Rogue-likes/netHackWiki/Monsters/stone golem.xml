@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>stone golem</Name>
+  <Attack1>Claw 3d8</Attack1>
+  <Difficulty>15</Difficulty>
+  <BaseLevel>14</BaseLevel>
+  <BaseExperience>345</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>50</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1900</Weight>
+  <NutritionalValue>0</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>has a thick hide. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

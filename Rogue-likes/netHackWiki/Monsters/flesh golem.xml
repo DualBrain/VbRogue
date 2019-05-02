@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>flesh golem</Name>
+  <Attack1>Claw 2d8</Attack1>
+  <Attack2> Claw 2d8</Attack2>
+  <Difficulty>10</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>186</BaseExperience>
+  <Speed>8</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1400</Weight>
+  <NutritionalValue>600</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed Fire (12%), Cold (12%), Shock (12%), Sleep (12%), Poison (12%)</Resistances>
+  <ResistancesConveyed>Fire (12%), Cold (12%), Shock (12%), Sleep (12%), Poison (12%)</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong.</string>
+  </Characteristics>
+</Monster>

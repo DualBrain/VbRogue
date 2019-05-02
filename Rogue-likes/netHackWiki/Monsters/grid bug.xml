@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>grid bug</Name>
+  <Attack1>Bite d1 shock</Attack1>
+  <Difficulty>1</Difficulty>
+  <BaseLevel>0</BaseLevel>
+  <BaseExperience>1</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>15</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>is an animal. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

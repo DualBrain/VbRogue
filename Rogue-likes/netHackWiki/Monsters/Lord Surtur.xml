@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Lord Surtur</Name>
+  <Attack1>Weapon 2d10</Attack1>
+  <Attack2> weapon 2d10</Attack2>
+  <Attack3> claw quest-artifact-stealing 2d6</Attack3>
+  <Difficulty>19</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>486</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>50</BaseMR>
+  <Alignment>12 (lawful)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>2250</Weight>
+  <NutritionalValue>850</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Fire (50%)</Resistances>
+  <ResistancesConveyed>Fire (50%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a giant. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can throw boulders. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>wants your quest artifact. </string>
+    <string>waits for you to come. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

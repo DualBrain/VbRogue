@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>water troll</Name>
+  <Attack1>Weapon 2d8</Attack1>
+  <Attack2> claw 2d8</Attack2>
+  <Attack3> bite 2d6</Attack3>
+  <Difficulty>13</Difficulty>
+  <BaseLevel>11</BaseLevel>
+  <BaseExperience>246</BaseExperience>
+  <Speed>14</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>40</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1200</Weight>
+  <NutritionalValue>300</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can regenerate hit points. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is strong. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

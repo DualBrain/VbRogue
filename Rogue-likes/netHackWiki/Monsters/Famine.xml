@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Famine</Name>
+  <Attack1>Touch 8d8 plus hunger</Attack1>
+  <Attack2> Touch 8d8 plus hunger</Attack2>
+  <Difficulty>34</Difficulty>
+  <BaseLevel>30</BaseLevel>
+  <BaseExperience>1431</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>-5</BaseAC>
+  <BaseMR>100</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>1</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can regenerate hit points. </string>
+    <string>can see invisible creatures. </string>
+    <string>has teleport control. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>can displace other monsters.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Yeenoghu</Name>
+  <Attack1>Weapon 3d6</Attack1>
+  <Attack2> weapon 2d8 confusion</Attack2>
+  <Attack3> claw 1d6 (paralyzing)</Attack3>
+  <Difficulty>31</Difficulty>
+  <BaseLevel>25</BaseLevel>
+  <BaseExperience>1073</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>-5</BaseAC>
+  <BaseMR>80</BaseMR>
+  <Alignment>-15 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>can see invisible creatures. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a demon. </string>
+    <string>is a lord to its kind. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>can pick up weapons and food. </string>
+    <string>wants the Amulet of Yendor. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

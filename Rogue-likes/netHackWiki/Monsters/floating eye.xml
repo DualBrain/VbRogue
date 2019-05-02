@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>floating eye</Name>
+  <Attack1>Passive paralysis</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>7</BaseExperience>
+  <Speed>1</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 5 (Common)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>10</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Telepathy (100%)</Resistances>
+  <ResistancesConveyed>Telepathy (100%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>can survive underwater. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

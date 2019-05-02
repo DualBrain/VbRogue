@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>elf-lord</Name>
+  <Attack1>Weapon 2d4</Attack1>
+  <Attack2> weapon 2d4</Attack2>
+  <Difficulty>11</Difficulty>
+  <BaseLevel>8</BaseLevel>
+  <BaseExperience>123</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-9 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>800</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Sleep (53%)</Resistances>
+  <ResistancesConveyed>Sleep (53%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can see invisible creatures. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is an elf. </string>
+    <string>is a lord to its kind. </string>
+    <string>is male. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

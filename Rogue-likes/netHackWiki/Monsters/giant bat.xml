@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant bat</Name>
+  <Attack1>Bite 1d6</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>22</BaseExperience>
+  <Speed>22</Speed>
+  <BaseAC>7</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>30</Weight>
+  <NutritionalValue>30</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

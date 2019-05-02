@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>acid blob</Name>
+  <Attack1>Passive acid 1d8</Attack1>
+  <Difficulty>2</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>9</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>30</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Cures stoning</Resistances>
+  <ResistancesConveyed>Cures stoning</ResistancesConveyed>
+  <Characteristics>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly.</string>
+  </Characteristics>
+</Monster>

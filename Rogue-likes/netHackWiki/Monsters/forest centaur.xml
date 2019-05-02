@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>forest centaur</Name>
+  <Attack1>Projectile as weapon or melee weapon 1d8</Attack1>
+  <Attack2> Kick 1d6</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>64</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>-1 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2550</Weight>
+  <NutritionalValue>600</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Keystone Kop</Name>
+  <Attack1>Weapon 1d4</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>13</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>9 (lawful)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is a human. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in large groups normally.</string>
+  </Characteristics>
+</Monster>

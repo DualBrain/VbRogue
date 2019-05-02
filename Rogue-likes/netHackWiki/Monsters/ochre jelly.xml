@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ochre jelly</Name>
+  <Attack1>Engulfs and covers with acidic slime 3d6</Attack1>
+  <Attack2> Passive 3d6 acid</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>88</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>50</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed none</Resistances>
+  <ResistancesConveyed>none</ResistancesConveyed>
+  <Characteristics>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>cannot pick up items. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

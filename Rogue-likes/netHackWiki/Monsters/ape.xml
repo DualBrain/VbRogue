@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ape</Name>
+  <Attack1>Claw 1d3</Attack1>
+  <Attack2> Claw 1d3</Attack2>
+  <Attack3> Bite 1d6</Attack3>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>4</BaseLevel>
+  <BaseExperience>41</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1100</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

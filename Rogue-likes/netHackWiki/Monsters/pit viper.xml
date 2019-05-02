@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>pit viper</Name>
+  <Attack1>Bite 1d4 poison</Attack1>
+  <Attack2> Bite 1d4 poison</Attack2>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>93</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>100</Weight>
+  <NutritionalValue>60</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed poison (40%)</Resistances>
+  <ResistancesConveyed>poison (40%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can hide under items. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>has infravision.</string>
+  </Characteristics>
+</Monster>

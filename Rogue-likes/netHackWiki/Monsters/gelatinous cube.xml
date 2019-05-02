@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>gelatinous cube</Name>
+  <Attack1>Touch 2d4 paralyzes</Attack1>
+  <Attack2> passive 1d4 paralyzes</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>76</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>600</Weight>
+  <NutritionalValue>150</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed Fire (10%), cold (10%), shock (10%), sleep (10%)</Resistances>
+  <ResistancesConveyed>Fire (10%), cold (10%), shock (10%), sleep (10%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly.</string>
+  </Characteristics>
+</Monster>

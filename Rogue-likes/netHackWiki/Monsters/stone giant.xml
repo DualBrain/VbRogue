@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>stone giant</Name>
+  <Attack1>Weapon 2d10</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>127</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>2 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2250</Weight>
+  <NutritionalValue>750</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Increase Strength (50%)</Resistances>
+  <ResistancesConveyed>Increase Strength (50%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses. </string>
+    <string>is a giant. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can throw boulders. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

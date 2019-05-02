@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant beetle</Name>
+  <Attack1>Bite 3d6</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>56</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>10</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed Poison (33%)</Resistances>
+  <ResistancesConveyed>Poison (33%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

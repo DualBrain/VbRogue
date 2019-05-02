@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Scorpius</Name>
+  <Attack1>Claw 2d6</Attack1>
+  <Attack2> claw quest-artifact-stealing 2d6</Attack2>
+  <Attack3> sting sickness 1d4</Attack3>
+  <Difficulty>17</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>474</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-15 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>750</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Poison (100%)</Resistances>
+  <ResistancesConveyed>Poison (100%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can pick up magical items. </string>
+    <string>wants your quest artifact. </string>
+    <string>waits for you to come.</string>
+  </Characteristics>
+</Monster>

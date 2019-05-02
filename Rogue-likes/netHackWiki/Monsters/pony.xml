@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>pony</Name>
+  <Attack1>Kick 1d6</Attack1>
+  <Attack2> Bite 1d2</Attack2>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>31</BaseExperience>
+  <Speed>16</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1300</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat fruits. </string>
+    <string>can be tamed by feeding. </string>
+    <string>wanders randomly. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

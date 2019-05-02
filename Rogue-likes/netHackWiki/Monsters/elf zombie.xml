@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>elf zombie</Name>
+  <Attack1>Claw 1d7</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>28</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>850</Weight>
+  <NutritionalValue>170</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None (but sleep from the "elf" corpse it leaves)</Resistances>
+  <ResistancesConveyed>None (but sleep from the "elf" corpse it leaves)</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is an elf. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>appears in small groups normally. </string>
+    <string>can leave an old elf corpse.</string>
+  </Characteristics>
+</Monster>

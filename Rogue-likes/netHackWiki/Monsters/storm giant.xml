@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>storm giant</Name>
+  <Attack1>Weapon 2d12</Attack1>
+  <Difficulty>19</Difficulty>
+  <BaseLevel>16</BaseLevel>
+  <BaseExperience>536</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2250</Weight>
+  <NutritionalValue>750</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed shock (50%), Increase strength (50%)</Resistances>
+  <ResistancesConveyed>shock (50%), Increase strength (50%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses. </string>
+    <string>is a giant. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can throw boulders. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

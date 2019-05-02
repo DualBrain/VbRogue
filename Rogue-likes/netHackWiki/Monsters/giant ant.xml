@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant ant</Name>
+  <Attack1>Bite 1d4</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>20</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>yes</GenoCidable>
+  <Weight>10</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>tiny</Size>
+  <Resistances>conveyed none</Resistances>
+  <ResistancesConveyed>none</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

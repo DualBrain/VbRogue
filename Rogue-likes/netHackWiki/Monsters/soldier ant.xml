@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>soldier ant</Name>
+  <Attack1>Bite 2d4</Attack1>
+  <Attack2> Sting 3d4 poison</Attack2>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>37</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>20</Weight>
+  <NutritionalValue>5</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Poison (20%)</Resistances>
+  <ResistancesConveyed>Poison (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

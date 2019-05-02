@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>homunculus</Name>
+  <Attack1>Bite 1d3 sleep</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>19</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>-7 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>60</Weight>
+  <NutritionalValue>100</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed poison (7%), sleep (7%)</Resistances>
+  <ResistancesConveyed>poison (7%), sleep (7%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>dwarf zombie</Name>
+  <Attack1>Claw 1d6</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>17</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>150</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is a dwarf. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>appears in small groups normally. </string>
+    <string>can leave an old dwarf corpse.</string>
+  </Characteristics>
+</Monster>

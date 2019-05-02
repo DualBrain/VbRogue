@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>woodchuck</Name>
+  <Attack1>Bite 1d6</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>35</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>30</Weight>
+  <NutritionalValue>30</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can tunnel through walls. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

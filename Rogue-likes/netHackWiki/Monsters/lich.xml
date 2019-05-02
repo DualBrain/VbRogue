@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>lich</Name>
+  <Attack1>Touch 1d10 cold</Attack1>
+  <Attack2> Spell-casting</Attack2>
+  <Difficulty>14</Difficulty>
+  <BaseLevel>11</BaseLevel>
+  <BaseExperience>269</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>-9 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1200</Weight>
+  <NutritionalValue>100</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Cold</Resistances>
+  <ResistancesConveyed>Cold</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can regenerate hit points. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>can pick up magical items. </string>
+    <string>has infravision. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

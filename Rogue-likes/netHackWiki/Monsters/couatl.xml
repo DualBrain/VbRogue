@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>couatl</Name>
+  <Attack1>Bite 2d4 poison</Attack1>
+  <Attack2> Bite 1d3</Attack2>
+  <Attack3> Hug 2d4 drowning</Attack3>
+  <Difficulty>11</Difficulty>
+  <BaseLevel>8</BaseLevel>
+  <BaseExperience>180</BaseExperience>
+  <Speed>10</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>7 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>has a serpent body. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>does not appear in Gehennom. </string>
+    <string>appears in small groups normally. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>
