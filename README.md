@@ -11,11 +11,11 @@ The purpose of this project is as a learning device to...
 * work as a team (OSS).
 * and do so using http://github.com.
 
-This project is for those with little to no knowledge of programming, for those who have tons of experience and everyone in between.  The idea is to have fun while both learning and lending knowledge along the way.
+This project is for those with little to no knowledge of programming as well as those whom have tons of experience and everyone in between.  The idea is to have fun while both learning and lending knowledge along the way.
 
-Some of this collaboration is taking place in-person through http://basicsig.com monthly meetings while other interactions will be completely over the web.
+Some of this collaboration is taking place through twitch.tv live-coding sessions that take place every Tuesday 8pm central.
 
-NOTE: The purpose of this project is not to create a "rogue-like"; rather, we are using the original Rogue for inspiration and as a target design to build a project for the purposes of learning.  Once we have a "finished product"; where it goes from there is anyones guess... until then, we have a target that can be held steady. ;-)
+NOTE: The purpose of this project is **not** to create a "rogue-like"; rather, we are using the original Rogue for inspiration and as a target design to build a project for the purposes of learning.  Once we have a "finished product"; where it goes from there is anyones guess... until then, we have a target that can be held steady. ;-)
 
 # Folder Structure
 
@@ -42,7 +42,7 @@ If you see that we've strayed, please feel free to create an issue.
 # Development
 
 Prerequisites:
-* Visual Studio 2017
+* Visual Studio 2019 (we are using the Community Edition)
 
 To **develop** do the following:
 
@@ -57,7 +57,7 @@ We follow the same contribution process that [corefx is using][corefx-contributi
 
 [corefx-contributing]: https://github.com/dotnet/corefx/wiki/Contributing
 
-To discuss topics in "realtime", join our http://basicsig.slack.com group by visiting http://basicsig.com.  Once you are a member of the group, be sure to join the #oss-vbrogue channel.
+To discuss topics in "realtime", you can find many of us hanging out at https://gitter.im/VB-NET between broadcasts; and, of course, you can join us for the live-coding streams!
 
 # License
 
@@ -79,5 +79,14 @@ Logo by TBD.
 Additional Resource
 ========
 
+* [Rogue (c)1983 Artificial Intelligence Design MS-DOS Version (DosBox on Archive.org)](https://archive.org/details/ROGUE_PD)
+* [Rogue (c)1983 (CRACKED - CODEBUSTERS, INC.) MS-DOS Version (DosBox on Archive.org)](https://archive.org/details/msdos_Rogue_1983)
+* [Rogue (c)1985 Epyx Mac Version (Emulation on Archive.org)](https://archive.org/details/mac_Rogue)
+* [Rogue (like) (c)1988 Mastertronic C64 (Emulation at Archive.org)](https://archive.org/details/d64_Rogue_1988_Mastertronic)
+* [Rogue (like?) (c)1987 Antic Atari 800xl (Emulation at Archive.org)](https://archive.org/details/a8b_Atari_Rogue_1987_Antic_US_BASIC)
+* [Rogue (Like?) (c)1988 MasterTronic ZX Spectrum (Emulation at Archive.org)](https://archive.org/details/zx_Rogue_1988_Mastertronic#)
+* [Rogue (like?) (c)1987 Mastertronic Atari 800xl (Emulation at Archive.org)](https://archive.org/details/a8b_Rogue_1988_Mastertronic_GB_k_file)
+* [Rogue Clone (c)1988 MS-DOS (DosBox at Archive.org](https://archive.org/details/msdos_Rogue_Clone_1988)
+* [Rogue Box Cover for Atari ST](https://archive.org/details/firstera_rogue)
 * http://www.old-games.com/download/4041/rogue-epyx-
 * http://coredumpcentral.org
