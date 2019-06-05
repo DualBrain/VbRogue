@@ -1,4 +1,7 @@
 # VbRogue
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A Rogue clone written in Visual Basic.
 
 ![Rogue](Documents/rogue.png)
@@ -17,19 +20,25 @@ Some of this collaboration is taking place through twitch.tv live-coding session
 
 NOTE: The purpose of this project is **not** to create a "rogue-like"; rather, we are using the original Rogue for inspiration and as a target design to build a project for the purposes of learning.  Once we have a "finished product"; where it goes from there is anyones guess... until then, we have a target that can be held steady. ;-)
 
-# Folder Structure
+## Some Specifics
+
+* Use the latest version of VB.
+* Building for .NET Core 3.x (current pre-release).
+* "UI" will be a Console application.
+
+## Folder Structure
 
 * Documents - Contains reference materials for writing a rogue clone.
 * Prototyping - Contains various prototypes that serve to experiment with ideas/techniques that can be leveraged to write the actual game.
 * Rogue-likes - Contains several examples I've come across that demonstrate a "rogue-like" experience; including these examples for information purposes.
 
-# Found a bug?
+## Found a bug?
 
 Please file any issues at https://github.com/DualBrain/VbRogue/issues.
 
-# Coding Style
+## Coding Style
 
-We will do our best to attempt to adhere to the guidelines as defined:
+Although not 100% determined at this point, we will start by attempting to adhere to the guidelines as defined:
 
 https://msdn.microsoft.com/en-us/library/ms229042(v=vs.110).aspx
 
@@ -37,9 +46,7 @@ and
 
 http://addressof.com/blog/articles/codingguidelines.aspx
 
-If you see that we've strayed, please feel free to create an issue.
-
-# Development
+## Development
 
 Prerequisites:
 * Visual Studio 2019 (we are using the Community Edition)
@@ -51,24 +58,24 @@ To **develop** do the following:
 
 To **test** do the following: `TBD`
 
-# Contributing
+## Contributing
 
-We follow the same contribution process that [corefx is using][corefx-contributing].
+We will start by attempting to follow the same contribution process that [corefx is using][corefx-contributing].
 
 [corefx-contributing]: https://github.com/dotnet/corefx/wiki/Contributing
 
 To discuss topics in "realtime", you can find many of us hanging out at https://gitter.im/VB-NET between broadcasts; and, of course, you can join us for the live-coding streams!
 
-# License
+## License
 
-The source code is available on https://github.com/DualBrain/VbRogue and licensed under the MIT license.
+The **official** source is available on https://github.com/DualBrain/VbRogue and licensed under the MIT license.
 
 Acknowledgements
 ========
 
 This project is inspired/influenced in part by:
 
- * Rogue (Epyx) circa mid-1980's
+ * Rogue (Epyx) circa early-to-mid-1980's
  
 Technology references:
 
