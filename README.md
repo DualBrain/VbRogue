@@ -6,6 +6,8 @@ A Rogue clone written in Visual Basic.
 
 ![Rogue](Documents/rogue.png)
 
+![Rogue - Start Screen](Documents/rogue-welcome.jpg)
+
 The purpose of this project is as a learning device to...
 
 * learn fundamental programming techniques.
