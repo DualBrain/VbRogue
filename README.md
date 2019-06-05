@@ -4,7 +4,7 @@
 
 A Rogue clone written in Visual Basic.
 
-(Join us for the live-coding streams every Tuesday 8pm central at https://twitch.tv/gotbasic!!!!)
+(Join us for the live-coding streams every Tuesday 8pm central at https://twitch.tv/gotbasic !!!!)
 
 ![Rogue - Welcome](Documents/rogue-welcome.jpg)
 
