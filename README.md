@@ -90,6 +90,7 @@ Logo by TBD.
 Additional Resource
 ========
 
+* [Complete Rogue Monster List](https://strategywiki.org/wiki/Rogue/Monsters#Monsters)
 * [Rogue (c)1983 Artificial Intelligence Design MS-DOS Version (DosBox on Archive.org)](https://archive.org/details/ROGUE_PD)
 * [Rogue (c)1983 (CRACKED - CODEBUSTERS, INC.) MS-DOS Version (DosBox on Archive.org)](https://archive.org/details/msdos_Rogue_1983)
 * [Rogue (c)1985 Epyx Mac Version (Emulation on Archive.org)](https://archive.org/details/mac_Rogue)
