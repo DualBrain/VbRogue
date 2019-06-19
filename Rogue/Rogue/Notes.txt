@@ -1,0 +1,156 @@
+﻿' Need to fix the following to lines...
+' The code isn't drawing column 80 and the last row.
+
+      For row = 0 To room.GetUpperBound(0)
+        For col = 0 To room.GetUpperBound(1)
+
+' Replace room variable creation with the following....
+' Was thinking we need to have a level designer so that we can
+' move forward with actually working on the game instead of getting
+' bogged down with the procedurally generation of the levels.
+' At some point we will need to procedurally generate, but let's get
+' to having some fun.  I then decided that instead of a level
+' designer, it is simple enough to "just write it" if we selected
+' some character codes to represent the game world that would work
+' with the normal characters we can type.  The code could then 
+' take this text and convert it to the enhanced view that will then
+' be displayed.
+' To be consistent with the original, the row cound is limited to 21
+' for the "world".
+
+      ' Key
+      '  [-]|{} Walls
+      '  . Floor
+      '  # Tunnel
+      '  @ Hero
+      '  = Stairs
+      '  + Door
+      '  $ Gold
+      '  ^ Armor
+      '  % Trap
+      '  ! Potion
+      '  * Food
+
+      Dim roomX = "
+             [----]                                             [--------]      
+             |....|                                             |........|      
+             |....|                                     ########+........|      
+             |....|                                     #       |........|      
+             |....+###################                  #       {--------}      
+             {--+-}                  ####################                       
+        #########                      ############                             
+   [----+----------]                  [+----]                                   
+   |...............|                  |.....|      ################             
+   |..@K.....I.....+##################+.....|      #              #             
+   |.......^.......|                  |.....|      #              #             
+   |%....!.........|                  |.....+#######              #             
+   |...*$..........|                  |.....|                     #             
+   {---------------}                  {+----}                     #             
+                                ########                   ########             
+                              [-+]                         #                    
+                              |=.+##########               #                    
+                         #####+..|         #          [----+--------------]     
+                              |..|         ###########+...................|     
+                              |..|                    |...................|     
+                              {--}                    {-------------------}     
+"
+
+      Dim room(21, 79) As Integer
+
+      Dim lines = Split(roomX, vbCrLf)
+
+      If 1 = 1 Then
+
+        Dim row = 0
+        For Each line In lines
+          Dim col = 0
+          If line <> "" Then
+            For Each ch In line
+              Select Case ch
+                Case "["c : room(row, col) = Objects.WallTopLeft
+                Case "-"c : room(row, col) = Objects.WallHorizontal
+                Case "]"c : room(row, col) = Objects.WallTopRight
+                Case "|"c : room(row, col) = Objects.WallVertical
+                Case "{"c : room(row, col) = Objects.WallBottomLeft
+                Case "}"c : room(row, col) = Objects.WallBottomRight
+                Case "."c : room(row, col) = Objects.Floor
+                Case "#"c : room(row, col) = Objects.Tunnel
+                Case "@"c : room(row, col) = Objects.Hero
+                Case "="c : room(row, col) = Objects.Stairs
+                Case "+"c : room(row, col) = Objects.Door
+                Case "$"c : room(row, col) = Objects.Gold
+                Case "^"c : room(row, col) = Objects.Armor
+                Case "%"c : room(row, col) = Objects.Trap
+                Case "!"c : room(row, col) = Objects.Potion
+                Case "*"c : room(row, col) = Objects.Food
+                Case "B"c : room(row, col) = Objects.Bat
+                Case "E"c : room(row, col) = Objects.Emu
+                Case "H"c : room(row, col) = Objects.Hobgoblin
+                Case "I"c : room(row, col) = Objects.Imp
+                Case "K"c : room(row, col) = Objects.Kestral
+                Case "O"c : room(row, col) = Objects.Orc
+                Case "R"c : room(row, col) = Objects.RattleSnake
+                Case "S"c : room(row, col) = Objects.Slime
+                Case "Z"c : room(row, col) = Objects.Zombie
+                Case Else
+              End Select
+              col += 1
+            Next
+          End If
+          row += 1
+        Next
+
+      End If
+
+' Can begin the process of movement...
+
+          Select Case key.Key
+            Case ConsoleKey.UpArrow
+              Select Case CType(room(heroRow - 1, heroCol), Objects)
+                Case Objects.Floor
+                  SetCursorPosition(heroCol, heroRow)
+                  ForegroundColor = ConsoleColor.DarkGreen
+                  Write(FLOOR)
+                  ResetColor()
+                  room(heroRow, heroCol) = Objects.Floor
+                  heroRow -= 1
+                  room(heroRow, heroCol) = Objects.Hero
+                  SetCursorPosition(heroCol, heroRow)
+                  ForegroundColor = ConsoleColor.Yellow
+                  Write(QBChar(1))
+                  ResetColor()
+                Case Else
+              End Select
+            Case ConsoleKey.DownArrow
+              Select Case CType(room(heroRow + 1, heroCol), Objects)
+                Case Objects.Floor
+                  SetCursorPosition(heroCol, heroRow)
+                  ForegroundColor = ConsoleColor.DarkGreen
+                  Write(FLOOR)
+                  ResetColor()
+                  room(heroRow, heroCol) = Objects.Floor
+                  heroRow += 1
+                  room(heroRow, heroCol) = Objects.Hero
+                  SetCursorPosition(heroCol, heroRow)
+                  ForegroundColor = ConsoleColor.Yellow
+                  Write(QBChar(1))
+                  ResetColor()
+                Case Else
+              End Select
+            Case ConsoleKey.LeftArrow
+            Case ConsoleKey.RightArrow
+            Case ConsoleKey.Escape
+              Exit Do
+            Case Else
+          End Select
+
+' Movement presents a problem as we need to have a concept of "layers".
+
+' -= Screen Layout =-
+' The top row is reserved for "messages".
+' 21 rows for the "world"
+' There are three lines at the bottom...
+'   blank
+'   Level:1   Hits:21(21) etc...
+'   right justified, "the clock"
+
