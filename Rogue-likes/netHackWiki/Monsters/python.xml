@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>python</Name>
+  <Attack1>Bite 1d4</Attack1>
+  <Attack2> Touch</Attack2>
+  <Attack3> Hug 1d4 drowning</Attack3>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>82</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>250</Weight>
+  <NutritionalValue>100</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>has infravision.</string>
+  </Characteristics>
+</Monster>

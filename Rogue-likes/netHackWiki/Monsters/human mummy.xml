@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>human mummy</Name>
+  <Attack1>Claw 2d4</Attack1>
+  <Attack2> Claw 2d4</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>73</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>-5 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>has infravision. </string>
+    <string>can leave an old human corpse.</string>
+  </Characteristics>
+</Monster>

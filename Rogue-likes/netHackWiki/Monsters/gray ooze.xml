@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>gray ooze</Name>
+  <Attack1>Bite 2d8 rusting</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>28</BaseExperience>
+  <Speed>1</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>500</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed fire (7%), cold (7%), poison (7%)</Resistances>
+  <ResistancesConveyed>fire (7%), cold (7%), poison (7%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

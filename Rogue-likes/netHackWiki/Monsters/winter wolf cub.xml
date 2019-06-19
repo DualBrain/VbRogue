@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>winter wolf cub</Name>
+  <Attack1>Bite 1d8</Attack1>
+  <Attack2> Breathes cold 1d8</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>64</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-5 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>250</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Cold (33%)</Resistances>
+  <ResistancesConveyed>Cold (33%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>does not appear in Gehennom. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

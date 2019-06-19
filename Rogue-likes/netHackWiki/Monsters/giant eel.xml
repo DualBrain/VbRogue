@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant eel</Name>
+  <Attack1>Bite 3d6</Attack1>
+  <Attack2> drowning</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>1075</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>-1</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>200</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can survive underwater. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

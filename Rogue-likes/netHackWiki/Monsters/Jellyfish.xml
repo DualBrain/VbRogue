@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Jellyfish</Name>
+  <Attack1>Bite poisonous 3d3</Attack1>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>34</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>80</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Poison</Resistances>
+  <ResistancesConveyed>Poison</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can survive underwater. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>has a serpent body. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

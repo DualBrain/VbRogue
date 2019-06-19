@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>skeleton</Name>
+  <Attack1>Weapon 2d6</Attack1>
+  <Attack2> Touch 1d6 slowing</Attack2>
+  <Difficulty>14</Difficulty>
+  <BaseLevel>12</BaseLevel>
+  <BaseExperience>359</BaseExperience>
+  <Speed>8</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>300</Weight>
+  <NutritionalValue>5</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>has a thick hide. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

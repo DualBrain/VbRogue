@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>horse</Name>
+  <Attack1>Kick 1d8</Attack1>
+  <Attack2> Bite 1d3</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>61</BaseExperience>
+  <Speed>20</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1500</Weight>
+  <NutritionalValue>300</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat fruits. </string>
+    <string>can be tamed by feeding. </string>
+    <string>wanders randomly. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

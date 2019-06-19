@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>dwarf king</Name>
+  <Attack1>Weapon 2d6</Attack1>
+  <Attack2> Weapon 2d6</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>83</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>6 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>300</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can tunnel through walls. </string>
+    <string>needs a pick-axe to tunnel through walls. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is a dwarf. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is male. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ettin mummy</Name>
+  <Attack1>Claw 2d6</Attack1>
+  <Attack2> Claw 2d6</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>92</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>-6 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1700</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>has infravision. </string>
+    <string>can leave an old ettin corpse.</string>
+  </Characteristics>
+</Monster>

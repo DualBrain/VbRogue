@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>quivering blob</Name>
+  <Attack1>Touch 1d8</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>59</BaseExperience>
+  <Speed>1</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>200</Weight>
+  <NutritionalValue>100</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed poison (33%)</Resistances>
+  <ResistancesConveyed>poison (33%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly.</string>
+  </Characteristics>
+</Monster>

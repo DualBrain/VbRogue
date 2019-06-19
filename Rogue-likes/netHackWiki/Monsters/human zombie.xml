@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>human zombie</Name>
+  <Attack1>Claw 1d8</Attack1>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>4</BaseLevel>
+  <BaseExperience>41</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>appears in small groups normally. </string>
+    <string>can leave an old human corpse.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>vampire bat</Name>
+  <Attack1>Bite 1d6</Attack1>
+  <Attack2> Bite poison</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>66</BaseExperience>
+  <Speed>20</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>30</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can regenerate hit points. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

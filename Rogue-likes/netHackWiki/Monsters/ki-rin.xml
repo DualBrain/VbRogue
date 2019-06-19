@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ki-rin</Name>
+  <Attack1>Kick 2d4</Attack1>
+  <Attack2> kick 2d4</Attack2>
+  <Attack3> butt 3d6</Attack3>
+  <Difficulty>21</Difficulty>
+  <BaseLevel>16</BaseLevel>
+  <BaseExperience>552</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>-5</BaseAC>
+  <BaseMR>90</BaseMR>
+  <Alignment>15 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can see invisible creatures. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a lord to its kind. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>does not appear in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

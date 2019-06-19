@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ghoul</Name>
+  <Attack1>Claw 1d2 paralysis</Attack1>
+  <Attack2> Claw 1d3</Attack2>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>28</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-2 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>400</Weight>
+  <NutritionalValue>50</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>has infravision. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

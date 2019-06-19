@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>centipede</Name>
+  <Attack1>Bite 1d3 poisonous</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>19</BaseExperience>
+  <Speed>4</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>50</Weight>
+  <NutritionalValue>50</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Poison (13%)</Resistances>
+  <ResistancesConveyed>Poison (13%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can hide under items. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

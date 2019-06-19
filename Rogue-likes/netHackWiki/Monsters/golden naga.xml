@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>golden naga</Name>
+  <Attack1>Bite 2d6</Attack1>
+  <Attack2> Magic 4d6 spell-casting</Attack2>
+  <Difficulty>13</Difficulty>
+  <BaseLevel>10</BaseLevel>
+  <BaseExperience>239</BaseExperience>
+  <Speed>14</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>70</BaseMR>
+  <Alignment>5 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2600</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Poison</Resistances>
+  <ResistancesConveyed>Poison</ResistancesConveyed>
+  <Characteristics>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>has a serpent body. </string>
+    <string>has a thick hide. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is strong.</string>
+  </Characteristics>
+</Monster>

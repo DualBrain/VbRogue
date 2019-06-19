@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>raven</Name>
+  <Attack1>Bite 1d6</Attack1>
+  <Attack2> claw 1d6 blinding (no damage)</Attack2>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>4</BaseLevel>
+  <BaseExperience>46</BaseExperience>
+  <Speed>20</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>40</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

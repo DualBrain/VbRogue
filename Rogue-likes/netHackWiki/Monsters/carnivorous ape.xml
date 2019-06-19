@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>carnivorous ape</Name>
+  <Attack1>Claw 1d4</Attack1>
+  <Attack2> Claw 1d4</Attack2>
+  <Attack3> Bearhug 1d8</Attack3>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>76</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1250</Weight>
+  <NutritionalValue>550</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

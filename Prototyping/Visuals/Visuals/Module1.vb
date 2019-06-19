@@ -193,6 +193,8 @@ Module Module1
     m_levelMap.Initialize(True)
     m_levelMap.DrawScreen()
 
+    NearestConsoleColor.Main()
+    Console.ReadLine()
   End Sub
 
   Private Sub InitializeGame(ByVal whatEntryStairLocation As String, ByVal whatExitStairLocation As String)

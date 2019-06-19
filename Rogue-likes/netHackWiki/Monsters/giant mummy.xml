@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant mummy</Name>
+  <Attack1>Claw 3d4</Attack1>
+  <Attack2> Claw 3d4</Attack2>
+  <Difficulty>10</Difficulty>
+  <BaseLevel>8</BaseLevel>
+  <BaseExperience>116</BaseExperience>
+  <Speed>14</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>-7 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2050</Weight>
+  <NutritionalValue>375</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Strength</Resistances>
+  <ResistancesConveyed>Strength</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is a giant. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>likes gems. </string>
+    <string>has infravision. </string>
+    <string>can leave an old giant corpse.</string>
+  </Characteristics>
+</Monster>

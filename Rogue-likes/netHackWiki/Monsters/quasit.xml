@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>quasit</Name>
+  <Attack1>Claw poisonous (dexterity) 1d2</Attack1>
+  <Attack2> claw poisonous (dexterity) 1d2</Attack2>
+  <Attack3> bite 1d4</Attack3>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>36</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-7 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>200</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Poison (20%)</Resistances>
+  <ResistancesConveyed>Poison (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can regenerate hit points. </string>
+    <string>does not eat. (*) </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

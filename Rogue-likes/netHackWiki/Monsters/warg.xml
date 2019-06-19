@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>warg</Name>
+  <Attack1>Bite 2d6</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>92</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-5 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>850</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

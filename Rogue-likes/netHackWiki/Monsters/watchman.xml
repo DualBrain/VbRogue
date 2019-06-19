@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>watchman</Name>
+  <Attack1>Weapon 1d8</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>78</BaseExperience>
+  <Speed>10</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-2 (chaotic)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is a member of the Yendorian army. </string>
+    <string>is normally generated peaceful. </string>
+    <string>can follow you to other levels. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

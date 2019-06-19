@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>water moccasin</Name>
+  <Attack1>Bite 1d6 poison</Attack1>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>4</BaseLevel>
+  <BaseExperience>48</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>150</Weight>
+  <NutritionalValue>80</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Poison (27%)</Resistances>
+  <ResistancesConveyed>Poison (27%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can hide under items. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>appears in large groups normally.</string>
+  </Characteristics>
+</Monster>

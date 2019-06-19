@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>owlbear</Name>
+  <Attack1>Claw 1d6</Attack1>
+  <Attack2> Claw 1d6</Attack2>
+  <Attack3> Hug 2d8</Attack3>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>94</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1700</Weight>
+  <NutritionalValue>700</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

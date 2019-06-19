@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>mumak</Name>
+  <Attack1>Butt 4d12</Attack1>
+  <Attack2> Bite 2d6</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>68</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-2 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2500</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>has a thick hide. </string>
+    <string>can eat fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

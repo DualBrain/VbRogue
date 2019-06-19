@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>fox</Name>
+  <Attack1>Bite 1d3</Attack1>
+  <Difficulty>1</Difficulty>
+  <BaseLevel>0</BaseLevel>
+  <BaseExperience>4</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>7</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>300</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ogre</Name>
+  <Attack1>Projectile as a weapon</Attack1>
+  <Attack2> or melee weapon for 2d5</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>61</BaseExperience>
+  <Speed>10</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1600</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

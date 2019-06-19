@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>purple worm</Name>
+  <Attack1>Bite 2d8</Attack1>
+  <Attack2> Engulf 1d10 digest</Attack2>
+  <Difficulty>17</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>474</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2700</Weight>
+  <NutritionalValue>700</NutritionalValue>
+  <Size>Gigantic</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is nasty. </string>
+    <string>is strong.</string>
+  </Characteristics>
+</Monster>

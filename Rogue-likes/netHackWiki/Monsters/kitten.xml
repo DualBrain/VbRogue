@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>kitten</Name>
+  <Attack1>Bite 1d6</Attack1>
+  <Difficulty>3</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>20</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>150</Weight>
+  <NutritionalValue>150</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Intrinsic aggravate monster</Resistances>
+  <ResistancesConveyed>Intrinsic aggravate monster</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>can be tamed by feeding. </string>
+    <string>wanders randomly. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

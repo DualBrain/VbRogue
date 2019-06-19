@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Ashikaga Takauji</Name>
+  <Attack1>Weapon 2d6</Attack1>
+  <Attack2> Weapon 2d6</Attack2>
+  <Attack3> claw quest-artifact-stealing 2d6</Attack3>
+  <Difficulty>19</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>488</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>40</BaseMR>
+  <Alignment>-13 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can pick up magical items. </string>
+    <string>wants your quest artifact. </string>
+    <string>waits for you to come. </string>
+    <string>can be seen through infravision. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

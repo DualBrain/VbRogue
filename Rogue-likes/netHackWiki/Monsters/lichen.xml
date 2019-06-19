@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>lichen</Name>
+  <Attack1>Touch sticky</Attack1>
+  <Difficulty>1</Difficulty>
+  <BaseLevel>0</BaseLevel>
+  <BaseExperience>4</BaseExperience>
+  <Speed>1</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 4 (Uncommon)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>20</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>cannot pick up items. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

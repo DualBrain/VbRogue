@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>large dog</Name>
+  <Attack1>Bite 2d4</Attack1>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>76</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>800</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Intrinsic aggravate monster</Resistances>
+  <ResistancesConveyed>Intrinsic aggravate monster</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>can be tamed by feeding. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

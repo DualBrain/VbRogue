@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>thug</Name>
+  <Attack1>Weapon 1d6</Attack1>
+  <Attack2> weapon 1d6</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>66</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is normally generated peaceful. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

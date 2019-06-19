@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>spotted jelly</Name>
+  <Attack1>Passive (level + 1)d6 acid</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>61</BaseExperience>
+  <Speed>0</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>50</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed none</Resistances>
+  <ResistancesConveyed>none</ResistancesConveyed>
+  <Characteristics>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>cannot pick up items. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

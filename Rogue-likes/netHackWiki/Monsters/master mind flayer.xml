@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>master mind flayer</Name>
+  <Attack1>Weapon 1d8</Attack1>
+  <Attack2> (int drain 2d1)*5</Attack2>
+  <Difficulty>19</Difficulty>
+  <BaseLevel>13</BaseLevel>
+  <BaseExperience>416</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>90</BaseMR>
+  <Alignment>-8 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Telepathy (50%), +1 Intelligence (50%)</Resistances>
+  <ResistancesConveyed>Telepathy (50%), +1 Intelligence (50%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can see invisible creatures. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>is nasty. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>
