@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Kop Lieutenant</Name>
+  <Attack1>Weapon 1d8</Attack1>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>33</BaseExperience>
+  <Speed>10</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>11 (lawful)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is a human. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

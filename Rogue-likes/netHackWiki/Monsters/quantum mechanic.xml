@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>quantum mechanic</Name>
+  <Attack1>Claw 1d4 teleport</Attack1>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>92</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can teleport. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

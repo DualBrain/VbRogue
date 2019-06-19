@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>piranha</Name>
+  <Attack1>Bite 2d6</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>56</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>60</Weight>
+  <NutritionalValue>30</NutritionalValue>
+  <Size>small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can survive underwater. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>warhorse</Name>
+  <Attack1>Kick 1d10</Attack1>
+  <Attack2> Bite 1d4</Attack2>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>97</BaseExperience>
+  <Speed>24</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1800</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat fruits. </string>
+    <string>can be tamed by feeding. </string>
+    <string>wanders randomly. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

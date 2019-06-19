@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ogre king</Name>
+  <Attack1>uses weapons 3d5</Attack1>
+  <Attack2> uses projectiles</Attack2>
+  <Difficulty>11</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>194</BaseExperience>
+  <Speed>14</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>60</BaseMR>
+  <Alignment>-7 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1700</Weight>
+  <NutritionalValue>750</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is male. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

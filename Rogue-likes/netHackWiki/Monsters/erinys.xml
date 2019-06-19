@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>erinys</Name>
+  <Attack1>Weapon poisonous 2d4</Attack1>
+  <Difficulty>10</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>158</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>10 (lawful)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a demon. </string>
+    <string>is female. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>appears in small groups normally. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

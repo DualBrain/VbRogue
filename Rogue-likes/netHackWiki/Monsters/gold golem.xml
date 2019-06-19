@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>gold golem</Name>
+  <Attack1>Claw 2d3</Attack1>
+  <Attack2> Claw 2d3</Attack2>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>56</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>450</Weight>
+  <NutritionalValue>0</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>:</string>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>has a thick hide. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

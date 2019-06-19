@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>mastodon</Name>
+  <Attack1>Butt 4d8</Attack1>
+  <Attack2> Butt 4d8</Attack2>
+  <Difficulty>22</Difficulty>
+  <BaseLevel>20</BaseLevel>
+  <BaseExperience>611</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>3800</Weight>
+  <NutritionalValue>800</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>has a thick hide. </string>
+    <string>can eat fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

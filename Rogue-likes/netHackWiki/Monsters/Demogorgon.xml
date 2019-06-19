@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Demogorgon</Name>
+  <Attack1>Spell-casting</Attack1>
+  <Attack2> Sting 1d4 drain life</Attack2>
+  <Attack3> Claw 1d6 disease</Attack3>
+  <Difficulty>57</Difficulty>
+  <BaseLevel>50</BaseLevel>
+  <BaseExperience>3297</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>-8</BaseAC>
+  <BaseMR>95</BaseMR>
+  <Alignment>-20 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1500</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>can see invisible creatures. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a demon. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>wants the Amulet of Yendor. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>hell hound pup</Name>
+  <Attack1>Bite 2d6</Attack1>
+  <Attack2> fire breath 2d6</Attack2>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>102</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-5 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>200</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Fire (47%)</Resistances>
+  <ResistancesConveyed>Fire (47%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

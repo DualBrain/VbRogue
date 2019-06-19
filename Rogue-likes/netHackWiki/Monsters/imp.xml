@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>imp</Name>
+  <Attack1>Claw 1d4</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>33</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-7 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>20</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can regenerate hit points. </string>
+    <string>does not eat. (*) </string>
+    <string>wanders randomly. </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

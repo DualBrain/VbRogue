@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>tengu</Name>
+  <Attack1>Bite 1d7</Attack1>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>76</BaseExperience>
+  <Speed>13</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>7 (lawful)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>300</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Poison (13%), teleport control (17%), causes teleportitis (20%)</Resistances>
+  <ResistancesConveyed>Poison (13%), teleport control (17%), causes teleportitis (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can teleport. </string>
+    <string>has teleport control. </string>
+    <string>does not eat. (*) </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

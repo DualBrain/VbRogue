@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Chromatic Dragon</Name>
+  <Attack1>Breath 6d8</Attack1>
+  <Attack2> spell-casting</Attack2>
+  <Attack3> claw quest-artifact-stealing 2d8</Attack3>
+  <Difficulty>23</Difficulty>
+  <BaseLevel>16</BaseLevel>
+  <BaseExperience>586</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>30</BaseMR>
+  <Alignment>-14 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>4500</Weight>
+  <NutritionalValue>1700</NutritionalValue>
+  <Size>Gigantic</Size>
+  <Resistances>conveyed Fire (17%), cold (17%), sleep (17%), disintegration (17%), shock (17%), poison (17%)</Resistances>
+  <ResistancesConveyed>Fire (17%), cold (17%), sleep (17%), disintegration (17%), shock (17%), poison (17%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>has a thick hide. </string>
+    <string>can see invisible creatures. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is female. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up magical items. </string>
+    <string>wants your quest artifact. </string>
+    <string>waits for you to come. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

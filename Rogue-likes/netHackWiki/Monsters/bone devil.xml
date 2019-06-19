@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>bone devil</Name>
+  <Attack1>Weapon 3d4</Attack1>
+  <Attack2> sting poisonous 2d4</Attack2>
+  <Difficulty>13</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>285</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>-1</BaseAC>
+  <BaseMR>40</BaseMR>
+  <Alignment>-9 (chaotic)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is a demon. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>appears in small groups normally. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

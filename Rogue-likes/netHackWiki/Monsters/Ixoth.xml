@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Ixoth</Name>
+  <Attack1>Breath fire 8d6</Attack1>
+  <Attack2> bite 4d8</Attack2>
+  <Attack3> spell-casting</Attack3>
+  <Difficulty>22</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>545</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>-1</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-14 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>4500</Weight>
+  <NutritionalValue>1600</NutritionalValue>
+  <Size>Gigantic</Size>
+  <Resistances>conveyed Fire (100%)</Resistances>
+  <ResistancesConveyed>Fire (100%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>has a thick hide. </string>
+    <string>can see invisible creatures. </string>
+    <string>can eat corpses. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>can pick up magical items. </string>
+    <string>wants your quest artifact. </string>
+    <string>waits for you to come. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

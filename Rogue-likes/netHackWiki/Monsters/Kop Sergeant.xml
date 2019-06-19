@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Kop Sergeant</Name>
+  <Attack1>Weapon 1d6</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>2</BaseLevel>
+  <BaseExperience>22</BaseExperience>
+  <Speed>8</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>10 (lawful)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>200</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is a human. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

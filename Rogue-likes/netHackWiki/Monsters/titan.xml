@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>titan</Name>
+  <Attack1>Weapon 2d8</Attack1>
+  <Attack2> Spell-casting</Attack2>
+  <Difficulty>20</Difficulty>
+  <BaseLevel>16</BaseLevel>
+  <BaseExperience>553</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>-3</BaseAC>
+  <BaseMR>70</BaseMR>
+  <Alignment>9 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>2300</Weight>
+  <NutritionalValue>900</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can throw boulders. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can pick up magical items. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>jabberwock</Name>
+  <Attack1>Bite 2d10</Attack1>
+  <Attack2> bite 2d10</Attack2>
+  <Attack3> claw 2d10</Attack3>
+  <Difficulty>18</Difficulty>
+  <BaseLevel>15</BaseLevel>
+  <BaseExperience>489</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>-2</BaseAC>
+  <BaseMR>50</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1300</Weight>
+  <NutritionalValue>600</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

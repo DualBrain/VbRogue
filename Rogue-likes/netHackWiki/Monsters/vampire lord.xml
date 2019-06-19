@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>vampire lord</Name>
+  <Attack1>Claw 1d8</Attack1>
+  <Attack2> bite 1d8 drain life</Attack2>
+  <Difficulty>14</Difficulty>
+  <BaseLevel>12</BaseLevel>
+  <BaseExperience>399</BaseExperience>
+  <Speed>14</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>50</BaseMR>
+  <Alignment>-9 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400 (human corpse)</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>does not breathe. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can regenerate hit points. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is a lord to its kind. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision. </string>
+    <string>can leave an old human corpse.</string>
+  </Characteristics>
+</Monster>

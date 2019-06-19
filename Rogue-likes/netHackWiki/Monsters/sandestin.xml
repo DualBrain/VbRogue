@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>sandestin</Name>
+  <Attack1>Weapon 2d6</Attack1>
+  <Attack2> weapon 2d6</Attack2>
+  <Difficulty>15</Difficulty>
+  <BaseLevel>13</BaseLevel>
+  <BaseExperience>308</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>60</BaseMR>
+  <Alignment>-5 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1500</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>can follow you to other levels. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

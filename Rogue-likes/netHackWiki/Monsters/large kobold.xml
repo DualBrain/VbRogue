@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>large kobold</Name>
+  <Attack1>Weapon 1d6</Attack1>
+  <Difficulty>2</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>13</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-3 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>450</Weight>
+  <NutritionalValue>150</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

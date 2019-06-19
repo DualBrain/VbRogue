@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>brown mold</Name>
+  <Attack1>Passive (level + 1)d6 cold</Attack1>
+  <Difficulty>2</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>9</BaseExperience>
+  <Speed>0</Speed>
+  <BaseAC>9</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>50</Weight>
+  <NutritionalValue>30</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed Cold (3%), poison (3%)</Resistances>
+  <ResistancesConveyed>Cold (3%), poison (3%)</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>cannot pick up items. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

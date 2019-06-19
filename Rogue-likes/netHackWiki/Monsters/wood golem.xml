@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>wood golem</Name>
+  <Attack1>Claw 3d4</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>92</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>0</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>has a thick hide. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

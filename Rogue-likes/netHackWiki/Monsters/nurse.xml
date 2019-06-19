@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>nurse</Name>
+  <Attack1>Claw 2d6 heal</Attack1>
+  <Difficulty>13</Difficulty>
+  <BaseLevel>11</BaseLevel>
+  <BaseExperience>245</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>yellow light</Name>
+  <Attack1>Explode blind</Attack1>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>44</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 4 (Uncommon)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>0</Weight>
+  <NutritionalValue>0</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>cannot pick up items. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>does not have a solid form. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>never leaves a corpse. </string>
+    <string>gives out light.</string>
+  </Characteristics>
+</Monster>

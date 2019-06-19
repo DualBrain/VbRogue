@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>crocodile</Name>
+  <Attack1>Bite 4d2</Attack1>
+  <Attack2> Claw 1d12</Attack2>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>73</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can survive underwater. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>has a thick hide. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

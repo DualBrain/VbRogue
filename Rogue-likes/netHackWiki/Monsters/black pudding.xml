@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>black pudding</Name>
+  <Attack1>Bite 3d8 corrosion</Attack1>
+  <Attack2> Passive corrosion</Attack2>
+  <Difficulty>12</Difficulty>
+  <BaseLevel>10</BaseLevel>
+  <BaseExperience>221</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>6</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>250</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed cold (7%), shock (7%), poison (7%)</Resistances>
+  <ResistancesConveyed>cold (7%), shock (7%), poison (7%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can flow under doors. </string>
+    <string>does not breathe. </string>
+    <string>has no eyes. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>is acidic to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

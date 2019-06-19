@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>gecko</Name>
+  <Attack1>Bite 1d3</Attack1>
+  <Difficulty>2</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>8</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 5 (Common)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>10</Weight>
+  <NutritionalValue>20</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

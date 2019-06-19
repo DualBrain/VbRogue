@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>shark</Name>
+  <Attack1>Bite 5d6</Attack1>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>104</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>500</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can swim. </string>
+    <string>can survive underwater. </string>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>is an animal. </string>
+    <string>has a serpent body. </string>
+    <string>has a thick hide. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

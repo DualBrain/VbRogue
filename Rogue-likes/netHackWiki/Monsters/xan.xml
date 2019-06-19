@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>xan</Name>
+  <Attack1>Sting 1d4 scratching</Attack1>
+  <Attack2> targets legs</Attack2>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>7</BaseLevel>
+  <BaseExperience>120</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>-4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>300</Weight>
+  <NutritionalValue>300</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed poison (46%)</Resistances>
+  <ResistancesConveyed>poison (46%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

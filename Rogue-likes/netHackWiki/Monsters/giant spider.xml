@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>giant spider</Name>
+  <Attack1>Bite 2d4 poison</Attack1>
+  <Difficulty>7</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>64</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>100</Weight>
+  <NutritionalValue>100</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed poison (33%)</Resistances>
+  <ResistancesConveyed>poison (33%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong.</string>
+  </Characteristics>
+</Monster>

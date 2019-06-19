@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>leprechaun</Name>
+  <Attack1>Claw 1d2 steal gold</Attack1>
+  <Difficulty>4</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>59</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>8</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 4 (Uncommon)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>60</Weight>
+  <NutritionalValue>30</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Causes teleportitis (50%)</Resistances>
+  <ResistancesConveyed>Causes teleportitis (50%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can teleport. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>likes gold. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

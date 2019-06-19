@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>guardian naga</Name>
+  <Attack1>Bite 1d6 paralysis</Attack1>
+  <Attack2> Spit 1d6 poison</Attack2>
+  <Attack3> Hug 2d4</Attack3>
+  <Difficulty>16</Difficulty>
+  <BaseLevel>12</BaseLevel>
+  <BaseExperience>295</BaseExperience>
+  <Speed>16</Speed>
+  <BaseAC>0</BaseAC>
+  <BaseMR>50</BaseMR>
+  <Alignment>7 (lawful)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2600</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Poison (20%)</Resistances>
+  <ResistancesConveyed>Poison (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>has a serpent body. </string>
+    <string>has a thick hide. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is strong.</string>
+  </Characteristics>
+</Monster>

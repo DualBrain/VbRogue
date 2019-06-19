@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>queen bee</Name>
+  <Attack1>Sting 1d8 poisonous</Attack1>
+  <Difficulty>12</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>225</BaseExperience>
+  <Speed>24</Speed>
+  <BaseAC>-4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 0 (Not randomly generated)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1</Weight>
+  <NutritionalValue>5</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Poison (60%)</Resistances>
+  <ResistancesConveyed>Poison (60%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is an overlord to its kind. </string>
+    <string>is female. </string>
+    <string>is normally generated hostile.</string>
+  </Characteristics>
+</Monster>

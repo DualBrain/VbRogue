@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>stalker</Name>
+  <Attack1>Claw 4d4</Attack1>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>8</BaseLevel>
+  <BaseExperience>113</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 3 (Rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>900</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed Invisibility, see invisible (only if invisible when corpse is eaten)</Resistances>
+  <ResistancesConveyed>Invisibility, see invisible (only if invisible when corpse is eaten)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>is an animal. </string>
+    <string>can see invisible creatures. </string>
+    <string>does not eat. (*) </string>
+    <string>is normally generated hostile. </string>
+    <string>wanders randomly. </string>
+    <string>can follow you to other levels. </string>
+    <string>is strong. </string>
+    <string>has infravision.</string>
+  </Characteristics>
+</Monster>

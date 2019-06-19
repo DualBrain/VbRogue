@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>fire ant</Name>
+  <Attack1>2d4 bite; 2d4 fire</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>3</BaseLevel>
+  <BaseExperience>34</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>3</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>0</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>yes</GenoCidable>
+  <Weight>30</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>tiny</Size>
+  <Resistances>conveyed fire (20%)</Resistances>
+  <ResistancesConveyed>fire (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears in small groups normally.</string>
+  </Characteristics>
+</Monster>

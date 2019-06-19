@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>killer bee</Name>
+  <Attack1>Sting 1d3 poison</Attack1>
+  <Difficulty>5</Difficulty>
+  <BaseLevel>1</BaseLevel>
+  <BaseExperience>31</BaseExperience>
+  <Speed>18</Speed>
+  <BaseAC>-1</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>1</Weight>
+  <NutritionalValue>5</NutritionalValue>
+  <Size>Tiny</Size>
+  <Resistances>conveyed Poison (30%)</Resistances>
+  <ResistancesConveyed>Poison (30%)</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is female. </string>
+    <string>is normally generated hostile. </string>
+    <string>appears in large groups normally.</string>
+  </Characteristics>
+</Monster>

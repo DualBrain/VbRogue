@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>freezing sphere</Name>
+  <Attack1>Explode 4d6 cold</Attack1>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>91</BaseExperience>
+  <Speed>13</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 2 (Quite rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>10</Weight>
+  <NutritionalValue>10</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>does not breathe. </string>
+    <string>has no limbs. </string>
+    <string>has no head. </string>
+    <string>is mindless. </string>
+    <string>does not eat. (*) </string>
+    <string>is neither male nor female. </string>
+    <string>is normally generated hostile. </string>
+    <string>can be seen through infravision. </string>
+    <string>does not appear in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>wumpus</Name>
+  <Attack1>Bite 3d6</Attack1>
+  <Difficulty>9</Difficulty>
+  <BaseLevel>8</BaseLevel>
+  <BaseExperience>118</BaseExperience>
+  <Speed>3</Speed>
+  <BaseAC>2</BaseAC>
+  <BaseMR>10</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2500</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Large</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can cling to the ceiling. </string>
+    <string>has no hands. </string>
+    <string>is an animal. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is normally generated hostile. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

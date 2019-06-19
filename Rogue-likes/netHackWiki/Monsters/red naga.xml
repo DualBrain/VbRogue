@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>red naga</Name>
+  <Attack1>Bite 2d4</Attack1>
+  <Attack2> Breath 2d6 fire</Attack2>
+  <Difficulty>8</Difficulty>
+  <BaseLevel>6</BaseLevel>
+  <BaseExperience>82</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>4</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-4 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>2600</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed Fire (20%), Poison (20%)</Resistances>
+  <ResistancesConveyed>Fire (20%), Poison (20%)</ResistancesConveyed>
+  <Characteristics>
+    <string>cannot pick up items. </string>
+    <string>has no limbs. </string>
+    <string>has a serpent body. </string>
+    <string>has a thick hide. </string>
+    <string>can lay eggs. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is strong. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

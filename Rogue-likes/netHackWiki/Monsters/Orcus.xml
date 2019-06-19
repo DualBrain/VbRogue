@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Orcus</Name>
+  <Attack1>Weapon 3d6</Attack1>
+  <Attack2> claw 3d4</Attack2>
+  <Attack3> claw 3d4</Attack3>
+  <Difficulty>36</Difficulty>
+  <BaseLevel>30</BaseLevel>
+  <BaseExperience>1445</BaseExperience>
+  <Speed>9</Speed>
+  <BaseAC>-6</BaseAC>
+  <BaseMR>85</BaseMR>
+  <Alignment>-20 (chaotic)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1500</Weight>
+  <NutritionalValue>500</NutritionalValue>
+  <Size>Huge</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>can fly. </string>
+    <string>can see invisible creatures. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a demon. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is male. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>is nasty. </string>
+    <string>can pick up weapons and food. </string>
+    <string>wants the Amulet of Yendor. </string>
+    <string>wants the Book of the Dead. </string>
+    <string>waits for you to come. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision. </string>
+    <string>appears only in Gehennom. </string>
+    <string>never leaves a corpse.</string>
+  </Characteristics>
+</Monster>

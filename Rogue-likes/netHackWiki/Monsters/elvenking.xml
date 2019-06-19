@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>elvenking</Name>
+  <Attack1>Weapon 2d4</Attack1>
+  <Attack2> weapon 2d4</Attack2>
+  <Difficulty>11</Difficulty>
+  <BaseLevel>9</BaseLevel>
+  <BaseExperience>196</BaseExperience>
+  <Speed>12</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>25</BaseMR>
+  <Alignment>-10 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>800</Weight>
+  <NutritionalValue>350</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed Sleep (60%)</Resistances>
+  <ResistancesConveyed>Sleep (60%)</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can see invisible creatures. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is an elf. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is male. </string>
+    <string>is strong. </string>
+    <string>can pick up weapons and food. </string>
+    <string>has infravision. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>kobold zombie</Name>
+  <Attack1>Claw 1d4</Attack1>
+  <Difficulty>1</Difficulty>
+  <BaseLevel>0</BaseLevel>
+  <BaseExperience>1</BaseExperience>
+  <Speed>6</Speed>
+  <BaseAC>10</BaseAC>
+  <BaseMR>0</BaseMR>
+  <Alignment>-2 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>400</Weight>
+  <NutritionalValue>50</NutritionalValue>
+  <Size>Small</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is normally generated hostile. </string>
+    <string>can follow you to other levels. </string>
+    <string>has infravision. </string>
+    <string>can leave an old kobold corpse.</string>
+  </Characteristics>
+</Monster>

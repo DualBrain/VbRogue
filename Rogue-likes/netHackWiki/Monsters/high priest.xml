@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>high priest</Name>
+  <Attack1>Weapon 4d10</Attack1>
+  <Attack2> Kick 2d8</Attack2>
+  <Attack3> spell-casting (clerical)</Attack3>
+  <Difficulty>30</Difficulty>
+  <BaseLevel>25</BaseLevel>
+  <BaseExperience>1054</BaseExperience>
+  <Speed>15</Speed>
+  <BaseAC>7</BaseAC>
+  <BaseMR>70</BaseMR>
+  <Alignment>0 (neutral)</Alignment>
+  <Frequency>(by normal means) Unique</Frequency>
+  <GenoCidable>No</GenoCidable>
+  <Weight>1450</Weight>
+  <NutritionalValue>400</NutritionalValue>
+  <Size>Human</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>can see invisible creatures. </string>
+    <string>can eat corpses and fruits. </string>
+    <string>is not a valid polymorphable form. </string>
+    <string>is a human. </string>
+    <string>is an overlord to its kind. </string>
+    <string>is nasty. </string>
+    <string>can pick up weapons and food. </string>
+    <string>can pick up magical items. </string>
+    <string>can be seen through infravision.</string>
+  </Characteristics>
+</Monster>

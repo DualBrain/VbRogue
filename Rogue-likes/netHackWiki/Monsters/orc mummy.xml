@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monster xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>orc mummy</Name>
+  <Attack1>Claw 1d6</Attack1>
+  <Difficulty>6</Difficulty>
+  <BaseLevel>5</BaseLevel>
+  <BaseExperience>56</BaseExperience>
+  <Speed>10</Speed>
+  <BaseAC>5</BaseAC>
+  <BaseMR>20</BaseMR>
+  <Alignment>-4 (chaotic)</Alignment>
+  <Frequency>(by normal means) 1 (Very rare)</Frequency>
+  <GenoCidable>Yes</GenoCidable>
+  <Weight>850</Weight>
+  <NutritionalValue>75</NutritionalValue>
+  <Size>Medium</Size>
+  <Resistances>conveyed None</Resistances>
+  <ResistancesConveyed>None</ResistancesConveyed>
+  <Characteristics>
+    <string>does not breathe. </string>
+    <string>is mindless. </string>
+    <string>has a head, a couple of arms, and a torso. </string>
+    <string>is poisonous to eat. </string>
+    <string>does not eat. (*) </string>
+    <string>is undead. </string>
+    <string>is an orc. </string>
+    <string>is normally generated hostile. </string>
+    <string>likes gold. </string>
+    <string>likes gems. </string>
+    <string>has infravision. </string>
+    <string>can leave an old orc corpse.</string>
+  </Characteristics>
+</Monster>
