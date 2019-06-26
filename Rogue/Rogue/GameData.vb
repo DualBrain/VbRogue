@@ -1,5 +1,92 @@
 ﻿Module GameData
 
+  Friend Enum TileType
+    Void
+    Floor
+    Tunnel
+    Hero ' On level start, replace with Floor.
+    Hole
+    Door
+    WallHorizontal
+    WallVertical
+    WallTopLeft
+    WallTopRight
+    WallBottomLeft
+    WallBottomRight
+  End Enum
+
+  Friend NotInheritable Class Tile
+
+    Sub New(c As Char)
+      Me.New(CharToTileType(c))
+    End Sub
+
+    Sub New(type As TileType)
+
+      Me.Type = type
+
+      ' Is this a hero start point?
+      Select Case type
+        Case TileType.Hero
+          Me.Type = TileType.Floor
+          Me.HeroStart = True
+        Case Else
+      End Select
+
+      ' Is the tile "pass through"...
+      Select Case type
+        Case TileType.Door, TileType.Tunnel, TileType.Floor, TileType.Hole
+          Me.PassThrough = True
+        Case Else
+          Me.PassThrough = False
+      End Select
+
+    End Sub
+
+    Public ReadOnly Property Type As TileType
+    Public ReadOnly Property PassThrough As Boolean
+    Public ReadOnly Property Explored As Boolean
+    Public ReadOnly Property HeroStart As Boolean
+
+    Public Overrides Function ToString() As String
+      Select Case Me.Type
+        Case TileType.Void : Return " "
+        Case TileType.Floor : Return "."
+        Case TileType.Tunnel : Return "▓"
+        Case TileType.WallTopLeft : Return "╔"
+        Case TileType.WallTopRight : Return "╗"
+        Case TileType.WallHorizontal : Return "═"
+        Case TileType.WallVertical : Return "║"
+        Case TileType.WallBottomLeft : Return "╚"
+        Case TileType.WallBottomRight : Return "╝"
+        Case TileType.Door : Return "╬"
+        Case TileType.Hole : Return "≡"
+        Case Else
+          Throw New Exception("Unknown tile type.")
+      End Select
+    End Function
+
+  End Class
+
+  Friend Function CharToTileType(c As Char) As TileType
+    Select Case c
+      Case " "c : Return TileType.Void
+      Case "."c : Return TileType.Floor
+      Case "#"c : Return TileType.Tunnel
+      Case "["c : Return TileType.WallTopLeft
+      Case "]"c : Return TileType.WallTopRight
+      Case "-"c : Return TileType.WallHorizontal
+      Case "|"c : Return TileType.WallVertical
+      Case "{"c : Return TileType.WallBottomLeft
+      Case "}"c : Return TileType.WallBottomRight
+      Case "+"c : Return TileType.Door
+      Case "="c : Return TileType.Hole
+      Case "@"c : Return TileType.Hero
+      Case Else
+        Throw New Exception("Unknown tile type.")
+    End Select
+  End Function
+
   Friend Structure Monster
 
     Public Sub New(symbol As Char,
