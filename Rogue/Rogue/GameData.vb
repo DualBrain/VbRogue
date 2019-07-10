@@ -60,6 +60,8 @@
     Public ReadOnly Property Secret As Boolean
     Private Property SearchCount As Integer
 
+    Public Property Gold As Integer
+
     Public Function FoundSecret(forced As Boolean) As Boolean
 
       If Me.Secret Then
@@ -83,7 +85,7 @@
           Case Else : probMiss = 0.035
         End Select
 
-        Dim v = SearchRandomizer.NextDouble
+        Dim v = Randomizer.NextDouble
 
         If forced OrElse v > probMiss Then
           Me._Secret = False
