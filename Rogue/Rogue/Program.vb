@@ -134,6 +134,12 @@ Module Program
                              New XP(19, 2621440, 13, 3),
                              New XP(20, 5242880, 14, 3)}
 
+  Private Enum Display
+    Level
+    Inventory
+    Help
+  End Enum
+
   'Private Async Function MainAsync(args As String()) As Task
   Public Sub Main(args As String())
 
@@ -169,7 +175,7 @@ Module Program
 
       If Not IO.File.Exists("default.rogue") Then
         WriteLine("Missing 'default.rogue' file.")
-  Return
+        Return
       End If
 
       ' Load / parse the dungeon into memory...
@@ -182,9 +188,7 @@ Module Program
 
       InitializeLevel()
 
-      SetCursorPosition(0, 0)
-      ResetColor()
-      Write($"Hello {m_heroName}.  Are you prepared to die?.")
+      DisplayMessage($"Hello {m_heroName}.  Are you prepared to die?.")
 
       ' "Game Loop"
 
@@ -192,16 +196,17 @@ Module Program
 
       Dim cycles = 0
 
-      Do
+      Dim displaying = Display.Level
 
-        'Await Task.Delay(1)
+      Do
 
         Threading.Thread.Sleep(1)
 
         If m_holeFound AndAlso
            cycles > 250 AndAlso
            (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
-           Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) Then
+           Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) AndAlso
+           displaying = Display.Level Then
           cycles = 0
           ' Draw stairway...
           ForegroundColor = ConsoleColor.Black
@@ -218,11 +223,28 @@ Module Program
 
         If KeyAvailable Then
 
-          Dim key = ReadKey(True)
+          Dim ki = ReadKey(True)
+          Dim key = ki.Key
 
           Dim isAction = False
 
-          Select Case key.Key
+          ' Translate "alternate keys" to "primary keys".
+
+          If ki.Modifiers = ConsoleModifiers.Shift Then
+            Select Case key
+              Case ConsoleKey.OemPeriod : key = ConsoleKey.Insert
+              Case ConsoleKey.Oem2 ' /
+                key = ConsoleKey.F1
+              Case Else
+            End Select
+          Else
+            Select Case key
+              Case ConsoleKey.F7 : key = ConsoleKey.I
+              Case Else
+            End Select
+          End If
+
+          Select Case key
             Case ConsoleKey.D0 : Accumulate("0"c)
             Case ConsoleKey.D1 : Accumulate("1"c)
             Case ConsoleKey.D2 : Accumulate("2"c)
@@ -242,9 +264,43 @@ Module Program
                 End If
                 InitializeLevel()
               End If
+
+            Case ConsoleKey.I
+
+              DrawInventory()
+              DrawLevel()
+              displaying = Display.Level
+
+              'If displaying = Display.Inventory Then
+              '  DrawLevel()
+              '  displaying = Display.Level
+              'Else
+              '  DrawInventory()
+              '  displaying = Display.Inventory
+              'End If
+
+            Case ConsoleKey.F1
+
+              If key = ConsoleKey.F1 OrElse
+                 (key = ConsoleKey.Oem2 AndAlso ki.Modifiers = ConsoleModifiers.Shift) Then
+                DrawHelp()
+                DrawLevel()
+                displaying = Display.Level
+              End If
+
+              'If displaying = Display.Help Then
+              '  DrawLevel()
+              '  displaying = Display.Level
+              'Else
+              '  ResetColor()
+              '  Clear()
+              '  Write("Help")
+              '  displaying = Display.Help
+              'End If
+
             Case ConsoleKey.Q
               'TODO: Need to determine if uppercase Q.
-              If key.Modifiers = ConsoleModifiers.Shift Then
+              If ki.Modifiers = ConsoleModifiers.Shift Then
                 SetCursorPosition(0, 0)
                 ForegroundColor = ConsoleColor.Gray
                 BackgroundColor = ConsoleColor.Black
@@ -258,8 +314,8 @@ Module Program
                 Dim quit = False
                 Do
                   If KeyAvailable Then
-                    key = ReadKey(True)
-                    Select Case key.Key
+                    ki = ReadKey(True)
+                    Select Case ki.Key
                       Case ConsoleKey.Y
                         quit = True
                         Exit Do
@@ -282,109 +338,187 @@ Module Program
                  ConsoleKey.DownArrow,
                  ConsoleKey.LeftArrow,
                  ConsoleKey.RightArrow,
-                 ConsoleKey.S
+                 ConsoleKey.Home,
+                 ConsoleKey.End,
+                 ConsoleKey.PageUp,
+                 ConsoleKey.PageDown,
+                 ConsoleKey.S,
+                 ConsoleKey.Y, ConsoleKey.U, ConsoleKey.H, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L, ConsoleKey.B, ConsoleKey.N,
+                 ConsoleKey.Delete
 
               isAction = True
 
             Case Else
               ' Do nothing...
+              Stop
           End Select
 
           If isAction Then
 
-            Dim repeatCount = 1
-            If m_accumulator <> "" Then
-              repeatCount = CInt(m_accumulator)
-            End If
+              Dim repeatCount = 1
+              If m_accumulator <> "" Then
+                repeatCount = CInt(m_accumulator)
+              End If
 
-            For i = repeatCount To 1 Step -1
+              For i = repeatCount To 1 Step -1
 
-              Select Case key.Key
-                Case ConsoleKey.UpArrow
-                  If CanMove(m_heroX, m_heroY - 1) Then
-                    DrawRoomTile(m_heroX, m_heroY)
-                    m_heroY -= 1
-                    PlaceHero()
-                  Else
-                    Exit For
-                  End If
-                Case ConsoleKey.DownArrow
-                  If CanMove(m_heroX, m_heroY + 1) Then
-                    DrawRoomTile(m_heroX, m_heroY)
-                    m_heroY += 1
-                    PlaceHero()
-                  Else
-                    Exit For
-                  End If
-                Case ConsoleKey.LeftArrow
-                  If CanMove(m_heroX - 1, m_heroY) Then
-                    DrawRoomTile(m_heroX, m_heroY)
-                    m_heroX -= 1
-                    PlaceHero()
-                  Else
-                    Exit For
-                  End If
-                Case ConsoleKey.RightArrow
-                  If CanMove(m_heroX + 1, m_heroY) Then
-                    DrawRoomTile(m_heroX, m_heroY)
-                    m_heroX += 1
-                    PlaceHero()
-                  Else
-                    Exit For
-                  End If
-                Case ConsoleKey.S
+                ClearMessage()
+
+                Dim dirX = 0 'm_heroX
+                Dim dirY = 0 'm_heroY
+
+                Dim run = False
+
+                Dim actions = 0
+                Dim abort = False
+                Dim initialMove = True
+
+              Select Case key
+
+                Case ConsoleKey.Home : dirX -= 1 : dirY -= 1
+                Case ConsoleKey.Y : dirX -= 1 : dirY -= 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.End : dirX -= 1 : dirY += 1
+                Case ConsoleKey.B : dirX -= 1 : dirY += 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.PageUp : dirX += 1 : dirY -= 1
+                Case ConsoleKey.U : dirX += 1 : dirY -= 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.PageDown : dirX += 1 : dirY += 1
+                Case ConsoleKey.N : dirX += 1 : dirY += 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+
+                Case ConsoleKey.UpArrow : dirY -= 1
+                Case ConsoleKey.K : dirY -= 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.DownArrow : dirY += 1
+                Case ConsoleKey.J : dirY += 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.LeftArrow : dirX -= 1
+                Case ConsoleKey.H : dirX -= 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+                Case ConsoleKey.RightArrow : dirX += 1
+                Case ConsoleKey.L : dirX += 1 : run = (ki.Modifiers = ConsoleModifiers.Shift)
+
+                Case ConsoleKey.S, ConsoleKey.Delete
+                  actions += 1
                   If PerformSearch() Then
-                    Exit For
+                    abort = True
                   End If
                 Case Else
               End Select
 
-              ' Clear the message...
-              ResetColor()
-              SetCursorPosition(0, 0)
-              Write(New String(" "c, 80))
+              If dirX <> 0 OrElse
+                 dirY <> 0 Then
 
-              m_moveCount += 1
+                  ' If running and find "something", abort...
 
-              ' Handle regeneration (healing)...
-              If m_heroHp < m_heroHpMax Then
-                m_healCount += 1
-                If m_healCount >= m_healTurns Then
-                  If m_healAmount = 1 Then
-                    m_heroHp += m_healAmount
-                  Else
-                    m_heroHp += Randomizer.Next(1, m_healAmount)
-                  End If
-                  If m_heroHp > m_heroHpMax Then
-                    m_heroHp = m_heroHpMax
-                  End If
-                  m_healCount = 0
+                  Do
+
+                    If CanMove(m_heroX + dirX, m_heroY + dirY) Then
+                      DrawRoomTile(m_heroX, m_heroY)
+                      m_heroX += dirX
+                      m_heroY += dirY
+                      Dim encounter = PlaceHero()
+                      actions += 1
+                      initialMove = False
+                      If encounter OrElse Not run Then
+                        Exit Do
+                      Else
+                        Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                        If tile.Type = TileType.Door Then
+                          Exit Do
+                        End If
+                      End If
+                    Else
+
+                      If Not initialMove Then
+                        Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                        If tile.Type = TileType.Tunnel Then
+
+                          If dirX = 0 Then
+                            If CanMove(m_heroX - 1, m_heroY) Then
+                              ' Can move to the left
+                              dirX = -1 : dirY = 0
+                            ElseIf CanMove(m_heroX + 1, m_heroY) Then
+                              ' Can move to the right
+                              dirX = 1 : dirY = 0
+                            Else
+                              abort = True
+                              Exit Do
+                            End If
+                          ElseIf dirY = 0 Then
+                            If CanMove(m_heroX, m_heroY - 1) Then
+                              ' Can move up
+                              dirX = 0 : dirY = -1
+                            ElseIf CanMove(m_heroX, m_heroY + 1) Then
+                              ' Can move down
+                              dirX = 0 : dirY = 1
+                            Else
+                              abort = True
+                              Exit Do
+                            End If
+                          Else
+                            abort = True
+                            Exit Do
+                          End If
+                        Else
+                          abort = True
+                          Exit Do
+                        End If
+                      Else
+                        abort = True
+                        Exit Do
+                      End If
+
+                    End If
+                  Loop
+
                 End If
-              End If
 
-              If m_accumulator <> "" Then
-                m_accumulator = i.ToString
-                DrawAccumulator()
-              End If
+                If actions > 0 Then
 
-            Next
+                  m_moveCount += actions
 
-            ClearAccumulator()
+                  ' Handle regeneration (healing)...
+                  If m_heroHp < m_heroHpMax Then
+                    m_healCount += actions
+                    If m_healCount >= m_healTurns Then
+                      If m_healAmount = 1 Then
+                        m_heroHp += m_healAmount
+                      Else
+                        m_heroHp += Randomizer.Next(1, m_healAmount)
+                      End If
+                      If m_heroHp > m_heroHpMax Then
+                        m_heroHp = m_heroHpMax
+                      End If
+                      m_healCount = 0
+                    End If
+                  End If
+
+                End If
+
+                If m_accumulator <> "" Then
+                  m_accumulator = i.ToString
+                  DrawAccumulator()
+                End If
+
+                If abort Then
+                  Exit For
+                End If
+
+              Next
+
+              ClearAccumulator()
+
+            End If
 
           End If
 
-        End If
-
-        cycles += 1
+          cycles += 1
 
         SetCursorPosition(0, 25)
         BackgroundColor = ConsoleColor.Black
         ForegroundColor = ConsoleColor.Cyan
         Write($"{m_moveCount.ToString.PadRight(5)}")
 
-        DrawHud()
-
-        DrawClock()
+        If displaying = Display.Level Then
+          DrawHud()
+          DrawClock()
+        End If
 
       Loop
 
@@ -453,6 +587,80 @@ Module Program
 
 #End Region
 
+  End Sub
+
+  Private Sub DrawInventory()
+    ResetColor()
+    Clear()
+    'WriteLine("a) Some food")
+    'WriteLine("b) A scroll titled 'cir celxev goszur'")
+    'WriteLine("c) +1 ring mail [armor class 5) (being worn)")
+    'WriteLine("d) A +1,+1 mace (weapon in hand)")
+    'WriteLine("e) A +1,+0 short bow")
+    'WriteLine("f) 30 +0,+0 arrows")
+    SetCursorPosition(0, 24)
+    Write("-Press space to continue-")
+    PressSpaceToContinue()
+  End Sub
+
+  Private Sub DrawHelp()
+    ResetColor()
+    Clear()
+    WriteLine("F1      list of commands                F2      list of symbols")
+    WriteLine("F3      repeat command                  F4      repeat message")
+    WriteLine("F5      rename something                F6      recall what's been discovered")
+    WriteLine("F7      inventory of your possessions   F8      <dir> identify trap type")
+    WriteLine("F9      The Any Key (definable)         Alt F9  defines the Any Key")
+    WriteLine("F10     Supervisor Key (fake dos)       Space   Clear -More- message")
+    WriteLine("CR      the Enter Key                   Lt      left")
+    WriteLine("Dn      down                            Up      up")
+    WriteLine("Rt      right                           Home    up & left")
+    WriteLine("PgUp    up & right                      End     down & left")
+    WriteLine("PgDn    down & right                    Scroll  Fast Play mode")
+    WriteLine(".       rest                            >       go down a staircase")
+    WriteLine("<       go up the staircase             Esc     cancel command")
+    WriteLine("d       drop object                     e       eat food")
+    WriteLine("f       <dir> find something            q       quaff potion")
+    WriteLine("r       read paper                      s       search for trap/secret door")
+    WriteLine("t       <dir> throw something           w       wield a weapon")
+    WriteLine("z       <dir> zap with a wand           B       run down & left")
+    WriteLine("H       run left                        J       run down")
+    WriteLine("K       run up                          L       run right")
+    WriteLine("N       run down & right                U       run up & right")
+    WriteLine("Y       run up & left                   W       wear armor")
+    WriteLine("T       take armor off                  P       put on ring")
+    SetCursorPosition(0, 24)
+    Write("-Press space for more, Esc to continue-")
+    Dim result = PressSpaceForMoreEscToContinue()
+    If result Then
+      Return
+    Else
+      Clear()
+      WriteLine("Q       quit                            R       remove ring")
+      WriteLine("S       save game                       ^       identify trap")
+      WriteLine("?       help                            /       key")
+      WriteLine("+       throw                           -       zap")
+      WriteLine("Ctrl t  terse message format            Ctrl r  repeat message")
+      WriteLine("Del     search for something hidden     Ins     <dir> find something")
+      WriteLine("a       repeat command                  c       rename something")
+      WriteLine("i       inventory                       v       version number")
+      WriteLine("!       Supervisor Key (fake dos)       D       list what has been discovered")
+      SetCursorPosition(0, 24)
+      Write("-Press space to continue-")
+      PressSpaceForMoreEscToContinue()
+    End If
+  End Sub
+
+  Private Sub DisplayMessage(message$)
+    ResetColor()
+    SetCursorPosition(0, 0)
+    Write(message.PadRight(80).Substring(0, 80))
+  End Sub
+
+  Private Sub ClearMessage()
+    ResetColor()
+    SetCursorPosition(0, 0)
+    Write(New String(" "c, 80))
   End Sub
 
   Private Sub Accumulate(c As Char)
@@ -701,13 +909,28 @@ Module Program
       floors.RemoveAt(tileNumber)
     Next
 
+    DrawLevel()
+  End Sub
+
+  Private Sub DrawLevel()
+    ResetColor()
+    Clear()
+
+    For x = 0 To 79
+      For y = 0 To 20
+        Dim explored = m_levels(m_level).Map(y, x).Explored
+        If explored Then
+          DrawRoomTile(x, y)
+        End If
+      Next
+    Next
+
     Dim zone = DetermineZone(m_heroX, m_heroY)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
     If lit Then
       DrawRoom(m_heroX, m_heroY)
     End If
     PlaceHero()
-
   End Sub
 
   Private Function CanMove(x%, y%) As Boolean
@@ -765,7 +988,9 @@ Module Program
     Public ReadOnly Property Y As Integer
   End Class
 
-  Private Sub PlaceHero()
+  Private Function PlaceHero() As Boolean
+
+    Dim result = False
 
     Dim zone = DetermineZone(m_heroX, m_heroY)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
@@ -848,11 +1073,14 @@ Module Program
     'End If
 
     If m_levels(m_level).Map(m_heroY, m_heroX).Gold > 0 Then
+      DisplayMessage($"You found {m_levels(m_level).Map(m_heroY, m_heroX).Gold} gold pieces")
       m_heroGold += m_levels(m_level).Map(m_heroY, m_heroX).Gold
       m_levels(m_level).Map(m_heroY, m_heroX).Gold = 0
+      result = True
     End If
 
     If m_levels(m_level).Map(m_heroY, m_heroX).Type = TileType.Hole Then
+      result = True
       BackgroundColor = ConsoleColor.Green
     Else
       BackgroundColor = ConsoleColor.Black
@@ -861,7 +1089,9 @@ Module Program
     SetCursorPosition(m_heroX, m_heroY + 1)
     Write("☺")
 
-  End Sub
+    Return result
+
+  End Function
 
   Private Sub DrawRoom(x As Integer, y As Integer)
 
@@ -918,6 +1148,7 @@ Module Program
   Private Function DrawRoomTile(x%, y%) As Boolean
     Dim result = False
     Dim tile = m_levels(m_level).Map(y, x)
+    tile.Explored = True
     Dim output = tile.ToString
     Dim fg = ConsoleColor.DarkGray
     Dim bg = ConsoleColor.Black
@@ -946,14 +1177,14 @@ Module Program
         'Case "!"c : output = QBChar(173) : fg = ConsoleColor.DarkMagenta
         'Case "%"c : output = QBChar(4) : fg = ConsoleColor.Magenta
         'Case "$"c : output = QBChar(15) : fg = ConsoleColor.Yellow
-    'Case "^"c : output = QBChar(24) : fg = ConsoleColor.DarkMagenta
-    'Case "\"c : output = QBChar(8) : fg = ConsoleColor.DarkMagenta
-    'Case "*"c : output = QBChar(5) : fg = ConsoleColor.Red
-    'Case "#"c : output = TUNNEL
-    'Case "@"c, "."c : output = "."c : fg = ConsoleColor.DarkGreen
-    'Case "0"c : output = QBChar(248) : fg = ConsoleColor.DarkMagenta
-    'Case "9"c : output = QBChar(13) : fg = ConsoleColor.DarkMagenta
-    Case Else
+        'Case "^"c : output = QBChar(24) : fg = ConsoleColor.DarkMagenta
+        'Case "\"c : output = QBChar(8) : fg = ConsoleColor.DarkMagenta
+        'Case "*"c : output = QBChar(5) : fg = ConsoleColor.Red
+        'Case "#"c : output = TUNNEL
+        'Case "@"c, "."c : output = "."c : fg = ConsoleColor.DarkGreen
+        'Case "0"c : output = QBChar(248) : fg = ConsoleColor.DarkMagenta
+        'Case "9"c : output = QBChar(13) : fg = ConsoleColor.DarkMagenta
+      Case Else
     End Select
     If BackgroundColor <> bg Then
       BackgroundColor = bg
@@ -990,6 +1221,34 @@ Module Program
       Case Else
         Return ""
     End Select
+  End Function
+
+  Private Sub PressSpaceToContinue()
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.A To ConsoleKey.Z, ConsoleKey.Spacebar
+            Exit Do
+          Case Else
+        End Select
+      End If
+    Loop
+  End Sub
+
+  Private Function PressSpaceForMoreEscToContinue() As Boolean
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.Spacebar
+            Return False
+          Case ConsoleKey.Escape
+            Return True
+          Case Else
+        End Select
+      End If
+    Loop
   End Function
 
 End Module

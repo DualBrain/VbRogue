@@ -55,7 +55,7 @@
 
     Public ReadOnly Property Type As TileType
     Public ReadOnly Property PassThrough As Boolean
-    Public ReadOnly Property Explored As Boolean
+    Public Property Explored As Boolean
     Public ReadOnly Property HeroStart As Boolean
     Public ReadOnly Property Secret As Boolean
     Private Property SearchCount As Integer
