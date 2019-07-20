@@ -22,9 +22,9 @@ Namespace Global
     Private Const SC_SIZE As Integer = &HF000
 
     Private Const MF_BYCOMMAND As Integer = &H0
-    Private Const MF_ENABLED As Integer = &H0
-    Private Const MF_DISABLED As Integer = &H2
-    Private Const MF_GRAYED As Integer = &H1
+    'Private Const MF_ENABLED As Integer = &H0
+    'Private Const MF_DISABLED As Integer = &H2
+    'Private Const MF_GRAYED As Integer = &H1
     Private Const MF_BYPOSITION As Integer = &H400
 
     Private Const STD_OUTPUT_HANDLE As Integer = -11 ' per WinBase.h
@@ -453,19 +453,19 @@ Namespace Global
         Console.SetWindowSize(cols%, rows%) ' Set the windows size...
       Catch ex As Exception
         Console.WriteLine("1 - " & ex.ToString)
-        Threading.Thread.Sleep(5000)
+        'Threading.Thread.Sleep(5000)
       End Try
       Try
         Console.SetBufferSize(cols%, rows%) ' Then set the buffer size to the now window size...
       Catch ex As Exception
         Console.WriteLine("2 - " & ex.ToString)
-        Threading.Thread.Sleep(5000)
+        'Threading.Thread.Sleep(5000)
       End Try
       Try
         Console.SetWindowSize(cols%, rows%) ' Then set the window size again so that the scroll bar area is removed.
       Catch ex As Exception
         Console.WriteLine("3 - " & ex.ToString)
-        Threading.Thread.Sleep(5000)
+        'Threading.Thread.Sleep(5000)
       End Try
     End Sub
 

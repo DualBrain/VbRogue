@@ -60,20 +60,7 @@ Module Program
 
   End Enum
 
-  Class Level
-
-    Public Sub New()
-      ReDim Me.Map(20, 79)
-      ReDim Me.Lights(8)
-    End Sub
-
-    Public Property Name As String
-    Public Property Lights As Boolean()
-    Public Property Map As Tile(,)
-
-  End Class
-
-  Private m_levels As List(Of Level)
+  Private m_levels As List(Of Core.Level)
   Private m_level As Integer
 
   Private m_holeX% = -1
@@ -82,18 +69,18 @@ Module Program
 
   Private m_heroX% = -1
   Private m_heroY% = -1
-  Private m_heroLevel% = 0
+  Private ReadOnly m_heroLevel% = 0
   Private m_heroHp% = 1 ' 12
-  Private m_heroHpMax% = 12
-  Private m_heroStr% = 16
-  Private m_heroStrMax% = 16
+  Private ReadOnly m_heroHpMax% = 12
+  Private ReadOnly m_heroStr% = 16
+  Private ReadOnly m_heroStrMax% = 16
   Private m_heroGold% = 0
-  Private m_heroArmor% = 5
+  Private ReadOnly m_heroArmor% = 5
   Private m_heroName As String = "Whimp"
 
   Private m_healCount% = 0
-  Private m_healTurns% = 18
-  Private m_healAmount% = 1
+  Private ReadOnly m_healTurns% = 18
+  Private ReadOnly m_healAmount% = 1
 
   Private m_moveCount% = 0
 
@@ -112,7 +99,7 @@ Module Program
     Public ReadOnly Property HealRate As Integer
   End Class
 
-  Private XpTable As XP() = {New XP(0, 0, 1, 18),
+  Private ReadOnly XpTable As XP() = {New XP(0, 0, 1, 18),
                              New XP(1, 10, 1, 17),
                              New XP(2, 20, 1, 15),
                              New XP(3, 40, 1, 13),
@@ -141,7 +128,29 @@ Module Program
   End Enum
 
   'Private Async Function MainAsync(args As String()) As Task
-  Public Sub Main(args As String())
+  Public Sub Main() 'args As String())
+
+    'Dim r0 = 0
+    'Dim r1 = 0
+    'Dim r2 = 0
+    'Dim r3 = 0
+
+    'For x = 1 To 1000
+    '  Select Case Rogue.Core.Param.Randomizer.Next(0, 3)
+    '    Case 0 : r0 += 1
+    '    Case 1 : r1 += 1
+    '    Case 2 : r2 += 1
+    '    Case 3 : r3 += 1
+    '    Case Else
+    '  End Select
+    'Next
+
+    'Console.WriteLine(r0)
+    'Console.WriteLine(r1)
+    'Console.WriteLine(r2)
+    'Console.WriteLine(r3)
+
+    'Console.ReadLine()
 
 #Region "Configure Console Window"
 
@@ -180,7 +189,14 @@ Module Program
 
       ' Load / parse the dungeon into memory...
 
-      m_levels = LoadDungeon("default.rogue")
+      If 1 = 1 Then
+        m_levels = LoadDungeon("default.rogue")
+      Else
+        m_levels = New List(Of Core.Level)
+        For index = 1 To 1 '26
+          m_levels.Add(New Core.Level(index))
+        Next
+      End If
 
       m_heroName = GetCharacterName()
 
@@ -245,6 +261,10 @@ Module Program
           End If
 
           Select Case key
+            Case ConsoleKey.F12
+              'TEST:
+              m_levels(m_level) = New Core.Level(m_level)
+              InitializeLevel()
             Case ConsoleKey.D0 : Accumulate("0"c)
             Case ConsoleKey.D1 : Accumulate("1"c)
             Case ConsoleKey.D2 : Accumulate("2"c)
@@ -299,7 +319,6 @@ Module Program
               'End If
 
             Case ConsoleKey.Q
-              'TODO: Need to determine if uppercase Q.
               If ki.Modifiers = ConsoleModifiers.Shift Then
                 SetCursorPosition(0, 0)
                 ForegroundColor = ConsoleColor.Gray
@@ -355,23 +374,23 @@ Module Program
 
           If isAction Then
 
-              Dim repeatCount = 1
-              If m_accumulator <> "" Then
-                repeatCount = CInt(m_accumulator)
-              End If
+            Dim repeatCount = 1
+            If m_accumulator <> "" Then
+              repeatCount = CInt(m_accumulator)
+            End If
 
-              For i = repeatCount To 1 Step -1
+            For i = repeatCount To 1 Step -1
 
-                ClearMessage()
+              ClearMessage()
 
-                Dim dirX = 0 'm_heroX
-                Dim dirY = 0 'm_heroY
+              Dim dirX = 0 'm_heroX
+              Dim dirY = 0 'm_heroY
 
-                Dim run = False
+              Dim run = False
 
-                Dim actions = 0
-                Dim abort = False
-                Dim initialMove = True
+              Dim actions = 0
+              Dim abort = False
+              Dim initialMove = True
 
               Select Case key
 
@@ -404,53 +423,49 @@ Module Program
               If dirX <> 0 OrElse
                  dirY <> 0 Then
 
-                  ' If running and find "something", abort...
+                ' If running and find "something", abort...
 
-                  Do
+                Do
 
-                    If CanMove(m_heroX + dirX, m_heroY + dirY) Then
-                      DrawRoomTile(m_heroX, m_heroY)
-                      m_heroX += dirX
-                      m_heroY += dirY
-                      Dim encounter = PlaceHero()
-                      actions += 1
-                      initialMove = False
-                      If encounter OrElse Not run Then
-                        Exit Do
-                      Else
-                        Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
-                        If tile.Type = TileType.Door Then
-                          Exit Do
-                        End If
-                      End If
+                  If CanMove(m_heroX + dirX, m_heroY + dirY) Then
+                    DrawRoomTile(m_heroX, m_heroY)
+                    m_heroX += dirX
+                    m_heroY += dirY
+                    Dim encounter = PlaceHero()
+                    actions += 1
+                    initialMove = False
+                    If encounter OrElse Not run Then
+                      Exit Do
                     Else
+                      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                      If tile.Type = Core.TileType.Door Then
+                        Exit Do
+                      End If
+                    End If
+                  Else
 
-                      If Not initialMove Then
-                        Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
-                        If tile.Type = TileType.Tunnel Then
+                    If Not initialMove Then
+                      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                      If tile.Type = Core.TileType.Tunnel Then
 
-                          If dirX = 0 Then
-                            If CanMove(m_heroX - 1, m_heroY) Then
-                              ' Can move to the left
-                              dirX = -1 : dirY = 0
-                            ElseIf CanMove(m_heroX + 1, m_heroY) Then
-                              ' Can move to the right
-                              dirX = 1 : dirY = 0
-                            Else
-                              abort = True
-                              Exit Do
-                            End If
-                          ElseIf dirY = 0 Then
-                            If CanMove(m_heroX, m_heroY - 1) Then
-                              ' Can move up
-                              dirX = 0 : dirY = -1
-                            ElseIf CanMove(m_heroX, m_heroY + 1) Then
-                              ' Can move down
-                              dirX = 0 : dirY = 1
-                            Else
-                              abort = True
-                              Exit Do
-                            End If
+                        If dirX = 0 Then
+                          If CanMove(m_heroX - 1, m_heroY) Then
+                            ' Can move to the left
+                            dirX = -1 : dirY = 0
+                          ElseIf CanMove(m_heroX + 1, m_heroY) Then
+                            ' Can move to the right
+                            dirX = 1 : dirY = 0
+                          Else
+                            abort = True
+                            Exit Do
+                          End If
+                        ElseIf dirY = 0 Then
+                          If CanMove(m_heroX, m_heroY - 1) Then
+                            ' Can move up
+                            dirX = 0 : dirY = -1
+                          ElseIf CanMove(m_heroX, m_heroY + 1) Then
+                            ' Can move down
+                            dirX = 0 : dirY = 1
                           Else
                             abort = True
                             Exit Do
@@ -463,52 +478,56 @@ Module Program
                         abort = True
                         Exit Do
                       End If
-
+                    Else
+                      abort = True
+                      Exit Do
                     End If
-                  Loop
 
-                End If
-
-                If actions > 0 Then
-
-                  m_moveCount += actions
-
-                  ' Handle regeneration (healing)...
-                  If m_heroHp < m_heroHpMax Then
-                    m_healCount += actions
-                    If m_healCount >= m_healTurns Then
-                      If m_healAmount = 1 Then
-                        m_heroHp += m_healAmount
-                      Else
-                        m_heroHp += Randomizer.Next(1, m_healAmount)
-                      End If
-                      If m_heroHp > m_heroHpMax Then
-                        m_heroHp = m_heroHpMax
-                      End If
-                      m_healCount = 0
-                    End If
                   End If
+                Loop
 
+              End If
+
+              If actions > 0 Then
+
+                m_moveCount += actions
+
+                ' Handle regeneration (healing)...
+                If m_heroHp < m_heroHpMax Then
+                  m_healCount += actions
+                  If m_healCount >= m_healTurns Then
+                    If m_healAmount = 1 Then
+                      m_heroHp += m_healAmount
+                    Else
+                      m_heroHp += Randomizer.Next(1, m_healAmount + 1)
+                    End If
+                    If m_heroHp > m_heroHpMax Then
+                      m_heroHp = m_heroHpMax
+                    End If
+                    m_healCount = 0
+                  End If
                 End If
 
-                If m_accumulator <> "" Then
-                  m_accumulator = i.ToString
-                  DrawAccumulator()
-                End If
+              End If
 
-                If abort Then
-                  Exit For
-                End If
+              If m_accumulator <> "" Then
+                m_accumulator = i.ToString
+                DrawAccumulator()
+              End If
 
-              Next
+              If abort Then
+                Exit For
+              End If
 
-              ClearAccumulator()
+            Next
 
-            End If
+            ClearAccumulator()
 
           End If
 
-          cycles += 1
+        End If
+
+        cycles += 1
 
         SetCursorPosition(0, 25)
         BackgroundColor = ConsoleColor.Black
@@ -702,9 +721,9 @@ Module Program
 
   End Function
 
-  Private Function LoadDungeon(path As String) As List(Of Level)
+  Private Function LoadDungeon(path As String) As List(Of Core.Level)
 
-    Dim result = New List(Of Level)
+    Dim result = New List(Of Core.Level)
 
     Dim lines = IO.File.ReadAllLines(path)
 
@@ -718,7 +737,7 @@ Module Program
 
       If lines(lineIndex).ToLower.StartsWith("level:") Then
         level = CInt(lines(lineIndex).Substring(6).Trim)
-        result.Add(New Program.Level())
+        result.Add(New Core.Level())
         lineIndex += 1
       ElseIf lines(lineIndex).ToLower.StartsWith("name:") Then
         result(level - 1).Name = lines(lineIndex).Substring(6).Trim
@@ -733,7 +752,7 @@ Module Program
         lineIndex += 1
         For i = 0 To 20
           For c = 0 To 79
-            result(level - 1).Map(i, c) = New Tile(lines(lineIndex)(c))
+            result(level - 1).Map(i, c) = New Core.Tile(lines(lineIndex)(c))
           Next
           lineIndex += 1
         Next
@@ -881,20 +900,20 @@ Module Program
     Clear()
     WriteLine()
 
-    Dim floors As New List(Of Tile)
+    Dim floors As New List(Of Core.Tile)
 
     For y = 0 To 20
       For x = 0 To 79
 
         Dim tile = m_levels(m_level).Map(y, x)
 
-        If tile.HeroStart OrElse tile.Type = TileType.Floor Then
+        If tile.HeroStart OrElse tile.Type = Core.TileType.Floor Then
           floors.Add(tile)
         End If
 
         If tile.HeroStart Then
           m_heroX = x : m_heroY = y
-        ElseIf tile.Type = TileType.Hole Then
+        ElseIf tile.Type = Core.TileType.Hole Then
           m_holeX = x : m_holeY = y
         End If
 
@@ -904,15 +923,18 @@ Module Program
     Dim goldCount = Randomizer.Next(2, 5)
 
     For gold = 1 To goldCount
-      Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
-      floors(tileNumber).Gold = Randomizer.Next(1, 100)
-      floors.RemoveAt(tileNumber)
+      If floors.Count > 0 Then
+        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        floors(tileNumber).Gold = Randomizer.Next(1, 100)
+        floors.RemoveAt(tileNumber)
+      End If
     Next
 
     DrawLevel()
   End Sub
 
   Private Sub DrawLevel()
+
     ResetColor()
     Clear()
 
@@ -925,15 +947,29 @@ Module Program
       Next
     Next
 
+    'SetCursorPosition(0, 7)
+    'Write(New String("-"c, 80))
+
+    'SetCursorPosition(0, 15)
+    'Write(New String("-"c, 80))
+
+    'For y = 0 To 20
+    '  SetCursorPosition(26, y + 1) : Write("|")
+    '  SetCursorPosition(53, y + 1) : Write("|")
+    'Next
+
     Dim zone = DetermineZone(m_heroX, m_heroY)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
     If lit Then
       DrawRoom(m_heroX, m_heroY)
     End If
+
     PlaceHero()
+
   End Sub
 
   Private Function CanMove(x%, y%) As Boolean
+    If x < 0 OrElse y < 0 OrElse x > 79 OrElse y > 20 Then Return False
     Return m_levels(m_level).Map(y, x).PassThrough
   End Function
 
@@ -994,7 +1030,7 @@ Module Program
 
     Dim zone = DetermineZone(m_heroX, m_heroY)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
-    Dim floor = If(zone > -1, m_levels(m_level).Map(m_heroY, m_heroX).Type = TileType.Floor, False)
+    Dim floor = If(zone > -1, m_levels(m_level).Map(m_heroY, m_heroX).Type = Core.TileType.Floor, False)
 
     'If lit AndAlso floor Then
 
@@ -1017,47 +1053,12 @@ Module Program
 
     'Else
 
-    Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+    If m_heroY > -1 AndAlso m_heroX > -1 Then
 
-    Select Case tile.Type
-      Case TileType.Floor
-        For yy = -1 To 1
-          For xx = -1 To 1
-            Dim foundStairs = DrawRoomTile(m_heroX + xx, m_heroY + yy)
-            If foundStairs Then
-              m_holeFound = True
-            End If
-          Next
-        Next
-      Case TileType.Tunnel
-        For yy = -1 To 1
-          For xx = -1 To 1
-            Dim target = m_levels(m_level).Map(m_heroY + yy, m_heroX + xx)
-            Select Case target.Type
-              Case TileType.Tunnel, TileType.Door
-                DrawRoomTile(m_heroX + xx, m_heroY + yy)
-              Case Else
-            End Select
-          Next
-        Next
-      Case TileType.Door, TileType.SecretHorizontal, TileType.SecretVertical
-        If lit Then
-          ' In the doorway, determine the floor to the left, right, top or bottom.
-          ' Once found, use "paint" routine above...
-          Dim coords = {New Coord(0, -1),
-                        New Coord(1, 0),
-                        New Coord(0, 1),
-                        New Coord(-1, 0)}
-          For Each coord In coords
-            Dim target = m_levels(m_level).Map(m_heroY + coord.Y, m_heroX + coord.X)
-            If target.Type = TileType.Floor Then
-              ' found it...
-              DrawRoom(m_heroX + coord.X, m_heroY + coord.Y)
-              m_levels(m_level).Lights(zone) = False
-              Exit For
-            End If
-          Next
-        Else
+      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+
+      Select Case tile.Type
+        Case Core.TileType.Floor
           For yy = -1 To 1
             For xx = -1 To 1
               Dim foundStairs = DrawRoomTile(m_heroX + xx, m_heroY + yy)
@@ -1066,28 +1067,73 @@ Module Program
               End If
             Next
           Next
-        End If
-      Case Else
-    End Select
+        Case Core.TileType.Tunnel
+          For yy = -1 To 1
+            If m_heroY + yy > 20 Then Continue For
+            If m_heroY + yy < 0 Then Continue For
+            For xx = -1 To 1
+              If m_heroX + xx > 79 Then Continue For
+              If m_heroX + xx < 0 Then Continue For
+              Dim target = m_levels(m_level).Map(m_heroY + yy, m_heroX + xx)
+              Select Case target.Type
+                Case Core.TileType.Tunnel, Core.TileType.Door
+                  DrawRoomTile(m_heroX + xx, m_heroY + yy)
+                Case Else
+              End Select
+            Next
+          Next
+        Case Core.TileType.Door, Core.TileType.SecretHorizontal, Core.TileType.SecretVertical
+          If lit Then
+            ' In the doorway, determine the floor to the left, right, top or bottom.
+            ' Once found, use "paint" routine above...
+            Dim coords = {New Coord(0, -1),
+                        New Coord(1, 0),
+                        New Coord(0, 1),
+                        New Coord(-1, 0)}
+            For Each coord In coords
+              If Not m_heroY + coord.Y > 20 Then
+                Dim target = m_levels(m_level).Map(m_heroY + coord.Y, m_heroX + coord.X)
+                If target.Type = Core.TileType.Floor Then
+                  ' found it...
+                  DrawRoom(m_heroX + coord.X, m_heroY + coord.Y)
+                  m_levels(m_level).Lights(zone) = False
+                  Exit For
+                End If
+              End If
+            Next
+          Else
+            For yy = -1 To 1
+              For xx = -1 To 1
+                Dim foundStairs = DrawRoomTile(m_heroX + xx, m_heroY + yy)
+                If foundStairs Then
+                  m_holeFound = True
+                End If
+              Next
+            Next
+          End If
+        Case Else
+      End Select
 
-    'End If
+      'End If
 
-    If m_levels(m_level).Map(m_heroY, m_heroX).Gold > 0 Then
-      DisplayMessage($"You found {m_levels(m_level).Map(m_heroY, m_heroX).Gold} gold pieces")
-      m_heroGold += m_levels(m_level).Map(m_heroY, m_heroX).Gold
-      m_levels(m_level).Map(m_heroY, m_heroX).Gold = 0
-      result = True
+      If m_levels(m_level).Map(m_heroY, m_heroX).Gold > 0 Then
+        DisplayMessage($"You found {m_levels(m_level).Map(m_heroY, m_heroX).Gold} gold pieces")
+        m_heroGold += m_levels(m_level).Map(m_heroY, m_heroX).Gold
+        m_levels(m_level).Map(m_heroY, m_heroX).Gold = 0
+        result = True
+      End If
+
+      If m_levels(m_level).Map(m_heroY, m_heroX).Type = Core.TileType.Hole Then
+        result = True
+        BackgroundColor = ConsoleColor.Green
+      Else
+        BackgroundColor = ConsoleColor.Black
+      End If
+      ForegroundColor = ConsoleColor.Yellow
+      SetCursorPosition(m_heroX, m_heroY + 1)
+      Write("☺")
+
     End If
-
-    If m_levels(m_level).Map(m_heroY, m_heroX).Type = TileType.Hole Then
-      result = True
-      BackgroundColor = ConsoleColor.Green
-    Else
-      BackgroundColor = ConsoleColor.Black
-    End If
-    ForegroundColor = ConsoleColor.Yellow
-    SetCursorPosition(m_heroX, m_heroY + 1)
-    Write("☺")
 
     Return result
 
@@ -1100,14 +1146,14 @@ Module Program
     Dim xx = x
     Dim yy = y
     Do
-      If m_levels(m_level).Map(yy, xx - 1).Type = TileType.Floor Then
+      If m_levels(m_level).Map(yy, xx - 1).Type = Core.TileType.Floor Then
         xx -= 1
       Else
         Exit Do
       End If
     Loop
     Do
-      If m_levels(m_level).Map(yy - 1, xx).Type = TileType.Floor Then
+      If m_levels(m_level).Map(yy - 1, xx).Type = Core.TileType.Floor Then
         yy -= 1
       Else
         Exit Do
@@ -1125,8 +1171,9 @@ Module Program
           m_holeFound = True
         End If
         xxx += 1
+        If xxx > 79 Then Exit Do
         Select Case m_levels(m_level).Map(yyy, xxx).Type
-          Case TileType.Void, TileType.Tunnel
+          Case Core.TileType.Void, Core.TileType.Tunnel
             Exit Do
           Case Else
         End Select
@@ -1136,7 +1183,7 @@ Module Program
       yyy += 1
       If yyy > 20 Then Exit Do
       Select Case m_levels(m_level).Map(yyy, xxx).Type
-        Case TileType.Void, TileType.Tunnel
+        Case Core.TileType.Void, Core.TileType.Tunnel
           Exit Do
         Case Else
       End Select
@@ -1146,6 +1193,7 @@ Module Program
   End Sub
 
   Private Function DrawRoomTile(x%, y%) As Boolean
+    If y > 20 Then Return False
     Dim result = False
     Dim tile = m_levels(m_level).Map(y, x)
     tile.Explored = True
@@ -1153,26 +1201,26 @@ Module Program
     Dim fg = ConsoleColor.DarkGray
     Dim bg = ConsoleColor.Black
     Select Case tile.Type
-      Case TileType.WallTopLeft : fg = ConsoleColor.DarkYellow
-      Case TileType.WallTopRight : fg = ConsoleColor.DarkYellow
-      Case TileType.WallHorizontal : fg = ConsoleColor.DarkYellow
-      Case TileType.WallVertical : fg = ConsoleColor.DarkYellow
-      Case TileType.WallBottomLeft : fg = ConsoleColor.DarkYellow
-      Case TileType.WallBottomRight : fg = ConsoleColor.DarkYellow
-      Case TileType.SecretHorizontal : fg = ConsoleColor.DarkYellow
-      Case TileType.SecretVertical : fg = ConsoleColor.DarkYellow
-      Case TileType.Door : fg = ConsoleColor.DarkYellow
-      Case TileType.Hole
+      Case Core.TileType.WallTopLeft : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallTopRight : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallHorizontal : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallVertical : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallBottomLeft : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallBottomRight : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.SecretHorizontal : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.SecretVertical : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.Door : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.Hole
         fg = ConsoleColor.Black : bg = ConsoleColor.Green
         result = True
-      Case TileType.Floor
+      Case Core.TileType.Floor
         If tile.Gold > 0 Then
           fg = ConsoleColor.Yellow
           output = "*"
         Else
           fg = ConsoleColor.DarkGreen
         End If
-      Case TileType.Tunnel
+      Case Core.TileType.Tunnel
         'Case "@"c : output = QBChar(1) : fg = ConsoleColor.Yellow
         'Case "!"c : output = QBChar(173) : fg = ConsoleColor.DarkMagenta
         'Case "%"c : output = QBChar(4) : fg = ConsoleColor.Magenta
