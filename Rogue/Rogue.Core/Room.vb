@@ -5,6 +5,25 @@ Imports System.Drawing
 
 Namespace Global.Rogue.Core
 
+  Public Enum Face
+    Top
+    Right
+    Bottom
+    Left
+  End Enum
+
+  Public NotInheritable Class Door
+    Inherits Coordinate
+
+    Public Sub New(x%, y%, face As Face)
+      MyBase.New(x, y)
+      Me.Face = face
+    End Sub
+
+    Public ReadOnly Property Face As Face
+
+  End Class
+
   Public NotInheritable Class Room
 
     Public Sub New()
@@ -40,7 +59,7 @@ Namespace Global.Rogue.Core
     Public Property Height() As Integer
     Public Property Width() As Integer
     Public Property GridPosition() As Integer = 0 ' 1-9 to position room within grid of 3x3...
-    Public Property Doors() As New List(Of Coordinate) ' Keep track of which doors exist for this room...
+    Public Property Doors() As New List(Of Door) ' Keep track of which doors exist for this room...
     Public Property IsLit() As Boolean = False
 
     Public Sub Initialize()
@@ -53,7 +72,7 @@ Namespace Global.Rogue.Core
       Me.Height = 0
       Me.Width = 0
       Me.GridPosition = 0
-      Me.Doors = New List(Of Coordinate)
+      Me.Doors = New List(Of Door)
       Me.IsLit = False
       Dim possibilityLit = Param.Randomizer.NextDouble()
       If possibilityLit >= 0.8 Then
@@ -62,125 +81,167 @@ Namespace Global.Rogue.Core
 
     End Sub
 
-    Public Shared Function CreateRandomEntryRoom(gridRow%, gridColumn%, entryRow%, entryColumn%) As Room
+    'Public Shared Function CreateRandomEntryRoom(gridRow%, gridColumn%, entryRow%, entryColumn%) As Room
 
-      Dim result = Room.CreateRandomRoom(gridRow, gridColumn)
+    '  Dim result = Room.CreateRandomRoom(gridRow, gridColumn)
 
-      If 1 = 0 Then
+    '  If 1 = 0 Then
 
-        Dim x = result.MapLeftLocation
-        Dim y = result.MapTopLocation
+    '    Dim x = result.MapLeftLocation
+    '    Dim y = result.MapTopLocation
 
-        Dim entryX = entryColumn - ((gridColumn - 1) * 26)
-        Dim entryY = entryRow - ((gridRow - 1) * 7)
+    '    Dim entryX = entryColumn - ((gridColumn - 1) * 26)
+    '    Dim entryY = entryRow - ((gridRow - 1) * 7)
 
-        If result.MapTopLocation > entryY - 1 Then
-          y = entryY - 1
-        End If
-        If result.MapTopLocation + result.Height < entryY + 2 Then
-          y = (entryY - result.Height) + 2
-        End If
-        If result.MapLeftLocation > entryX - 1 Then
-          x = entryX - 1
-        End If
-        If result.MapLeftLocation + result.Width < entryX + 2 Then
-          x = (entryX - result.Width) + 2
-        End If
+    '    If result.MapTopLocation > entryY - 1 Then
+    '      y = entryY - 1
+    '    End If
+    '    If result.MapTopLocation + result.Height < entryY + 2 Then
+    '      y = (entryY - result.Height) + 2
+    '    End If
+    '    If result.MapLeftLocation > entryX - 1 Then
+    '      x = entryX - 1
+    '    End If
+    '    If result.MapLeftLocation + result.Width < entryX + 2 Then
+    '      x = (entryX - result.Width) + 2
+    '    End If
 
-        Dim xOFF = result.MapLeftLocation - x
-        Dim yOFF = result.MapTopLocation - y
+    '    Dim xOFF = result.MapLeftLocation - x
+    '    Dim yOFF = result.MapTopLocation - y
 
-        'result.MapTopLocation = y
-        'result.MapLeftLocation = x
+    '    'result.MapTopLocation = y
+    '    'result.MapLeftLocation = x
 
-        For d = 0 To result.Doors.Count - 1
+    '    For d = 0 To result.Doors.Count - 1
 
-          Dim newX = result.Doors(d).X
-          Dim newY = result.Doors(d).Y
-          'Dim newType = result.Doors(d).Type
+    '      Dim newX = result.Doors(d).X
+    '      Dim newY = result.Doors(d).Y
+    '      'Dim newType = result.Doors(d).Type
 
-          newY -= yOFF
-          newX -= xOFF
+    '      newY -= yOFF
+    '      newX -= xOFF
 
-          If newX < result.MapLeftLocation + 1 Then
-            newX = result.MapLeftLocation + 1
-          End If
-          If newY < result.MapTopLocation + 1 Then
-            newY = result.MapTopLocation + 1
-          End If
+    '      If newX < result.MapLeftLocation + 1 Then
+    '        newX = result.MapLeftLocation + 1
+    '      End If
+    '      If newY < result.MapTopLocation + 1 Then
+    '        newY = result.MapTopLocation + 1
+    '      End If
 
-          result.Doors(d) = New Coordinate(newX, newY) ', newType)
+    '      result.Doors(d) = New Coordinate(newX, newY) ', newType)
 
-        Next
+    '    Next
 
-      End If
+    '  End If
 
-      Return result
+    '  Return result
 
-    End Function
+    'End Function
 
-    Public Function CreateRandomExitRoom(gridRow%, gridColumn%, exitRow%, exitColumn%) As Room
+    'Public Function CreateRandomExitRoom(gridRow%, gridColumn%, exitRow%, exitColumn%) As Room
 
-      Dim result = CreateRandomRoom(gridRow, gridColumn)
+    '  Dim result = CreateRandomRoom(gridRow, gridColumn)
 
-      If 1 = 0 Then
+    '  If 1 = 0 Then
 
-        Dim exitX = exitColumn - ((gridColumn - 1) * 26)
+    '    Dim exitX = exitColumn - ((gridColumn - 1) * 26)
 
-        Dim xOff = (exitX - result.Width) + 1
+    '    Dim xOff = (exitX - result.Width) + 1
 
-        Dim x1 = result.Width - 1
-        Dim x = Param.Randomizer.Next(x1) + xOff + 1
+    '    Dim x1 = result.Width - 1
+    '    Dim x = Param.Randomizer.Next(x1) + xOff + 1
 
-        If x >= exitX Then
-          x = exitX - 1
-        End If
-        If x <= (exitX - (result.Width - 1)) Then
-          x = (exitX - (result.Width - 1)) + 1
-        End If
-        If x < 2 Then
-          x = 2
-        End If
-        If x > Param.CellWidth(gridColumn) - result.Width Then
-          x = Param.CellWidth(gridColumn) - result.Width
-        End If
+    '    If x >= exitX Then
+    '      x = exitX - 1
+    '    End If
+    '    If x <= (exitX - (result.Width - 1)) Then
+    '      x = (exitX - (result.Width - 1)) + 1
+    '    End If
+    '    If x < 2 Then
+    '      x = 2
+    '    End If
+    '    If x > Param.CellWidth(gridColumn) - result.Width Then
+    '      x = Param.CellWidth(gridColumn) - result.Width
+    '    End If
 
-        Dim exitY As Integer = exitRow - ((gridRow - 1) * 7)
-        Dim y = 0
+    '    Dim exitY As Integer = exitRow - ((gridRow - 1) * 7)
+    '    Dim y = 0
 
-        If y >= exitY Then
-          y = exitY - 1
-        End If
-        If y <= (exitY - (result.Height - 1)) Then
-          y = (exitY - (result.Height - 1)) + 1
-        End If
-        If y < 2 Then
-          y = 2
-        End If
-        If y > Param.CellHeight(gridRow) - result.Height Then
-          y = Param.CellHeight(gridRow) - result.Height
-        End If
+    '    If y >= exitY Then
+    '      y = exitY - 1
+    '    End If
+    '    If y <= (exitY - (result.Height - 1)) Then
+    '      y = (exitY - (result.Height - 1)) + 1
+    '    End If
+    '    If y < 2 Then
+    '      y = 2
+    '    End If
+    '    If y > Param.CellHeight(gridRow) - result.Height Then
+    '      y = Param.CellHeight(gridRow) - result.Height
+    '    End If
 
-        xOff = result.MapLeftLocation - x
-        Dim yOFF = result.MapTopLocation - y
+    '    xOff = result.MapLeftLocation - x
+    '    Dim yOFF = result.MapTopLocation - y
 
-        'result.MapTopLocation = y
-        'result.MapLeftLocation = x
+    '    'result.MapTopLocation = y
+    '    'result.MapLeftLocation = x
 
-        For d = 0 To result.Doors.Count - 1
+    '    For d = 0 To result.Doors.Count - 1
 
-          Dim newX = result.Doors(d).X
-          Dim newY = result.Doors(d).Y
-          'Dim newType = result.Doors(d).Type
+    '      Dim newX = result.Doors(d).X
+    '      Dim newY = result.Doors(d).Y
+    '      'Dim newType = result.Doors(d).Type
 
-          newY -= yOFF
-          newX -= xOff
+    '      newY -= yOFF
+    '      newX -= xOff
 
-          result.Doors(d) = New Coordinate(x, y) ', newType)
+    '      result.Doors(d) = New Coordinate(x, y) ', newType)
 
-        Next
+    '    Next
 
-      End If
+    '  End If
+
+    '  Return result
+
+    'End Function
+
+    Public Shared Function CreateRoom(gridRow%, gridColumn%) As Room
+
+      Dim result = New Room
+
+      ' Determine the x and y of the grid cell...
+
+      Dim sx = If(gridColumn = 1, 0, If(gridColumn = 2, 27, 54))
+      Dim sy = If(gridRow = 1, 0, If(gridRow = 2, 7, 15))
+
+      Dim gridWidth = 26
+      Dim gridHeight = If(gridRow = 2, 7, 6)
+
+      ' Determine the size of the room; must be:
+      '  - minimum 4x4
+      '  - no larger than the grid height/width
+      '  - can be the whole grid size.
+      Dim height = Param.Randomizer.Next(4, gridHeight + 1)
+      Dim width = Param.Randomizer.Next(4, gridWidth + 1)
+
+      ' Determine offset of top left corner of room based on size of room and 
+      ' random distance from top left of map grid...
+
+      ' Top, Left of room within the grid cell...
+      Dim x = Param.Randomizer.Next(0, gridWidth - width + 1)
+      Dim y = Param.Randomizer.Next(0, gridHeight - height + 1)
+
+      Dim zone = ((gridRow - 1) * 3) + gridColumn
+
+      Debug.WriteLine($"Room # {zone} ({x}, {y}) [{width}, {height}] |{sx},{sy}|")
+
+      result.MapTopLocation = y
+      result.MapLeftLocation = x
+      result.MapGridRowLocation = gridRow
+      result.MapGridColumnLocation = gridColumn
+      result.Height = height
+      result.Width = width
+      result.GridPosition = ((gridRow - 1) * 3) + gridColumn
 
       Return result
 
@@ -239,7 +300,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorTopBottom
             Dim r = sy + y
             Dim c = sx + x + n
-            result.Doors.Add(New Coordinate(c, r)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Top)) ', type))
             doorCount += 1
             Debug.WriteLine($"  Door (Top)={c}|{r}")
           End If
@@ -256,7 +317,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorSide
             Dim c = sx + x
             Dim r = sy + y + n
-            result.Doors.Add(New Coordinate(c, r)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Left)) ', type))
             doorCount += 1
             Debug.WriteLine($"  Door (Left)={c}|{r}")
           End If
@@ -275,7 +336,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorSide
             Dim c = sx + x
             Dim r = sy + y + n
-            result.Doors.Add(New Coordinate(c, r)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Right)) ', type))
             doorCount += 1
             Debug.WriteLine($"  Door (Right)={c}|{r}")
           End If
@@ -292,7 +353,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorTopBottom
             Dim c = sx + x + n
             Dim r = sy + y
-            result.Doors.Add(New Coordinate(c, r)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Bottom)) ', type))
             doorCount += 1
             Debug.WriteLine($"  Door (Bottom)={c}|{r}")
           End If

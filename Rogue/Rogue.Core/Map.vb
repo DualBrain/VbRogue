@@ -196,111 +196,301 @@ Namespace Global.Rogue.Core
       'Me.Row = 0
       'Me.Column = 0
 
+Start:
+
       Me.Rooms = New List(Of Room)
       Me.RoomConnections = New List(Of Coordinate)
 
-      'If Me.EntryStairLocation Is Nothing AndAlso
-      '   Me.ExitStairLocation Is Nothing Then
+      ' Generate 1 or more random rooms in random locations (1-9)
 
-      ' These locations can be created by calling NEW with the correct parameters
-      ' If not, then randomly select them...
-      ' First select a random grid cell...
-      ' Then select a random spot within the cell which is not on the edge so it can be within walls...
+      Me.ClearMapData()
 
-      Dim seekX = 0
-      Dim seekY = Param.Randomizer.Next(0, Param.GridColumnCount * Param.GridRowCount) + 1
+      ' Create a list of possible grid locations (1-9)...
+      Dim grid = {New Coordinate(1, 1),
+                  New Coordinate(2, 1),
+                  New Coordinate(3, 1),
+                  New Coordinate(1, 2),
+                  New Coordinate(2, 2),
+                  New Coordinate(3, 2),
+                  New Coordinate(1, 3),
+                  New Coordinate(2, 3),
+                  New Coordinate(3, 3)}.ToList
 
-      Dim currentX = 0
-      Do While currentX < 10 AndAlso seekX = 0
-        seekX = Param.Randomizer.Next(0, Param.GridColumnCount * Param.GridRowCount) + 1
-        If seekX = seekY Then
-          seekX = 0 ' Can not be in the same grid as entry...
+      ' Now we will loop through a maximum of 9 times...
+      For r = 1 To 9
+
+        ' Pick a random entry from the grid list...
+
+        Dim number = Param.Randomizer.Next(0, grid.Count)
+
+        ' Now we will determine if we are going to actually create...
+
+        ' First we need to determine if this is the first room being
+        ' placed... if so, then we will place it as we will always
+        ' have at least one room.
+
+        Dim place = Me.Rooms.Count = 0
+
+        If Not place Then
+
+          ' If not the first room being placed, then we will determine
+          ' whether or not this room will be placed by rolling a d100.
+
+          place = Param.Randomizer.Next(1, 101) <= Param.MinHasRoomPercentage
+
         End If
-        currentX += 1
-      Loop
 
-      If seekX = 0 Then
-        ' If could not create random then set to next grid...
-        seekX = seekY + 1
-        If seekX > Param.GridColumnCount * Param.GridRowCount Then
-          seekX = 1
+        If place Then
+
+          ' We've determined that we are placing this room...
+          Dim c = grid(number)
+          ' So we will actually generate the room parameters (and doors).
+          Me.CreateRoom(c.Y, c.X)
+          ' And remove it from the list of possible locations before we
+          ' try for the next pass.  Yes, this means that it is possible
+          ' that the same room (at random) could try again in another
+          ' pass if it didn't place during a previous pass.  Removing it
+          ' from the available list prevents a useless second attempt.
+          grid.RemoveAt(number)
         End If
+
+      Next
+
+      ' In each room, generate 1 or more random doors;
+      '  however, limit to a single door per wall;
+      '  so a maximum of 4 doors.
+      '  With that said, need to restrict creating a door on a
+      '  wall that would be an invalid tunnel location.
+
+      For Each rm In Me.Rooms
+        Me.CreateDoors(rm)
+      Next
+
+      ' Now that we have rooms, need we need to genrate connections between each room:
+      '
+      '   If there is a room in the center, start with it.
+      '   If not a room in the center, pick another room at random.
+      '   Now that we have a room to start with, pick a door (source) at random in the selected room.
+      '   Find the doormat (source) for the source door.
+      '   Determine the nearest (target) door (in another room) to the selected door.
+      '   Find the doormat for the target door.
+      '   If target doormat is already a tunnel, follow path from the target door to
+      '     toward the source door until we move in a direction that would place us in "the void".
+      '     We will then use this as the target location.
+      '   We will then "dig" a path between the source location and target location.
+      '     Attempt to move in the direction of the target location.
+      '     If blocked, move toward the left/right of the target location.
+      '     If blocked, move in the other direction (left/right).
+      '     After moving, attempt (again) to move in the direction of the target.
+      '     If blocked, repeat...
+
+      For Each rm In Me.Rooms
+        Me.UpdateMap(rm)
+      Next
+
+      ' Generate the random start location within one of the rooms at random.
+
+      Dim heroRow = 0
+      Dim heroColumn = 0
+
+      If True Then
+
+        Dim n = Param.Randomizer.Next(0, Me.Rooms.Count)
+
+        Dim rm = Me.Rooms(n)
+
+        Dim x = Param.Randomizer.Next(1, rm.Width - 1)
+        Dim y = Param.Randomizer.Next(1, rm.Height - 1)
+
+        heroRow = rm.ActualMapTopLocation + y
+        heroColumn = rm.ActualMapLeftLocation + x
+
+        Me.MapCellData(heroRow, heroColumn) = CellType.Hero
+
       End If
 
-      ' Now we have the entry grid in aseekYptr and the exit grid in aseekXptr...
-      ' Pick a random location within the grid for the actual stairs making sure 
-      ' not to hit an edge so it will not conflict with walls
+      ' Generate the random exit location within one of the rooms at random.
+      '  Yes, the exit can be in the same room as the hero start; however,
+      '  the exit should not (cannot) be in the same position as the hero start.
 
-      'Dim currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
-      'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
+      If True Then
 
-      ' Need to convert local grid coordinates into global map coordinates...
+        Dim n = Param.Randomizer.Next(0, Me.Rooms.Count)
 
-      Dim gridY = 1
-      Dim aYPtr = seekY
-      Do While aYPtr > Param.GridColumnCount
-        If aYPtr > Param.GridColumnCount Then
-          gridY += 1
-          aYPtr -= Param.GridColumnCount
+        Dim rm = Me.Rooms(n)
+
+        Do
+
+          Dim x = Param.Randomizer.Next(1, rm.Width - 1)
+          Dim y = Param.Randomizer.Next(1, rm.Height - 1)
+
+          Dim r = rm.ActualMapTopLocation + y
+          Dim c = rm.ActualMapLeftLocation + x
+
+          If r = heroRow AndAlso c = heroColumn Then
+            ' Try again...
+          Else
+            Me.MapCellData(r, c) = CellType.StructureStairsDown
+            Exit Do
+          End If
+
+        Loop
+
+      End If
+
+      If 1 = 1 Then
+
+        ' The following code will draw what we've done thus far.
+
+        Console.ResetColor()
+
+        For y = 0 To Param.MapHeight - 1
+          For x = 0 To Param.MapWidth - 1
+
+            Dim ch = "?"c
+            Dim fg = ConsoleColor.Gray
+
+            Select Case Me.Tile(x, y)
+              Case CellType.Void : ch = " "c
+              Case CellType.Hero : ch = "@"c : fg = ConsoleColor.Yellow
+              Case CellType.StructureDoor : ch = "+"c : fg = ConsoleColor.White
+              Case CellType.StructureFloor : ch = "."c : fg = ConsoleColor.DarkGreen
+              Case CellType.StructureWallTopLeftCorner : ch = "["c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureWallTopRightCorner : ch = "]"c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureWallTopBottom : ch = "-"c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureWallSide : ch = "|"c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureWallBottomLeftCorner : ch = "{"c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureWallBottomRightCorner : ch = "}"c : fg = ConsoleColor.DarkYellow
+              Case CellType.StructureTunnel : ch = "#"c
+              Case CellType.StructureStairsDown : ch = "="c : fg = ConsoleColor.Green
+              Case Else
+                ch = "?"c : fg = ConsoleColor.Red
+            End Select
+
+            Console.SetCursorPosition(x, y + 1)
+            Console.ForegroundColor = fg
+            Console.Write(ch)
+
+          Next
+        Next
+
+        ' Create the tunnels between rooms...
+        ' Expects that there are at least two rooms (entry and exit)...
+        Me.CreateRandomTunnels()
+
+
+        Console.ReadLine()
+
+        GoTo Start
+
+      End If
+
+      If 1 = 0 Then
+
+        'If Me.EntryStairLocation Is Nothing AndAlso
+        '   Me.ExitStairLocation Is Nothing Then
+
+        ' These locations can be created by calling NEW with the correct parameters
+        ' If not, then randomly select them...
+        ' First select a random grid cell...
+        ' Then select a random spot within the cell which is not on the edge so it can be within walls...
+
+        Dim seekX = 0
+        Dim seekY = Param.Randomizer.Next(0, Param.GridColumnCount * Param.GridRowCount) + 1
+
+        Dim currentX = 0
+        Do While currentX < 10 AndAlso seekX = 0
+          seekX = Param.Randomizer.Next(0, Param.GridColumnCount * Param.GridRowCount) + 1
+          If seekX = seekY Then
+            seekX = 0 ' Can not be in the same grid as entry...
+          End If
+          currentX += 1
+        Loop
+
+        If seekX = 0 Then
+          ' If could not create random then set to next grid...
+          seekX = seekY + 1
+          If seekX > Param.GridColumnCount * Param.GridRowCount Then
+            seekX = 1
+          End If
         End If
-      Loop
 
-      If gridY = 0 Then
+        ' Now we have the entry grid in aseekYptr and the exit grid in aseekXptr...
+        ' Pick a random location within the grid for the actual stairs making sure 
+        ' not to hit an edge so it will not conflict with walls
+
+        'Dim currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
+        'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
+
+        ' Need to convert local grid coordinates into global map coordinates...
+
+        Dim gridY = 1
+        Dim aYPtr = seekY
+        Do While aYPtr > Param.GridColumnCount
+          If aYPtr > Param.GridColumnCount Then
+            gridY += 1
+            aYPtr -= Param.GridColumnCount
+          End If
+        Loop
+
+        If gridY = 0 Then
+          gridY = 1
+        End If
+
+        Dim gridX = aYPtr ' What is left is the x axis...
+
+        Dim currentY = Param.Randomizer.Next(1, Param.CellHeight(gridY))
+        currentX = Param.Randomizer.Next(1, Param.CellWidth(gridX))
+
+        'currentY = ((gridY - 1) * Param.MapGridCellHeight) + currentY
+        'currentX = ((gridX - 1) * Param.MapGridCellWidth) + currentX
+        currentY = Param.CellStartY(gridY) + currentY
+        currentX = Param.CellStartX(gridX) + currentX
+
+        Me.EntryStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
+        'Me.EntryStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
+
+        ' Pick a random location within the grid for the actual stairs making 
+        ' sure not to hit an edge so it will not conflict with walls...
+
+        'currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
+        'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
+        'currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
+        'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
+        currentY = Param.Randomizer.Next(1, Param.CellHeight(gridY))
+        currentX = Param.Randomizer.Next(1, Param.CellWidth(gridX))
+
+        ' Need to convert local grid coordinates into global map coordinates...
+
         gridY = 1
-      End If
+        gridX = 0
+        aYPtr = seekX
+        Do While aYPtr > Param.GridColumnCount
+          If aYPtr > Param.GridColumnCount Then
+            gridY += 1
+            aYPtr -= Param.GridColumnCount
+          End If
+        Loop
 
-      Dim gridX = aYPtr ' What is left is the x axis...
-
-      Dim currentY = Param.Randomizer.Next(1, Param.CellHeight(gridY))
-      currentX = Param.Randomizer.Next(1, Param.CellWidth(gridX))
-
-      'currentY = ((gridY - 1) * Param.MapGridCellHeight) + currentY
-      'currentX = ((gridX - 1) * Param.MapGridCellWidth) + currentX
-      currentY = Param.CellStartY(gridY) + currentY
-      currentX = Param.CellStartX(gridX) + currentX
-
-      Me.EntryStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
-      'Me.EntryStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
-
-      ' Pick a random location within the grid for the actual stairs making 
-      ' sure not to hit an edge so it will not conflict with walls...
-
-      'currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
-      'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
-      'currentY = Param.Randomizer.Next(0, Param.MapGridCellHeight - 2) + 2
-      'currentX = Param.Randomizer.Next(0, Param.MapGridCellWidth - 2) + 2
-      currentY = Param.Randomizer.Next(1, Param.CellHeight(gridY))
-      currentX = Param.Randomizer.Next(1, Param.CellWidth(gridX))
-
-      ' Need to convert local grid coordinates into global map coordinates...
-
-      gridY = 1
-      gridX = 0
-      aYPtr = seekX
-      Do While aYPtr > Param.GridColumnCount
-        If aYPtr > Param.GridColumnCount Then
-          gridY += 1
-          aYPtr -= Param.GridColumnCount
+        If gridY = 0 Then
+          gridY = 1
         End If
-      Loop
 
-      If gridY = 0 Then
-        gridY = 1
+        gridX = aYPtr ' What is left is the x axis...
+
+        'currentY = ((gridY - 1) * Param.MapGridCellHeight) + currentY
+        'currentX = ((gridX - 1) * Param.MapGridCellWidth) + currentX
+        currentY = Param.CellStartY(gridY) + currentY
+        currentX = Param.CellStartX(gridX) + currentX
+
+        Me.ExitStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
+        'Me.ExitStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
+
+        'End If
+
+        Me.CreateRandomLevel()
+
       End If
-
-      gridX = aYPtr ' What is left is the x axis...
-
-      'currentY = ((gridY - 1) * Param.MapGridCellHeight) + currentY
-      'currentX = ((gridX - 1) * Param.MapGridCellWidth) + currentX
-      currentY = Param.CellStartY(gridY) + currentY
-      currentX = Param.CellStartX(gridX) + currentX
-
-      Me.ExitStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
-      'Me.ExitStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
-
-      'End If
-
-      Me.CreateRandomLevel()
 
     End Sub
 
@@ -645,6 +835,90 @@ Namespace Global.Rogue.Core
 
     End Sub
 
+    Private Sub CreateRoom(gridRow%, gridColumn%)
+
+      Dim rm = Room.CreateRoom(gridRow, gridColumn)
+
+      If rm.Height > 0 Then
+        Me.Rooms.Add(rm)
+      Else
+        Stop
+      End If
+
+    End Sub
+
+    Private Sub CreateDoors(rm As Room)
+
+      Dim gridRow = rm.MapGridRowLocation
+      Dim gridColumn = rm.MapGridColumnLocation
+
+      Dim sx = If(gridColumn = 1, 0, If(gridColumn = 2, 27, 54))
+      Dim sy = If(gridRow = 1, 0, If(gridRow = 2, 7, 15))
+
+      Dim y = rm.MapTopLocation
+      Dim x = rm.MapLeftLocation
+
+      Dim allowTop = gridRow > 1 OrElse (gridRow = 1 AndAlso y > 0)
+      Dim allowBottom = gridRow < 3 OrElse (gridRow = 3 AndAlso y + (rm.Height) < Param.CellHeight(gridRow))
+      Dim allowLeft = gridColumn > 1 OrElse (gridColumn = 1 AndAlso x > 0)
+      Dim allowRight = gridColumn < 3 OrElse (gridColumn = 3 AndAlso x + (rm.Width) < Param.CellWidth(gridColumn))
+
+      Dim possible As New List(Of Integer)
+      If allowTop Then possible.Add(1)
+      If allowBottom Then possible.Add(2)
+      If allowLeft Then possible.Add(3)
+      If allowRight Then possible.Add(4)
+
+      ' Determine how many doors we will create...
+
+      Dim count = Param.Randomizer.Next(1, possible.Count + 1)
+
+      ' Now work to create "count" number of doors...
+
+      For i = 1 To count
+
+        ' Select a random (available) entry from the possible list.
+
+        Dim entry = Param.Randomizer.Next(0, possible.Count)
+
+        ' Determine which location this door will be (top, bottom, left, right)...
+
+        Dim door = possible(entry)
+
+        Dim xoffset = 0
+        Dim yoffset = 0
+
+        Dim face As Core.Face
+
+        Select Case door
+          Case 1, 2 ' Top, bottom
+            face = Core.Face.Top
+            xoffset = Param.Randomizer.Next(1, rm.Width - 1)
+          Case 3, 4 ' Left, right
+            face = Core.Face.Left
+            yoffset = Param.Randomizer.Next(1, rm.Height - 1)
+          Case Else
+            Stop
+        End Select
+
+        Select Case door
+          Case 2 ' Bottom
+            face = Core.Face.Bottom
+            yoffset = rm.Height - 1
+          Case 4 ' Right
+            face = Core.Face.Right
+            xoffset = rm.Width - 1
+          Case Else
+        End Select
+
+        rm.Doors.Add(New Door(sx + x + xoffset, sy + y + yoffset, face))
+
+        possible.RemoveAt(entry)
+
+      Next
+
+    End Sub
+
     Private Function CreateRandomRoom$(gridRow%, gridColumn%)
 
       Dim result As String = ""
@@ -694,6 +968,12 @@ Namespace Global.Rogue.Core
 
           Dim door = rm.Doors(d)
 
+          Dim mat = Me.FindDoormat(door.X, door.Y)
+          If Me.Tile(mat.X, mat.Y) = CellType.StructureTunnel Then
+            ' Already dug..
+            Continue For
+          End If
+
           Dim startDoorY = door.Y
           Dim startDoorX = door.X
 
@@ -718,7 +998,7 @@ Namespace Global.Rogue.Core
               Dim startY = coord.Y
               Dim startX = coord.X
 
-              Me.Dig(startX, startY)
+              Me.Dig(startX, startY, 0)
 
               ' Set tunnel to end just outside target door...
 
@@ -753,18 +1033,125 @@ Namespace Global.Rogue.Core
       'now that all tunnels that will be randomly created are in place
       'make sure that each room is accessible somehow.
 
-      Me.VerifyAllRoomsAccessible()
+      If 1 = 0 Then
+        Me.VerifyAllRoomsAccessible()
+      End If
 
     End Sub
 
     Private Enum Direction
+      None
       Up
       Down
       Left
       Right
     End Enum
 
-    Private Function CreateUtilityTunnel%(fromX%, fromY%, toX%, toY%)
+    Private Function OppositeDirection(d As Direction) As Direction
+      Select Case d
+        Case Direction.Up : Return Direction.Down
+        Case Direction.Left : Return Direction.Right
+        Case Direction.Right : Return Direction.Left
+        Case Direction.Down : Return Direction.Up
+        Case Else
+          Return Direction.None
+      End Select
+    End Function
+
+    Private Function CreateUtilityTunnel%(startX%, startY%, targetX%, targetY%)
+
+      Console.SetCursorPosition(startX, startY + 1)
+      Console.ForegroundColor = ConsoleColor.Green
+      Console.Write($"*")
+
+      Console.SetCursorPosition(targetX, targetY + 1)
+      Console.ForegroundColor = ConsoleColor.Red
+      Console.Write($"*")
+
+      Dim cx = startX
+      Dim cy = startY
+
+      Dim count = 1
+
+      Dim previous As Direction = Direction.None
+
+      Do
+
+        If cx = targetX AndAlso cy = targetY Then Exit Do
+
+        Dim diffX = cx - targetX
+        Dim diffY = cy - targetY
+
+        Dim primary As Direction
+        Dim secondary As Direction
+
+        If diffX = 0 Then
+          primary = If(diffY > 0, Direction.Up, Direction.Down)
+          secondary = If(diffX > 0, Direction.Left, Direction.Right)
+        ElseIf diffY = 0 Then
+          primary = If(diffX > 0, Direction.Left, Direction.Right)
+          secondary = If(diffY > 0, Direction.Up, Direction.Down)
+        ElseIf Math.Abs(diffY) > Math.Abs(diffX) Then
+          primary = If(diffX > 0, Direction.Left, Direction.Right)
+          secondary = If(diffY > 0, Direction.Up, Direction.Down)
+        Else
+          primary = If(diffY > 0, Direction.Up, Direction.Down)
+          secondary = If(diffX > 0, Direction.Left, Direction.Right)
+        End If
+
+        Dim possible = Me.DigDirections(cx, cy)
+
+        For index = possible.Count - 1 To 0 Step -1
+          If possible(index) = OppositeDirection(previous) Then
+            possible.RemoveAt(index)
+            Exit For
+          End If
+        Next
+
+        If possible.Contains(primary) Then
+          Select Case primary
+            Case Direction.Up : cy -= 1
+            Case Direction.Down : cy += 1
+            Case Direction.Left : cx -= 1
+            Case Direction.Right : cx += 1
+          End Select
+          previous = primary
+        ElseIf possible.Contains(secondary) Then
+          Select Case secondary
+            Case Direction.Up : cy -= 1
+            Case Direction.Down : cy += 1
+            Case Direction.Left : cx -= 1
+            Case Direction.Right : cx += 1
+          End Select
+          previous = secondary
+        ElseIf possible.Contains(previous) Then
+          Select Case previous
+            Case Direction.Up : cy -= 1
+            Case Direction.Down : cy += 1
+            Case Direction.Left : cx -= 1
+            Case Direction.Right : cx += 1
+          End Select
+        Else
+          Stop
+        End If
+
+        If Me.Tile(cx, cy) = CellType.StructureTunnel Then Exit Do
+
+        Me.Dig(cx, cy, 1)
+
+        count += 1
+
+      Loop
+
+      Console.ResetColor()
+
+      Console.SetCursorPosition(startX, startY + 1)
+      Console.Write($"#")
+
+      Console.SetCursorPosition(targetX, targetY + 1)
+      Console.Write($"#")
+
+      Return count
 
       Dim result As Integer = 0
 
@@ -774,61 +1161,64 @@ Namespace Global.Rogue.Core
       Dim aSeekColumn As Integer = 0
       Dim aSeekRow As Integer = 0
 
-      Dim horizontalDifference = fromX - toX
-      Dim verticalDifference = fromY - toY
+      Dim horizontalDifference = startX - targetX
+      Dim verticalDifference = startY - targetY
 
-      Dim aCurrentDirection As Direction
-      Dim aAvoidanceDirection As Direction
+      Dim tunnelDirection As Direction
+      Dim alternateDirection As Direction
 
       If Math.Abs(verticalDifference) > Math.Abs(horizontalDifference) Then
-        ' If verticlal is greater, start left to right...
         If horizontalDifference > 0 Then
-          aCurrentDirection = Direction.Left
+          tunnelDirection = Direction.Left
         Else
-          aCurrentDirection = Direction.Right
+          tunnelDirection = Direction.Right
         End If
         If verticalDifference > 0 Then
-          aAvoidanceDirection = Direction.Up
+          alternateDirection = Direction.Up
         Else
-          aAvoidanceDirection = Direction.Down
+          alternateDirection = Direction.Down
         End If
       Else
         If verticalDifference > 0 Then
-          aCurrentDirection = Direction.Up
+          tunnelDirection = Direction.Up
         Else
-          aCurrentDirection = Direction.Down
+          tunnelDirection = Direction.Down
         End If
         If horizontalDifference > 0 Then
-          aAvoidanceDirection = Direction.Left
+          alternateDirection = Direction.Left
         Else
-          aAvoidanceDirection = Direction.Right
+          alternateDirection = Direction.Right
         End If
       End If
 
-      Dim aCurrentRow = fromY
-      Dim aCurrentColumn = fromX
+      ' We need to tunnel in a particular (primary) direction.
+      ' If we hit an obsticle, we need to tunnel into a different (secondary) direction.
+      ' Each dig into the alternate direction, need to try to tunnel into the primary direction.
+
+      Dim aCurrentRow = startY
+      Dim aCurrentColumn = startX
 
       For result = 1 To (Param.MapHeight * Param.MapWidth)
 
         Dim currentData = Me.DigDirections(aCurrentColumn, aCurrentRow)
 
-        If aCurrentRow = toY Then
-          If aCurrentColumn - toX > 0 Then
-            aCurrentDirection = Direction.Left
+        If aCurrentRow = targetY Then
+          If aCurrentColumn - targetX > 0 Then
+            tunnelDirection = Direction.Left
           Else
-            aCurrentDirection = Direction.Right
+            tunnelDirection = Direction.Right
           End If
         Else
-          If aCurrentColumn = toX Then
-            If aCurrentRow - toY > 0 Then
-              aCurrentDirection = Direction.Up
+          If aCurrentColumn = targetX Then
+            If aCurrentRow - targetY > 0 Then
+              tunnelDirection = Direction.Up
             Else
-              aCurrentDirection = Direction.Down
+              tunnelDirection = Direction.Down
             End If
           End If
         End If
-        If currentData.Contains(aCurrentDirection) Then
-          Select Case aCurrentDirection
+        If currentData.Contains(tunnelDirection) Then
+          Select Case tunnelDirection
             Case Direction.Up
               aSeekRow = aCurrentRow - 1
               aSeekColumn = aCurrentColumn
@@ -843,10 +1233,10 @@ Namespace Global.Rogue.Core
               aSeekColumn = aCurrentColumn + 1
           End Select
         Else
-          If aCurrentDirection = aAvoidanceDirection Then
+          If tunnelDirection = alternateDirection Then
             'If 1 = 0 Then
             'need to tunnel around object
-            Dim coord = Me.TunnelAroundObstacle(aCurrentRow, aCurrentColumn, toY, toX, aCurrentDirection)
+            Dim coord = Me.TunnelAroundObstacle(aCurrentRow, aCurrentColumn, targetY, targetX, tunnelDirection)
             If coord IsNot Nothing Then
               aSeekRow = coord.Y
               aSeekColumn = coord.X
@@ -857,8 +1247,8 @@ Namespace Global.Rogue.Core
           Else
             'TODO: Getting stuck here when it hits a wall where the 
             ' door is literally just around the corner...
-            If currentData.Contains(aAvoidanceDirection) Then
-              Select Case aAvoidanceDirection
+            If currentData.Contains(alternateDirection) Then
+              Select Case alternateDirection
                 Case Direction.Up
                   aSeekRow = aCurrentRow - 1
                   aSeekColumn = aCurrentColumn
@@ -879,59 +1269,59 @@ Namespace Global.Rogue.Core
           End If
         End If
 
-        Me.Dig(aSeekColumn, aSeekRow)
+        Me.Dig(aSeekColumn, aSeekRow, 1)
 
         aCurrentColumn = aSeekColumn
         aCurrentRow = aSeekRow
 
-        If aCurrentRow = toY AndAlso aCurrentColumn = toX Then
+        If aCurrentRow = targetY AndAlso aCurrentColumn = targetX Then
           Exit For
         End If
-        If aCurrentRow = toY OrElse aCurrentColumn = toX Then
+        If aCurrentRow = targetY OrElse aCurrentColumn = targetX Then
           aStepsInDirectionCtr = 5
         End If
         'every X steps can change direction
         aStepsInDirectionCtr += 1
         If aStepsInDirectionCtr > 5 Then
           aStepsInDirectionCtr = 0
-          horizontalDifference = aCurrentColumn - toX
-          verticalDifference = aCurrentRow - toY
+          horizontalDifference = aCurrentColumn - targetX
+          verticalDifference = aCurrentRow - targetY
           If horizontalDifference = 0 Then
             If verticalDifference > 0 Then
-              aCurrentDirection = Direction.Up
+              tunnelDirection = Direction.Up
             Else
-              aCurrentDirection = Direction.Down
+              tunnelDirection = Direction.Down
             End If
           Else
             If verticalDifference = 0 Then
               If horizontalDifference > 0 Then
-                aCurrentDirection = Direction.Left
+                tunnelDirection = Direction.Left
               Else
-                aCurrentDirection = Direction.Right
+                tunnelDirection = Direction.Right
               End If
             Else
               If Math.Abs(verticalDifference) > Math.Abs(horizontalDifference) Then
                 'if up-down farther then start left right
                 If horizontalDifference > 0 Then
-                  aCurrentDirection = Direction.Left
+                  tunnelDirection = Direction.Left
                 Else
-                  aCurrentDirection = Direction.Right
+                  tunnelDirection = Direction.Right
                 End If
                 If verticalDifference > 0 Then
-                  aAvoidanceDirection = Direction.Up
+                  alternateDirection = Direction.Up
                 Else
-                  aAvoidanceDirection = Direction.Down
+                  alternateDirection = Direction.Down
                 End If
               Else
                 If verticalDifference > 0 Then
-                  aCurrentDirection = Direction.Up
+                  tunnelDirection = Direction.Up
                 Else
-                  aCurrentDirection = Direction.Down
+                  tunnelDirection = Direction.Down
                 End If
                 If horizontalDifference > 0 Then
-                  aAvoidanceDirection = Direction.Left
+                  alternateDirection = Direction.Left
                 Else
-                  aAvoidanceDirection = Direction.Right
+                  alternateDirection = Direction.Right
                 End If
               End If
             End If
@@ -1019,7 +1409,7 @@ Namespace Global.Rogue.Core
 
     End Function
 
-    Private Sub Dig(x%, y%)
+    Private Sub Dig(x%, y%, type%)
 
       If Not x.Between(0, Param.MapWidth - 1) Then
         Throw New ArgumentOutOfRangeException("x")
@@ -1032,14 +1422,33 @@ Namespace Global.Rogue.Core
       Me.Tile(x, y) = CellType.StructureTunnel
 
       If Debugger.IsAttached Then
+
+        Console.ResetColor()
+
+        Select Case type
+          Case 0 : Console.ForegroundColor = ConsoleColor.DarkGreen
+          Case 1 : Console.ForegroundColor = ConsoleColor.Gray
+          Case 2 : Console.ForegroundColor = ConsoleColor.DarkRed
+          Case Else
+            Stop
+        End Select
+
         Console.SetCursorPosition(x, y + 1)
-        Console.Write("*"c)
+
+        Me.SpinnerIndex += 1 : If Me.SpinnerIndex > Me.SpinnerChar.Length - 1 Then Me.SpinnerIndex = 0
+        Console.Write(Me.SpinnerChar(Me.SpinnerIndex))
+
         Threading.Thread.Sleep(100)
         Console.SetCursorPosition(x, y + 1)
-        Console.Write("X"c)
+        Console.Write("#"c)
+
       End If
 
     End Sub
+
+    'Private SpinnerChar As String = "\|/-"
+    Private SpinnerChar As String = "|+|-+-"
+    Private SpinnerIndex As Integer = 0
 
     Private Function FindDoormat(x%, y%) As Coordinate
 
@@ -1081,7 +1490,31 @@ Namespace Global.Rogue.Core
     ''' <param name="cell"></param>
     ''' <param name="coord"></param>
     ''' <returns></returns>
-    Private Function FindNearestDoor(cell As Room, coord As Coordinate) As Coordinate
+    Private Function FindNearestDoor(cell As Room, coord As Door) As Coordinate
+
+      ' Given an x/y find the nearest door not part of the same room.
+
+      Dim possible As Coordinate = Nothing
+
+      Dim pdx = Integer.MaxValue \ 2
+      Dim pdy = Integer.MaxValue \ 2
+      For Each r In Me.Rooms
+        If r IsNot cell Then
+          For Each d In r.Doors
+            Dim dx = Math.Abs(coord.X - d.X)
+            Dim dy = Math.Abs(coord.Y - d.Y)
+            If dx + dy < pdx + pdy Then
+              pdx = dx
+              pdy = dy
+              possible = New Coordinate(d.X, d.Y)
+            End If
+          Next
+        End If
+      Next
+
+      If possible IsNot Nothing Then
+        Return possible
+      End If
 
       Dim foundList As New List(Of Room)
 
@@ -1163,7 +1596,7 @@ Namespace Global.Rogue.Core
 
               Dim toPosition = Param.GridPositionToIndex(gridColumn - 1, gridRow)
 
-              For r As Integer = 0 To Me.Rooms.Count - 1
+              For r = 0 To Me.Rooms.Count - 1
 
                 If toPosition = Me.Rooms(r).GridPosition Then
 
@@ -1289,6 +1722,12 @@ Namespace Global.Rogue.Core
 
         Dim row = Param.GridRow(y)
         Dim col = Param.GridColumn(x)
+
+        If row = 0 OrElse col = 0 Then
+          ' Coords provided do not clearly identify a zone.
+          Return Nothing
+        End If
+
         Dim number = ((row - 1) * Param.GridColumnCount) + col
 
         For Each rm In Me.Rooms
@@ -1448,7 +1887,7 @@ Namespace Global.Rogue.Core
       If tile = CellType.Void OrElse tile = CellType.StructureTunnel Then
 
         ' Original direction clear...
-        Me.Dig(seekX, seekY)
+        Me.Dig(seekX, seekY, 2)
 
         ' Take the step in that direction then...
         isFound = False ' The way is clear so exit...
@@ -1458,20 +1897,12 @@ Namespace Global.Rogue.Core
 
       Else
 
-        'Dim aBlockingRoomNumber = Me.GetRoomNumberFromXY(seekX, seekY)
-
-        'Dim aBlockingRoom As Room = Nothing
-
-        'If aBlockingRoomNumber > 0 Then
-        '  aBlockingRoom = Me.GetRoom(aBlockingRoomNumber)
-        'End If
-
         Dim aBlockingRoom = Me.GetRoom(seekX, seekY)
 
         Dim aAvoidanceDirection As Direction
 
         If aBlockingRoom IsNot Nothing Then
-          'find out the shortest side of the blocking room and go that way
+          ' Find out the shortest side of the blocking room and go that way
           If direction = Direction.Down OrElse direction = Direction.Up Then
             aDistanceOne = aCurrentX - If(aBlockingRoom?.ActualMapLeftLocation, 0)
             aDistanceTwo = (aBlockingRoom.ActualMapLeftLocation + aBlockingRoom.Width) - aCurrentX
@@ -1557,7 +1988,7 @@ Namespace Global.Rogue.Core
                   Case Else
                     Stop
                 End Select
-                Me.Dig(seekX, seekY)
+                Me.Dig(seekX, seekY, 2)
                 aCurrentX = seekX
                 aCurrentY = seekY
               End If
@@ -1590,7 +2021,7 @@ Namespace Global.Rogue.Core
                   Case Else
                     Stop
                 End Select
-                Me.Dig(seekX, seekY)
+                Me.Dig(seekX, seekY, 2)
                 aCurrentX = seekX
                 aCurrentY = seekY
               Else
@@ -1603,7 +2034,7 @@ Namespace Global.Rogue.Core
               'End If
 
             End If
-            End If
+          End If
           aStepCtr += 1
         Loop
       End If

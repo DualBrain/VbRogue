@@ -47,7 +47,7 @@ Namespace Global.Rogue.Core
         Case GridRowStart2 To GridRowStop2 : Return 2
         Case GridRowStart3 To GridRowStop3 : Return 3
         Case Else
-          Stop
+          Return 0
       End Select
     End Function
 
@@ -57,7 +57,7 @@ Namespace Global.Rogue.Core
         Case GridColumnStart2 To GridColumnStop2 : Return 2
         Case GridColumnStart3 To GridColumnStop3 : Return 3
         Case Else
-          Stop
+          Return 0
       End Select
     End Function
 

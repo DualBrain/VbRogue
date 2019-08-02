@@ -189,7 +189,7 @@ Module Program
 
       ' Load / parse the dungeon into memory...
 
-      If 1 = 1 Then
+      If 1 = 0 Then
         m_levels = LoadDungeon("default.rogue")
       Else
         m_levels = New List(Of Core.Level)
@@ -768,7 +768,7 @@ Module Program
     ForegroundColor = ConsoleColor.Black
     BackgroundColor = ConsoleColor.Gray
     SetCursorPosition(75, 24)
-    Write($"{Now:h:mm}".PadLeft(5))
+    Write($"{DateTime.Now:h:mm}".PadLeft(5))
   End Sub
 
   Private Sub DrawHud()
@@ -796,12 +796,12 @@ Module Program
     Write($"╔{New System.String("═"c, 78)}╗")
     For r = 1 To 21
       SetCursorPosition(0, r)
-      Write($"║{Space(78)}║")
+      Write($"║{New String(" "c, 78)}║")
     Next
     SetCursorPosition(0, 22)
     Write($"╠{New System.String("═"c, 78)}╣")
     SetCursorPosition(0, 23)
-    Write($"║{Space(78)}║")
+    Write($"║{New String(" "c, 78)}║")
     SetCursorPosition(0, 24)
     Write($"╚{New System.String("═"c, 78)}╝")
 
@@ -879,7 +879,7 @@ Module Program
 
   Private Sub Center(text As String, row As Integer, fg As ConsoleColor)
     ForegroundColor = fg
-    Dim c = (80 - Len(text)) \ 2
+    Dim c = (80 - text.Length) \ 2
     SetCursorPosition(c, row)
     Write(text)
   End Sub
