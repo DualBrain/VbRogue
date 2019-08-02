@@ -1,4 +1,6 @@
-﻿Option Explicit On
+﻿#Const LINUX = True
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
@@ -164,17 +166,23 @@ Module Program
     OrgWindowWidth = WindowWidth
 
     OutputEncoding = Encoding.UTF8
+
+#If Not LINUX Then
+
     Resize(80, 26)
+
     DisableMinimize()
     DisableMaximize()
     DisableResize()
     DisableQuickEditMode()
 
-    CursorVisible = False
-
     ' MS-DOS Dark Yellow is more of a Brown.
     ConsoleEx.SetColor(ConsoleColor.DarkYellow, 170, 85, 0)
     ConsoleEx.SetColor(ConsoleColor.DarkMagenta, 85, 85, 255)
+
+#End If
+
+    CursorVisible = False
 
     Try
 
@@ -580,16 +588,21 @@ Module Program
 
     Finally
 
+      ForegroundColor = ConsoleColor.Gray
+      BackgroundColor = ConsoleColor.Black
+
+#If Not LINUX Then
+
       EnableMinimize()
       EnableMaximize()
       EnableResize()
-      ForegroundColor = ConsoleColor.Gray
-      BackgroundColor = ConsoleColor.Black
 
       SetBufferSize(OrgBufferWidth, OrgBufferHeight)
       SetWindowSize(OrgWindowWidth, OrgWindowHeight)
 
       EnableQuickEditMode()
+
+#End If
 
       ResetColor()
       'CLS()

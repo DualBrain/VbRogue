@@ -5,7 +5,7 @@
     <RootNamespace>Rogue</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PublishTrimmed>true</PublishTrimmed>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <!--<PublishReadyToRun>true</PublishReadyToRun>-->
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
