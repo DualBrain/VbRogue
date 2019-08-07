@@ -1,10 +1,9 @@
-﻿#Const LINUX = True
-
-Option Explicit On
+﻿Option Explicit On
 Option Strict On
 Option Infer On
 
 Imports System.Console
+Imports System.Runtime.InteropServices
 Imports System.Text
 Imports ConsoleEx
 Imports QB
@@ -85,8 +84,21 @@ Module Program
   Private ReadOnly m_healAmount% = 1
 
   Private m_moveCount% = 0
+  Private m_hungerCount% = 0
+  Private m_hungerStage As HungerStage
 
   Private m_accumulator$
+
+  Private m_messages As New Queue(Of String)
+
+  Private Enum HungerStage
+    Healthy
+    Hungry
+    Weak
+    Faint ' You feel very weak. you faint from lack of food -> You can move again
+    Hungry3
+    Dead
+  End Enum
 
   Private Class XP
     Public Sub New(level%, points%, dice%, healRate%)
@@ -102,32 +114,32 @@ Module Program
   End Class
 
   Private ReadOnly XpTable As XP() = {New XP(0, 0, 1, 18),
-                             New XP(1, 10, 1, 17),
-                             New XP(2, 20, 1, 15),
-                             New XP(3, 40, 1, 13),
-                             New XP(4, 80, 1, 11),
-                             New XP(5, 160, 1, 9),
-                             New XP(6, 320, 1, 7),
-                             New XP(7, 640, 1, 3),
-                             New XP(8, 1280, 2, 3),
-                             New XP(9, 2560, 3, 3),
-                             New XP(10, 5120, 4, 3),
-                             New XP(11, 10240, 5, 3),
-                             New XP(12, 20480, 6, 3),
-                             New XP(13, 40960, 7, 3),
-                             New XP(14, 81920, 8, 3),
-                             New XP(15, 163840, 9, 3),
-                             New XP(16, 327680, 10, 3),
-                             New XP(17, 655360, 11, 3),
-                             New XP(18, 1310720, 12, 3),
-                             New XP(19, 2621440, 13, 3),
-                             New XP(20, 5242880, 14, 3)}
+                               New XP(1, 10, 1, 17),
+                               New XP(2, 20, 1, 15),
+                               New XP(3, 40, 1, 13),
+                               New XP(4, 80, 1, 11),
+                               New XP(5, 160, 1, 9),
+                               New XP(6, 320, 1, 7),
+                               New XP(7, 640, 1, 3),
+                               New XP(8, 1280, 2, 3),
+                               New XP(9, 2560, 3, 3),
+                               New XP(10, 5120, 4, 3),
+                               New XP(11, 10240, 5, 3),
+                               New XP(12, 20480, 6, 3),
+                               New XP(13, 40960, 7, 3),
+                               New XP(14, 81920, 8, 3),
+                               New XP(15, 163840, 9, 3),
+                               New XP(16, 327680, 10, 3),
+                               New XP(17, 655360, 11, 3),
+                               New XP(18, 1310720, 12, 3),
+                               New XP(19, 2621440, 13, 3),
+                               New XP(20, 5242880, 14, 3)}
 
-  Private Enum Display
-    Level
-    Inventory
-    Help
-  End Enum
+  'Private Enum Display
+  '  Level
+  '  Inventory
+  '  Help
+  'End Enum
 
   'Private Async Function MainAsync(args As String()) As Task
   Public Sub Main() 'args As String())
@@ -167,20 +179,21 @@ Module Program
 
     OutputEncoding = Encoding.UTF8
 
-#If Not LINUX Then
+    If RuntimeInformation.IsOSPlatform(OSPlatform.Windows) Then
 
-    Resize(80, 26)
+      Resize(80, 25)
 
-    DisableMinimize()
-    DisableMaximize()
-    DisableResize()
-    DisableQuickEditMode()
+      DisableMinimize()
+      DisableMaximize()
+      DisableResize()
+      DisableQuickEditMode()
 
-    ' MS-DOS Dark Yellow is more of a Brown.
-    ConsoleEx.SetColor(ConsoleColor.DarkYellow, 170, 85, 0)
-    ConsoleEx.SetColor(ConsoleColor.DarkMagenta, 85, 85, 255)
+      ' MS-DOS Dark Yellow is more of a Brown.
+      ConsoleEx.SetColor(ConsoleColor.DarkYellow, 170, 85, 0)
+      'ConsoleEx.SetColor(ConsoleColor.DarkMagenta, 85, 85, 255)
+      ConsoleEx.SetColor(ConsoleColor.Blue, 85, 85, 255)
 
-#End If
+    End If
 
     CursorVisible = False
 
@@ -197,7 +210,7 @@ Module Program
 
       ' Load / parse the dungeon into memory...
 
-      If 1 = 0 Then
+      If 1 = 1 Then
         m_levels = LoadDungeon("default.rogue")
       Else
         m_levels = New List(Of Core.Level)
@@ -220,17 +233,21 @@ Module Program
 
       Dim cycles = 0
 
-      Dim displaying = Display.Level
+      'Dim displaying = Display.Level
 
       Do
 
         Threading.Thread.Sleep(1)
 
+        'If m_holeFound AndAlso
+        '   cycles > 250 AndAlso
+        '   (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
+        '   Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) AndAlso
+        '   displaying = Display.Level Then
         If m_holeFound AndAlso
-           cycles > 250 AndAlso
-           (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
-           Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) AndAlso
-           displaying = Display.Level Then
+                   cycles > 250 AndAlso
+                   (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
+                   Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) Then
           cycles = 0
           ' Draw stairway...
           ForegroundColor = ConsoleColor.Black
@@ -247,6 +264,8 @@ Module Program
 
         If KeyAvailable Then
 
+          ClearMessage()
+
           Dim ki = ReadKey(True)
           Dim key = ki.Key
 
@@ -256,23 +275,30 @@ Module Program
 
           If ki.Modifiers = ConsoleModifiers.Shift Then
             Select Case key
-              Case ConsoleKey.OemPeriod : key = ConsoleKey.Insert
-              Case ConsoleKey.Oem2 ' /
+              Case ConsoleKey.OemPeriod ' >
+                key = ConsoleKey.Insert
+              Case ConsoleKey.Oem2 ' ?
                 key = ConsoleKey.F1
               Case Else
             End Select
           Else
             Select Case key
               Case ConsoleKey.F7 : key = ConsoleKey.I
+              Case ConsoleKey.OemPeriod ' .
+                isAction = True
+              Case ConsoleKey.Oem2 ' /
+                key = ConsoleKey.F2
               Case Else
             End Select
           End If
 
           Select Case key
-            Case ConsoleKey.F12
-              'TEST:
-              m_levels(m_level) = New Core.Level(m_level)
-              InitializeLevel()
+
+            Case ConsoleKey.Escape
+
+              m_accumulator = ""
+              DrawAccumulator()
+
             Case ConsoleKey.D0 : Accumulate("0"c)
             Case ConsoleKey.D1 : Accumulate("1"c)
             Case ConsoleKey.D2 : Accumulate("2"c)
@@ -283,9 +309,11 @@ Module Program
             Case ConsoleKey.D7 : Accumulate("7"c)
             Case ConsoleKey.D8 : Accumulate("8"c)
             Case ConsoleKey.D9 : Accumulate("9"c)
+
             Case ConsoleKey.Insert
+
               If m_heroX = m_holeX AndAlso
-                 m_heroY = m_holeY Then
+                               m_heroY = m_holeY Then
                 m_level += 1
                 If m_level > m_levels.Count - 1 Then
                   Exit Do
@@ -297,34 +325,6 @@ Module Program
 
               DrawInventory()
               DrawLevel()
-              displaying = Display.Level
-
-              'If displaying = Display.Inventory Then
-              '  DrawLevel()
-              '  displaying = Display.Level
-              'Else
-              '  DrawInventory()
-              '  displaying = Display.Inventory
-              'End If
-
-            Case ConsoleKey.F1
-
-              If key = ConsoleKey.F1 OrElse
-                 (key = ConsoleKey.Oem2 AndAlso ki.Modifiers = ConsoleModifiers.Shift) Then
-                DrawHelp()
-                DrawLevel()
-                displaying = Display.Level
-              End If
-
-              'If displaying = Display.Help Then
-              '  DrawLevel()
-              '  displaying = Display.Level
-              'Else
-              '  ResetColor()
-              '  Clear()
-              '  Write("Help")
-              '  displaying = Display.Help
-              'End If
 
             Case ConsoleKey.Q
               If ki.Modifiers = ConsoleModifiers.Shift Then
@@ -361,23 +361,45 @@ Module Program
                 End If
               End If
 
+            Case ConsoleKey.V
+
+              If Not ki.Modifiers = ConsoleModifiers.Shift Then
+                ' Version
+                DisplayMessage($"Rogue OPEN SOURCE version")
+              End If
+
+            Case ConsoleKey.F1
+
+              DrawHelp()
+              DrawLevel()
+
+            Case ConsoleKey.F2
+
+              DrawSymbols()
+              DrawLevel()
+
+            Case ConsoleKey.F12
+              'TEST:
+              m_levels(m_level) = New Core.Level(m_level)
+              InitializeLevel()
+
             Case ConsoleKey.UpArrow,
-                 ConsoleKey.DownArrow,
-                 ConsoleKey.LeftArrow,
-                 ConsoleKey.RightArrow,
-                 ConsoleKey.Home,
-                 ConsoleKey.End,
-                 ConsoleKey.PageUp,
-                 ConsoleKey.PageDown,
-                 ConsoleKey.S,
-                 ConsoleKey.Y, ConsoleKey.U, ConsoleKey.H, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L, ConsoleKey.B, ConsoleKey.N,
-                 ConsoleKey.Delete
+                             ConsoleKey.DownArrow,
+                             ConsoleKey.LeftArrow,
+                             ConsoleKey.RightArrow,
+                             ConsoleKey.Home,
+                             ConsoleKey.End,
+                             ConsoleKey.PageUp,
+                             ConsoleKey.PageDown,
+                             ConsoleKey.S,
+                             ConsoleKey.Y, ConsoleKey.U, ConsoleKey.H, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L, ConsoleKey.B, ConsoleKey.N,
+                             ConsoleKey.Delete
 
               isAction = True
 
             Case Else
               ' Do nothing...
-              Stop
+              'Stop
           End Select
 
           If isAction Then
@@ -389,7 +411,7 @@ Module Program
 
             For i = repeatCount To 1 Step -1
 
-              ClearMessage()
+              'ClearMessage()
 
               Dim dirX = 0 'm_heroX
               Dim dirY = 0 'm_heroY
@@ -425,11 +447,15 @@ Module Program
                   If PerformSearch() Then
                     abort = True
                   End If
+
+                Case ConsoleKey.OemPeriod
+                  actions += 1
+
                 Case Else
               End Select
 
               If dirX <> 0 OrElse
-                 dirY <> 0 Then
+                               dirY <> 0 Then
 
                 ' If running and find "something", abort...
 
@@ -499,6 +525,7 @@ Module Program
               If actions > 0 Then
 
                 m_moveCount += actions
+                m_hungerCount += actions
 
                 ' Handle regeneration (healing)...
                 If m_heroHp < m_heroHpMax Then
@@ -516,11 +543,19 @@ Module Program
                   End If
                 End If
 
+                ' Handle "hunger" (transition)...
+                Dim currentHungerStage = m_hungerStage
+                SetHungerStage()
+                If currentHungerStage <> m_hungerStage Then
+                  DisplayMessage("You are starting to get hungry")
+                End If
+
               End If
 
               If m_accumulator <> "" Then
                 m_accumulator = i.ToString
                 DrawAccumulator()
+                Threading.Thread.Sleep(10)
               End If
 
               If abort Then
@@ -537,15 +572,20 @@ Module Program
 
         cycles += 1
 
-        SetCursorPosition(0, 25)
-        BackgroundColor = ConsoleColor.Black
-        ForegroundColor = ConsoleColor.Cyan
-        Write($"{m_moveCount.ToString.PadRight(5)}")
+        'If displaying = Display.Level Then
+        DrawHud()
+        DrawClock()
+        'End If
 
-        If displaying = Display.Level Then
-          DrawHud()
-          DrawClock()
-        End If
+        ' DEBUG numbers...
+        SetCursorPosition(0, 24)
+        BackgroundColor = ConsoleColor.Black
+        ForegroundColor = ConsoleColor.White
+        Write($"{m_moveCount}")
+        ForegroundColor = ConsoleColor.Gray
+        Write(",")
+        ForegroundColor = ConsoleColor.Red
+        Write($"{m_hungerCount}".PadRight(4))
 
       Loop
 
@@ -591,18 +631,18 @@ Module Program
       ForegroundColor = ConsoleColor.Gray
       BackgroundColor = ConsoleColor.Black
 
-#If Not LINUX Then
+      If RuntimeInformation.IsOSPlatform(OSPlatform.Windows) Then
 
-      EnableMinimize()
-      EnableMaximize()
-      EnableResize()
+        EnableMinimize()
+        EnableMaximize()
+        EnableResize()
 
-      SetBufferSize(OrgBufferWidth, OrgBufferHeight)
-      SetWindowSize(OrgWindowWidth, OrgWindowHeight)
+        SetBufferSize(OrgBufferWidth, OrgBufferHeight)
+        SetWindowSize(OrgWindowWidth, OrgWindowHeight)
 
-      EnableQuickEditMode()
+        EnableQuickEditMode()
 
-#End If
+      End If
 
       ResetColor()
       'CLS()
@@ -630,69 +670,295 @@ Module Program
     'WriteLine("d) A +1,+1 mace (weapon in hand)")
     'WriteLine("e) A +1,+0 short bow")
     'WriteLine("f) 30 +0,+0 arrows")
-    SetCursorPosition(0, 24)
-    Write("-Press space to continue-")
     PressSpaceToContinue()
   End Sub
+
+  Private Class KeyCommand
+
+    Public Sub New(key As String, description As String, Optional implemented As Boolean = False)
+      Me.Key = key
+      Me.Description = description
+      Me.Implemented = implemented
+    End Sub
+
+    Public ReadOnly Property Key As String
+    Public ReadOnly Property Description As String
+    Public ReadOnly Property Implemented As Boolean
+
+  End Class
 
   Private Sub DrawHelp()
     ResetColor()
     Clear()
-    WriteLine("F1      list of commands                F2      list of symbols")
-    WriteLine("F3      repeat command                  F4      repeat message")
-    WriteLine("F5      rename something                F6      recall what's been discovered")
-    WriteLine("F7      inventory of your possessions   F8      <dir> identify trap type")
-    WriteLine("F9      The Any Key (definable)         Alt F9  defines the Any Key")
-    WriteLine("F10     Supervisor Key (fake dos)       Space   Clear -More- message")
-    WriteLine("CR      the Enter Key                   Lt      left")
-    WriteLine("Dn      down                            Up      up")
-    WriteLine("Rt      right                           Home    up & left")
-    WriteLine("PgUp    up & right                      End     down & left")
-    WriteLine("PgDn    down & right                    Scroll  Fast Play mode")
-    WriteLine(".       rest                            >       go down a staircase")
-    WriteLine("<       go up the staircase             Esc     cancel command")
-    WriteLine("d       drop object                     e       eat food")
-    WriteLine("f       <dir> find something            q       quaff potion")
-    WriteLine("r       read paper                      s       search for trap/secret door")
-    WriteLine("t       <dir> throw something           w       wield a weapon")
-    WriteLine("z       <dir> zap with a wand           B       run down & left")
-    WriteLine("H       run left                        J       run down")
-    WriteLine("K       run up                          L       run right")
-    WriteLine("N       run down & right                U       run up & right")
-    WriteLine("Y       run up & left                   W       wear armor")
-    WriteLine("T       take armor off                  P       put on ring")
-    SetCursorPosition(0, 24)
-    Write("-Press space for more, Esc to continue-")
-    Dim result = PressSpaceForMoreEscToContinue()
-    If result Then
-      Return
-    Else
-      Clear()
-      WriteLine("Q       quit                            R       remove ring")
-      WriteLine("S       save game                       ^       identify trap")
-      WriteLine("?       help                            /       key")
-      WriteLine("+       throw                           -       zap")
-      WriteLine("Ctrl t  terse message format            Ctrl r  repeat message")
-      WriteLine("Del     search for something hidden     Ins     <dir> find something")
-      WriteLine("a       repeat command                  c       rename something")
-      WriteLine("i       inventory                       v       version number")
-      WriteLine("!       Supervisor Key (fake dos)       D       list what has been discovered")
-      SetCursorPosition(0, 24)
-      Write("-Press space to continue-")
-      PressSpaceForMoreEscToContinue()
-    End If
+
+    Dim commands = New List(Of KeyCommand)
+
+    ' Page 1
+
+    commands.Add(New KeyCommand("F1", "list of commands", True))
+    commands.Add(New KeyCommand("F2", "list Of symbols", True))
+    commands.Add(New KeyCommand("F3", "repeat command"))
+    commands.Add(New KeyCommand("F4", "repeat message"))
+    commands.Add(New KeyCommand("F5", "rename something"))
+    commands.Add(New KeyCommand("F6", "recall what's been discovered"))
+    commands.Add(New KeyCommand("F7", "inventory Of your possessions", True))
+    commands.Add(New KeyCommand("F8", "<dir> identify trap type"))
+    commands.Add(New KeyCommand("F9", "The Any Key (definable)"))
+    commands.Add(New KeyCommand("Alt F9", "defines the Any Key"))
+    commands.Add(New KeyCommand("F10", "Supervisor Key (fake dos)"))
+    commands.Add(New KeyCommand("Space", "Clear -More- message", True))
+    commands.Add(New KeyCommand("◄┘", "the Enter Key"))
+    commands.Add(New KeyCommand("←", "left", True))
+    commands.Add(New KeyCommand("↓", "down", True))
+    commands.Add(New KeyCommand("↑", "up", True))
+    commands.Add(New KeyCommand("→", "right", True))
+    commands.Add(New KeyCommand("Home", "up & left", True))
+    commands.Add(New KeyCommand("PgUp", "up & right", True))
+    commands.Add(New KeyCommand("End", "down & left", True))
+    commands.Add(New KeyCommand("PgDn", "down & right", True))
+    commands.Add(New KeyCommand("Scroll", "Fast Play mode"))
+    commands.Add(New KeyCommand(".", "rest"))
+    commands.Add(New KeyCommand(">", "go down a staircase", True))
+    commands.Add(New KeyCommand("<", "go up the staircase"))
+    commands.Add(New KeyCommand("Esc", "cancel command", True))
+    commands.Add(New KeyCommand("d", "drop Object"))
+    commands.Add(New KeyCommand("e", "eat food"))
+    commands.Add(New KeyCommand("f", "<dir> find something"))
+    commands.Add(New KeyCommand("q", "quaff potion"))
+    commands.Add(New KeyCommand("r", "read paper"))
+    commands.Add(New KeyCommand("s", "search for trap/secret door", True))
+    commands.Add(New KeyCommand("t", "<dir> Throw something"))
+    commands.Add(New KeyCommand("w", "wield a weapon"))
+    commands.Add(New KeyCommand("z", "<dir> zap with a wand"))
+    commands.Add(New KeyCommand("B", "run down & left", True))
+    commands.Add(New KeyCommand("J", "run down", True))
+    commands.Add(New KeyCommand("K", "run up", True))
+    commands.Add(New KeyCommand("H", "run left", True))
+    commands.Add(New KeyCommand("L", "run right", True))
+    commands.Add(New KeyCommand("N", "run down & right", True))
+    commands.Add(New KeyCommand("U", "run up & right", True))
+    commands.Add(New KeyCommand("Y", "run up & left", True))
+    commands.Add(New KeyCommand("W", "wear armor"))
+    commands.Add(New KeyCommand("T", "take armor off"))
+    commands.Add(New KeyCommand("P", "put on ring"))
+
+    ' Page 2
+
+    commands.Add(New KeyCommand("Q", "quit", True))
+    commands.Add(New KeyCommand("R", "remove ring"))
+    commands.Add(New KeyCommand("S", "save game"))
+    commands.Add(New KeyCommand("^", "identify trap"))
+    commands.Add(New KeyCommand("?", "help", True))
+    commands.Add(New KeyCommand("/", "key", True))
+    commands.Add(New KeyCommand("+", "throw"))
+    commands.Add(New KeyCommand("-", "zap"))
+    commands.Add(New KeyCommand("Ctrl t", "terse message format"))
+    commands.Add(New KeyCommand("Ctrl r", "repeat message"))
+    commands.Add(New KeyCommand("Del", "search for something hidden"))
+    commands.Add(New KeyCommand("Ins", "<dir> find something"))
+    commands.Add(New KeyCommand("a", "repeat command"))
+    commands.Add(New KeyCommand("c", "rename something"))
+    commands.Add(New KeyCommand("i", "inventory"))
+    commands.Add(New KeyCommand("v", "version number", True))
+    commands.Add(New KeyCommand("!", "Supervisor Key (fake dos)"))
+    commands.Add(New KeyCommand("D", "list what has been discovered"))
+
+    Dim page = 0
+    Dim index = 0
+
+    Do
+
+      Console.Clear()
+
+      Dim row = 0
+      Dim column = 0
+
+      Do Until index > 45
+
+        Console.SetCursorPosition(column * 40, row)
+
+        If commands((page * 46) + index).Implemented Then
+          Console.ForegroundColor = ConsoleColor.White
+        Else
+          Console.ForegroundColor = ConsoleColor.DarkGray
+        End If
+        Console.Write(commands((page * 46) + index).Key.PadRight(8))
+        Console.Write(commands((page * 46) + index).Description)
+
+        If column = 1 Then
+          row += 1
+        End If
+
+        column = If(column = 0, 1, 0)
+
+        index += 1
+
+        If (page * 46) + index > commands.Count - 1 Then
+          Exit Do
+        End If
+
+      Loop
+
+      page += 1
+      index = 0
+
+      If (page * 46) + index < commands.Count Then
+        ' Still more commands left, prompt as if there is another page to be viewed...
+        Dim result = PressSpaceForMoreEscToContinue()
+        If result Then
+          Return
+        End If
+      Else
+        ' This the last of this content, so prompt to "return to game".
+        PressSpaceToContinue()
+        Return
+      End If
+
+    Loop
+
   End Sub
 
-  Private Sub DisplayMessage(message$)
+  Private Class Symbol
+
+    Public Sub New(symbol As String, description As String, color As ConsoleColor)
+      Me.Symbol = symbol
+      Me.Description = description
+      Me.Color = color
+    End Sub
+
+    Public ReadOnly Property Symbol As String
+    Public ReadOnly Property Description As String
+    Public ReadOnly Property Color As ConsoleColor
+
+  End Class
+
+  Private Sub DrawSymbols()
+
     ResetColor()
-    SetCursorPosition(0, 0)
-    Write(message.PadRight(80).Substring(0, 80))
+    Clear()
+
+    Dim symbols = New List(Of Symbol)
+
+    ' Page 1
+
+    symbols.Add(New Symbol(".", "the floor", ConsoleColor.DarkGreen))
+    symbols.Add(New Symbol("☺", "the hero", ConsoleColor.Yellow))
+    symbols.Add(New Symbol("♣", "some food", ConsoleColor.Red))
+    symbols.Add(New Symbol("♀", "the amulet of yendor", ConsoleColor.Blue))
+    symbols.Add(New Symbol("♪", "a scroll", ConsoleColor.Blue))
+    symbols.Add(New Symbol("↑", "a weapon", ConsoleColor.Blue))
+    symbols.Add(New Symbol("◘", "a piece of armor", ConsoleColor.Blue))
+    symbols.Add(New Symbol("✶", "some gold", ConsoleColor.Yellow))
+    symbols.Add(New Symbol("¥", "a magic staff", ConsoleColor.Blue))
+    symbols.Add(New Symbol("¡", "a potion", ConsoleColor.Blue))
+    symbols.Add(New Symbol("○", "a magic ring", ConsoleColor.Blue))
+    symbols.Add(New Symbol("▓", "a passage", ConsoleColor.Gray))
+    symbols.Add(New Symbol("╬", "a door", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("╔", "an upper left corner", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("♦", "a trap", ConsoleColor.Magenta))
+    symbols.Add(New Symbol("═", "a horizontal wall", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("╝", "a lower right corner", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("╚", "a lower left corner", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("║", "a vertical wall", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("╗", "an upper right corner", ConsoleColor.DarkYellow))
+    symbols.Add(New Symbol("≡", "a stair case", ConsoleColor.Green))
+    symbols.Add(New Symbol("$,+", "safe and perilous magic", ConsoleColor.Gray))
+    symbols.Add(New Symbol("A-Z", "26 different monsters", ConsoleColor.Gray))
+
+    Dim page = 0
+    Dim index = 0
+
+    Do
+
+      Console.Clear()
+
+      Dim row = 0
+      Dim column = 0
+
+      Do Until index > 45
+
+        Console.SetCursorPosition(column * 40, row)
+
+        If symbols((page * 46) + index).Color = ConsoleColor.Green Then
+          Console.ForegroundColor = ConsoleColor.Black
+          Console.BackgroundColor = ConsoleColor.Green
+        Else
+          Console.ForegroundColor = symbols((page * 46) + index).Color
+        End If
+        Console.Write(symbols((page * 46) + index).Symbol)
+        Console.ResetColor()
+        Console.Write($": {symbols((page * 46) + index).Description}")
+
+        If column = 1 Then
+          row += 1
+        End If
+
+        column = If(column = 0, 1, 0)
+
+        index += 1
+
+        If (page * 46) + index > symbols.Count - 1 Then
+          Exit Do
+        End If
+
+      Loop
+
+      page += 1
+      index = 0
+
+      If (page * 46) + index < symbols.Count Then
+        ' Still more commands left, prompt as if there is another page to be viewed...
+        Dim result = PressSpaceForMoreEscToContinue()
+        If result Then
+          Return
+        End If
+      Else
+        ' This the last of this content, so prompt to "return to game".
+        PressSpaceToContinue()
+        Return
+      End If
+
+    Loop
+
+  End Sub
+
+  Private m_displayingMessage As Boolean
+  Private m_messageLength As Integer = 0
+
+  Private Sub DisplayMessage(message$)
+    If m_displayingMessage Then
+      m_messages.Enqueue(message)
+      SetCursorPosition(m_messageLength, 0)
+      ForegroundColor = ConsoleColor.Black
+      BackgroundColor = ConsoleColor.Gray
+      Write(" More ")
+      ResetColor()
+    Else
+      ResetColor()
+      SetCursorPosition(0, 0)
+      'Write("".PadRight(80)) ' Clear...
+      'SetCursorPosition(0, 0)
+      Write(message)
+      m_messageLength = message.Length
+      m_displayingMessage = True
+      If m_messages.Count > 0 Then
+        ForegroundColor = ConsoleColor.Black
+        BackgroundColor = ConsoleColor.Gray
+        Write(" More ")
+        ResetColor()
+      End If
+    End If
   End Sub
 
   Private Sub ClearMessage()
     ResetColor()
     SetCursorPosition(0, 0)
     Write(New String(" "c, 80))
+    m_displayingMessage = False
+    If m_messages.Count > 0 Then
+      Dim message = m_messages.Dequeue()
+      DisplayMessage(message)
+    End If
   End Sub
 
   Private Sub Accumulate(c As Char)
@@ -780,11 +1046,13 @@ Module Program
   Private Sub DrawClock()
     ForegroundColor = ConsoleColor.Black
     BackgroundColor = ConsoleColor.Gray
-    SetCursorPosition(75, 24)
+    SetCursorPosition(74, 24)
     Write($"{DateTime.Now:h:mm}".PadLeft(5))
   End Sub
 
   Private Sub DrawHud()
+
+    ResetColor()
 
     ForegroundColor = ConsoleColor.Yellow
 
@@ -796,7 +1064,36 @@ Module Program
     Dim gold = $"{m_heroGold}".PadRight(6)
     Dim armor = $"{m_heroArmor}".PadRight(7)
 
-    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{HeroLevel(m_heroLevel).PadRight(15)}")
+    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{HeroLevel(m_heroLevel).PadRight(12)}")
+
+    ' Handle "hunger"
+
+    ResetColor()
+    SetCursorPosition(57, 24)
+    Write("".PadRight(8))
+
+    If m_hungerStage > HungerStage.Healthy Then
+      SetCursorPosition(57, 24)
+      Dim hunger$ = m_hungerStage.ToString
+      ForegroundColor = ConsoleColor.Black
+      BackgroundColor = ConsoleColor.Gray
+      Write(hunger)
+      ResetColor()
+    End If
+
+  End Sub
+
+  Private Sub SetHungerStage()
+
+    Select Case m_hungerCount
+      Case <= 1000 : m_hungerStage = HungerStage.Healthy
+      Case <= 2000 : m_hungerStage = HungerStage.Hungry
+      Case <= 3000 : m_hungerStage = HungerStage.Weak
+      Case <= 4000 : m_hungerStage = HungerStage.Faint
+      Case <= 5000 : m_hungerStage = HungerStage.Hungry3
+      Case Else
+        m_hungerStage = HungerStage.Dead
+    End Select
 
   End Sub
 
@@ -816,10 +1113,11 @@ Module Program
     SetCursorPosition(0, 23)
     Write($"║{New String(" "c, 78)}║")
     SetCursorPosition(0, 24)
-    Write($"╚{New System.String("═"c, 78)}╝")
+    'Write($"╚{New System.String("═"c, 78)}╝")
+    Write($"╚{New System.String("═"c, 78)}")
 
     BackgroundColor = ConsoleColor.Gray
-    Center("ROGUE:  The Adventure Game", 2, ConsoleColor.Black)
+    Center("ROGUE: The Adventure Game", 2, ConsoleColor.Black)
 
     ResetColor()
 
@@ -828,14 +1126,14 @@ Module Program
     Center("and", 7, ConsoleColor.Gray)
     Center("Kenneth C.R.C. Arnold", 8, ConsoleColor.White)
 
-    Center("Adapted for the IBM PC by:", 10, ConsoleColor.Magenta)
-    Center("Jon Lane", 12, ConsoleColor.White)
+    Center("Adapted for the .NET Core by:", 10, ConsoleColor.Magenta)
+    Center("Cory Smith", 12, ConsoleColor.White)
     Center("Significant design contributions by:", 14, ConsoleColor.Magenta)
     Center("Glenn Wichman and scores of others", 16, ConsoleColor.White)
 
-    Center("(C) Copyright 1983", 18, ConsoleColor.Yellow)
-    Center("Artificial Intelligence Design", 19, ConsoleColor.White)
-    Center("All Rights Reserved", 20, ConsoleColor.Yellow)
+    Center("(C) Copyright 2019", 18, ConsoleColor.Yellow)
+    Center("Cory Smith", 19, ConsoleColor.White)
+    Center("Made available as open source under the MIT license.", 20, ConsoleColor.Yellow)
 
     ResetColor()
 
@@ -1100,9 +1398,9 @@ Module Program
             ' In the doorway, determine the floor to the left, right, top or bottom.
             ' Once found, use "paint" routine above...
             Dim coords = {New Coord(0, -1),
-                        New Coord(1, 0),
-                        New Coord(0, 1),
-                        New Coord(-1, 0)}
+                                    New Coord(1, 0),
+                                    New Coord(0, 1),
+                                    New Coord(-1, 0)}
             For Each coord In coords
               If Not m_heroY + coord.Y > 20 Then
                 Dim target = m_levels(m_level).Map(m_heroY + coord.Y, m_heroX + coord.X)
@@ -1285,6 +1583,8 @@ Module Program
   End Function
 
   Private Sub PressSpaceToContinue()
+    SetCursorPosition(0, 24)
+    Write("--press space to continue--")
     Do
       If KeyAvailable Then
         Dim key = ReadKey(True)
@@ -1298,6 +1598,8 @@ Module Program
   End Sub
 
   Private Function PressSpaceForMoreEscToContinue() As Boolean
+    SetCursorPosition(0, 24)
+    Write("--Press space for more, Esc to continue--")
     Do
       If KeyAvailable Then
         Dim key = ReadKey(True)
