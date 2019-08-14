@@ -6,10 +6,10 @@ Namespace Global.Rogue.Core
 
   Public MustInherit Class Entity
 
-    Public Property Armor As Integer = 0
+    Public Property AC As Integer = 0
 
-    Public Property MaxHitPoints As Integer = 0
-    Public Property CurrentHitPoints As Integer = 0
+    Public Property MaxHP As Integer = 0
+    Public Property HP As Integer = 0
     Public Property Level As Integer = 0
 
     Public Property X As Integer = -1

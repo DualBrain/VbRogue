@@ -18,100 +18,74 @@ Module Program
   '  MainAsync(args).GetAwaiter().GetResult()
   'End Sub
 
-  Private Enum Objects
-    Void = 0
+  'Private Enum Objects
+  '  Void = 0
 
-    Floor = 1
-    Tunnel = 2
-    Door = 3
-    Stairs = 10
-    Trap = 11
+  '  Floor = 1
+  '  Tunnel = 2
+  '  Door = 3
+  '  Stairs = 10
+  '  Trap = 11
 
-    WallTopLeft = 4
-    WallTopRight = 5
-    WallHorizontal = 6
-    WallVertical = 7
-    WallBottomLeft = 8
-    WallBottomRight = 9
+  '  WallTopLeft = 4
+  '  WallTopRight = 5
+  '  WallHorizontal = 6
+  '  WallVertical = 7
+  '  WallBottomLeft = 8
+  '  WallBottomRight = 9
 
-    Character = 20
+  '  Character = 20
 
-    Bat = 35
-    Emu = 34
-    Hobgoblin = 33
-    Imp = 30
-    Kestral = 31
-    Orc = 36
-    RattleSnake = 37
-    Snake = 32
-    Zombie = 38
+  '  Bat = 35
+  '  Emu = 34
+  '  Hobgoblin = 33
+  '  Imp = 30
+  '  Kestral = 31
+  '  Orc = 36
+  '  RattleSnake = 37
+  '  Snake = 32
+  '  Zombie = 38
 
-    Gold = 50
+  '  Gold = 50
 
-    Potion = 51
-    Ring = 53
-    Armor = 54
-    Scroll = 55
-    Weapon = 56
-    Food = 57
-    Staff = 58
-    Amulet = 59
-    SafeMagic = 60 ' $
-    PerilousMagic = 61 ' +
+  '  Potion = 51
+  '  Ring = 53
+  '  Armor = 54
+  '  Scroll = 55
+  '  Weapon = 56
+  '  Food = 57
+  '  Staff = 58
+  '  Amulet = 59
+  '  SafeMagic = 60 ' $
+  '  PerilousMagic = 61 ' +
 
-  End Enum
+  'End Enum
 
   Private m_levels As List(Of Core.Level)
   Private m_level As Integer
 
-  Private m_holeX% = -1
-  Private m_holeY% = -1
-  Private m_holeFound As Boolean = False
+  Private m_stairsDownX% = -1
+  Private m_stairsDownY% = -1
+  Private m_stairsDownFound As Boolean = False
 
-  Private m_heroX% = -1
-  Private m_heroY% = -1
-  Private ReadOnly m_heroLevel% = 0
-  Private m_heroHp% = 1 ' 12
-  Private ReadOnly m_heroHpMax% = 12
-  Private ReadOnly m_heroStr% = 16
-  Private ReadOnly m_heroStrMax% = 16
-  Private m_heroGold% = 0
-  Private ReadOnly m_heroArmor% = 5
-  Private m_heroName As String = "Whimp"
-
-  Private m_healCount% = 0
-  Private ReadOnly m_healTurns% = 18
-  Private ReadOnly m_healAmount% = 1
-
-  Private m_moveCount% = 0
-  Private m_hungerCount% = 0
-  Private m_hungerStage As HungerStage
+  Private ReadOnly Hero As New Core.Hero
 
   Private m_accumulator$
 
   Private ReadOnly m_messages As New Queue(Of String)
 
-  Private Enum HungerStage
-    Healthy
-    Hungry
-    Weak
-    Faint ' You feel very weak. you faint from lack of food -> You can move again
-    Hungry3
-    Dead
-  End Enum
-
-  Private Class XP
-    Public Sub New(level%, points%, dice%, healRate%)
-      Me.Level = level
-      Me.Points = points
-      Me.Dice = dice
-      Me.HealRate = healRate
-    End Sub
-    Public ReadOnly Property Level As Integer
-    Public ReadOnly Property Points As Integer
-    Public ReadOnly Property Dice As Integer
-    Public ReadOnly Property HealRate As Integer
-  End Class
+  'Private Class XP
+  '  Public Sub New(level%, points%, dice%, healRate%)
+  '    Me.Level = level
+  '    Me.Points = points
+  '    Me.Dice = dice
+  '    Me.HealRate = healRate
+  '  End Sub
+  '  Public ReadOnly Property Level As Integer
+  '  Public ReadOnly Property Points As Integer
+  '  Public ReadOnly Property Dice As Integer
+  '  Public ReadOnly Property HealRate As Integer
+  'End Class
 
   'Private ReadOnly XpTable As XP() = {New XP(0, 0, 1, 18),
   '                             New XP(1, 10, 1, 17),
@@ -219,13 +193,13 @@ Module Program
         Next
       End If
 
-      m_heroName = GetCharacterName()
+      Hero.Name = GetCharacterName()
 
       ' Holds the current location of the "stairs" (aka hole).
 
       InitializeLevel()
 
-      DisplayMessage($"Hello {m_heroName}.  Are you prepared to die?.")
+      DisplayMessage($"Hello {Hero.Name}.  Are you prepared to die?.")
 
       ' "Game Loop"
 
@@ -242,17 +216,17 @@ Module Program
         'If m_holeFound AndAlso
         '   cycles > 250 AndAlso
         '   (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
-        '   Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) AndAlso
+        '   Not (Hero.Y = m_holeY AndAlso Hero.X = m_holeX) AndAlso
         '   displaying = Display.Level Then
-        If m_holeFound AndAlso
-                   cycles > 250 AndAlso
-                   (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
-                   Not (m_heroY = m_holeY AndAlso m_heroX = m_holeX) Then
+        If m_stairsDownFound AndAlso
+           cycles > 250 AndAlso
+           (m_stairsDownY > -1 AndAlso m_stairsDownX > -1) AndAlso
+           Not (Hero.Y = m_stairsDownY AndAlso Hero.X = m_stairsDownX) Then
           cycles = 0
           ' Draw stairway...
           ForegroundColor = ConsoleColor.Black
           BackgroundColor = ConsoleColor.Green
-          SetCursorPosition(m_holeX, m_holeY + 1)
+          SetCursorPosition(m_stairsDownX, m_stairsDownY + 1)
           If alt Then
             Write(" ")
           Else
@@ -312,8 +286,8 @@ Module Program
 
             Case ConsoleKey.Insert
 
-              If m_heroX = m_holeX AndAlso
-                               m_heroY = m_holeY Then
+              If Hero.X = m_stairsDownX AndAlso
+                               Hero.Y = m_stairsDownY Then
                 m_level += 1
                 If m_level > m_levels.Count - 1 Then
                   Exit Do
@@ -413,8 +387,8 @@ Module Program
 
               'ClearMessage()
 
-              Dim dirX = 0 'm_heroX
-              Dim dirY = 0 'm_heroY
+              Dim dirX = 0 'Hero.X
+              Dim dirY = 0 'Hero.Y
 
               Dim run = False
 
@@ -461,17 +435,17 @@ Module Program
 
                 Do
 
-                  If CanMove(m_heroX + dirX, m_heroY + dirY) Then
-                    DrawRoomTile(m_heroX, m_heroY)
-                    m_heroX += dirX
-                    m_heroY += dirY
+                  If CanMove(Hero.X + dirX, Hero.Y + dirY) Then
+                    DrawRoomTile(Hero.X, Hero.Y)
+                    Hero.X += dirX
+                    Hero.Y += dirY
                     Dim encounter = PlaceHero()
                     actions += 1
                     initialMove = False
                     If encounter OrElse Not run Then
                       Exit Do
                     Else
-                      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
                       If tile.Type = Core.TileType.Door Then
                         Exit Do
                       End If
@@ -479,14 +453,14 @@ Module Program
                   Else
 
                     If Not initialMove Then
-                      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+                      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
                       If tile.Type = Core.TileType.Tunnel Then
 
                         If dirX = 0 Then
-                          If CanMove(m_heroX - 1, m_heroY) Then
+                          If CanMove(Hero.X - 1, Hero.Y) Then
                             ' Can move to the left
                             dirX = -1 : dirY = 0
-                          ElseIf CanMove(m_heroX + 1, m_heroY) Then
+                          ElseIf CanMove(Hero.X + 1, Hero.Y) Then
                             ' Can move to the right
                             dirX = 1 : dirY = 0
                           Else
@@ -494,10 +468,10 @@ Module Program
                             Exit Do
                           End If
                         ElseIf dirY = 0 Then
-                          If CanMove(m_heroX, m_heroY - 1) Then
+                          If CanMove(Hero.X, Hero.Y - 1) Then
                             ' Can move up
                             dirX = 0 : dirY = -1
-                          ElseIf CanMove(m_heroX, m_heroY + 1) Then
+                          ElseIf CanMove(Hero.X, Hero.Y + 1) Then
                             ' Can move down
                             dirX = 0 : dirY = 1
                           Else
@@ -524,29 +498,29 @@ Module Program
 
               If actions > 0 Then
 
-                m_moveCount += actions
-                m_hungerCount += actions
+                Hero.MoveCount += actions
+                Hero.HungerCount += actions
 
                 ' Handle regeneration (healing)...
-                If m_heroHp < m_heroHpMax Then
-                  m_healCount += actions
-                  If m_healCount >= m_healTurns Then
-                    If m_healAmount = 1 Then
-                      m_heroHp += m_healAmount
+                If Hero.HP < Hero.MaxHP Then
+                  Hero.HealCount += actions
+                  If Hero.HealCount >= Hero.HealTurns Then
+                    If Hero.HealAmount = 1 Then
+                      Hero.HP += Hero.HealAmount
                     Else
-                      m_heroHp += Randomizer.Next(1, m_healAmount + 1)
+                      Hero.HP += Randomizer.Next(1, Hero.HealAmount + 1)
                     End If
-                    If m_heroHp > m_heroHpMax Then
-                      m_heroHp = m_heroHpMax
+                    If Hero.HP > Hero.MaxHP Then
+                      Hero.HP = Hero.MaxHP
                     End If
-                    m_healCount = 0
+                    Hero.HealCount = 0
                   End If
                 End If
 
                 ' Handle "hunger" (transition)...
-                Dim currentHungerStage = m_hungerStage
+                Dim currentHungerStage = Hero.HungerStage
                 SetHungerStage()
-                If currentHungerStage <> m_hungerStage Then
+                If currentHungerStage <> Hero.HungerStage Then
                   DisplayMessage("You are starting to get hungry")
                 End If
 
@@ -581,11 +555,11 @@ Module Program
         SetCursorPosition(0, 24)
         BackgroundColor = ConsoleColor.Black
         ForegroundColor = ConsoleColor.White
-        Write($"{m_moveCount}")
+        Write($"{Hero.MoveCount}")
         ForegroundColor = ConsoleColor.Gray
         Write(",")
         ForegroundColor = ConsoleColor.Red
-        Write($"{m_hungerCount}".PadRight(4))
+        Write($"{Hero.HungerCount}".PadRight(4))
 
       Loop
 
@@ -593,7 +567,7 @@ Module Program
       Clear()
 
       SetCursorPosition(0, 0)
-      Write($"You quit with {m_heroGold} gold pieces")
+      Write($"You quit with {Hero.Gold} gold pieces")
 
       SetCursorPosition(0, 24)
       Write($"[Press Enter to see rankings]")
@@ -664,13 +638,80 @@ Module Program
   Private Sub DrawInventory()
     ResetColor()
     Clear()
+
     'WriteLine("a) Some food")
     'WriteLine("b) A scroll titled 'cir celxev goszur'")
     'WriteLine("c) +1 ring mail [armor class 5) (being worn)")
     'WriteLine("d) A +1,+1 mace (weapon in hand)")
     'WriteLine("e) A +1,+0 short bow")
     'WriteLine("f) 30 +0,+0 arrows")
-    PressSpaceToContinue()
+
+    Dim page = 0
+    Dim index = 0
+
+    Do
+
+      Console.Clear()
+
+      Dim row = 0
+
+      Dim letter = 0
+
+      If Hero.Rations > 0 Then
+        If Hero.Rations = 1 Then
+          Console.Write($"{ChrW(CInt(AscW("a") + letter))}) Some food")
+        Else
+          Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Rations} rations of food")
+        End If
+        letter += 1
+        row += 1
+      End If
+
+      Do Until index > 21
+
+        Console.SetCursorPosition(0, row)
+
+        Select Case Hero.Inventory(index).Object.Type
+          Case Core.ObjectType.Armor
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(being worn)", "")}")
+          Case Core.ObjectType.Weapon
+            If Hero.Inventory(index).Object.Name.Contains("arrow") OrElse
+               Hero.Inventory(index).Object.Name.Contains("bolt") Then
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).Count} {Hero.Inventory(index).ToString}s {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+            Else
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {If(Hero.Inventory(index).Count = 1, "A", "????")} {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+            End If
+          Case Else
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString}")
+        End Select
+
+        index += 1
+        row += 1
+        letter += 1
+
+        If (page * 21) + index > Hero.Inventory.Count - 1 Then
+          Exit Do
+        End If
+
+      Loop
+
+      page += 1
+      index = 0
+
+      If (page * 21) + index < Hero.Inventory.Count Then
+        ' Still more items left, prompt as if there is another page to be viewed...
+        Dim result = PressSpaceForMoreEscToContinue()
+        If result Then
+          Return
+        End If
+      Else
+        ' This the last of this content, so prompt to "return to game".
+        PressSpaceToContinue()
+        Return
+      End If
+
+    Loop
+
   End Sub
 
   Private Class KeyCommand
@@ -989,9 +1030,9 @@ Module Program
 
     For yy = -1 To 1
       For xx = -1 To 1
-        Dim tile = m_levels(m_level).Map(m_heroY + yy, m_heroX + xx)
+        Dim tile = m_levels(m_level).Map(Hero.Y + yy, Hero.X + xx)
         If tile.FoundSecret(False) Then
-          DrawRoomTile(m_heroX + xx, m_heroY + yy)
+          DrawRoomTile(Hero.X + xx, Hero.Y + yy)
           result = True
         End If
       Next
@@ -1060,12 +1101,12 @@ Module Program
     SetCursorPosition(0, 23)
 
     Dim level = $"{m_level + 1}".PadRight(5)
-    Dim hits = $"{m_heroHp}({m_heroHpMax})".PadRight(8)
-    Dim str = $"{m_heroStr}({m_heroStrMax})".PadRight(8)
-    Dim gold = $"{m_heroGold}".PadRight(6)
-    Dim armor = $"{m_heroArmor}".PadRight(7)
+    Dim hits = $"{Hero.HP}({Hero.MaxHP})".PadRight(8)
+    Dim str = $"{Hero.Str}({Hero.MaxStr})".PadRight(8)
+    Dim gold = $"{Hero.Gold}".PadRight(6)
+    Dim armor = $"{Hero.AC}".PadRight(7)
 
-    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{HeroLevel(m_heroLevel).PadRight(12)}")
+    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{HeroLevel(Hero.Level).PadRight(12)}")
 
     ' Handle "hunger"
 
@@ -1073,9 +1114,9 @@ Module Program
     SetCursorPosition(57, 24)
     Write("".PadRight(8))
 
-    If m_hungerStage > HungerStage.Healthy Then
+    If Hero.HungerStage > Core.HungerStage.Healthy Then
       SetCursorPosition(57, 24)
-      Dim hunger$ = m_hungerStage.ToString
+      Dim hunger$ = Hero.HungerStage.ToString
       ForegroundColor = ConsoleColor.Black
       BackgroundColor = ConsoleColor.Gray
       Write(hunger)
@@ -1086,14 +1127,14 @@ Module Program
 
   Private Sub SetHungerStage()
 
-    Select Case m_hungerCount
-      Case <= 1000 : m_hungerStage = HungerStage.Healthy
-      Case <= 2000 : m_hungerStage = HungerStage.Hungry
-      Case <= 3000 : m_hungerStage = HungerStage.Weak
-      Case <= 4000 : m_hungerStage = HungerStage.Faint
-      Case <= 5000 : m_hungerStage = HungerStage.Hungry3
+    Select Case Hero.HungerCount
+      Case <= 1000 : Hero.HungerStage = Core.HungerStage.Healthy
+      Case <= 2000 : Hero.HungerStage = Core.HungerStage.Hungry
+      Case <= 3000 : Hero.HungerStage = Core.HungerStage.Weak
+      Case <= 4000 : Hero.HungerStage = Core.HungerStage.Faint
+      Case <= 5000 : Hero.HungerStage = Core.HungerStage.Hungry3
       Case Else
-        m_hungerStage = HungerStage.Dead
+        Hero.HungerStage = Core.HungerStage.Dead
     End Select
 
   End Sub
@@ -1199,14 +1240,14 @@ Module Program
   Private Sub InitializeLevel()
 
     m_accumulator = Nothing
-    m_moveCount = 0
 
-    m_holeX = -1
-    m_holeY = -1
-    m_holeFound = False
+    m_stairsDownX = -1
+    m_stairsDownY = -1
+    m_stairsDownFound = False
 
-    m_heroX = -1
-    m_heroY = -1
+    Hero.MoveCount = 0
+    Hero.X = -1
+    Hero.Y = -1
 
     BackgroundColor = ConsoleColor.Black
     Clear()
@@ -1224,9 +1265,9 @@ Module Program
         End If
 
         If tile.HeroStart Then
-          m_heroX = x : m_heroY = y
+          Hero.X = x : Hero.Y = y
         ElseIf tile.Type = Core.TileType.Hole Then
-          m_holeX = x : m_holeY = y
+          m_stairsDownX = x : m_stairsDownY = y
         End If
 
       Next
@@ -1237,12 +1278,27 @@ Module Program
     For gold = 1 To goldCount
       If floors.Count > 0 Then
         Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
-        floors(tileNumber).Gold = Randomizer.Next(1, 100)
+        'floors(tileNumber).Gold = Randomizer.Next(1, 100)
+        floors(tileNumber).ObjectType = Core.ObjectType.Gold
+        floors(tileNumber).ObjectCount = Randomizer.Next(1, 100)
         floors.RemoveAt(tileNumber)
       End If
     Next
 
+    Dim foodCount = Randomizer.Next(0, 3)
+
+    For gold = 1 To goldCount
+      If floors.Count > 0 Then
+        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        floors(tileNumber).ObjectType = Core.ObjectType.Food
+        floors(tileNumber).ObjectCount = 1
+        floors.RemoveAt(tileNumber)
+      End If
+    Next
+
+
     DrawLevel()
+
   End Sub
 
   Private Sub DrawLevel()
@@ -1270,10 +1326,10 @@ Module Program
     '  SetCursorPosition(53, y + 1) : Write("|")
     'Next
 
-    Dim zone = DetermineZone(m_heroX, m_heroY)
+    Dim zone = DetermineZone(Hero.X, Hero.Y)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
     If lit Then
-      DrawRoom(m_heroX, m_heroY)
+      DrawRoom(Hero.X, Hero.Y)
     End If
 
     PlaceHero()
@@ -1340,14 +1396,14 @@ Module Program
 
     Dim result = False
 
-    Dim zone = DetermineZone(m_heroX, m_heroY)
+    Dim zone = DetermineZone(Hero.X, Hero.Y)
     Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
-    Dim floor = If(zone > -1, m_levels(m_level).Map(m_heroY, m_heroX).Type = Core.TileType.Floor, False)
+    Dim floor = If(zone > -1, m_levels(m_level).Map(Hero.Y, Hero.X).Type = Core.TileType.Floor, False)
 
     'If lit AndAlso floor Then
 
-    '  Dim xx = m_heroX
-    '  Dim yy = m_heroY
+    '  Dim xx = Hero.X
+    '  Dim yy = Hero.Y
     '  Do
     '    If m_levels(m_level).Map(yy, xx - 1).Type = TileType.Floor Then
     '      xx -= 1
@@ -1365,31 +1421,31 @@ Module Program
 
     'Else
 
-    If m_heroY > -1 AndAlso m_heroX > -1 Then
+    If Hero.Y > -1 AndAlso Hero.X > -1 Then
 
-      Dim tile = m_levels(m_level).Map(m_heroY, m_heroX)
+      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
 
       Select Case tile.Type
         Case Core.TileType.Floor
           For yy = -1 To 1
             For xx = -1 To 1
-              Dim foundStairs = DrawRoomTile(m_heroX + xx, m_heroY + yy)
+              Dim foundStairs = DrawRoomTile(Hero.X + xx, Hero.Y + yy)
               If foundStairs Then
-                m_holeFound = True
+                m_stairsDownFound = True
               End If
             Next
           Next
         Case Core.TileType.Tunnel
           For yy = -1 To 1
-            If m_heroY + yy > 20 Then Continue For
-            If m_heroY + yy < 0 Then Continue For
+            If Hero.Y + yy > 20 Then Continue For
+            If Hero.Y + yy < 0 Then Continue For
             For xx = -1 To 1
-              If m_heroX + xx > 79 Then Continue For
-              If m_heroX + xx < 0 Then Continue For
-              Dim target = m_levels(m_level).Map(m_heroY + yy, m_heroX + xx)
+              If Hero.X + xx > 79 Then Continue For
+              If Hero.X + xx < 0 Then Continue For
+              Dim target = m_levels(m_level).Map(Hero.Y + yy, Hero.X + xx)
               Select Case target.Type
                 Case Core.TileType.Tunnel, Core.TileType.Door
-                  DrawRoomTile(m_heroX + xx, m_heroY + yy)
+                  DrawRoomTile(Hero.X + xx, Hero.Y + yy)
                 Case Else
               End Select
             Next
@@ -1403,11 +1459,11 @@ Module Program
                                     New Coord(0, 1),
                                     New Coord(-1, 0)}
             For Each coord In coords
-              If Not m_heroY + coord.Y > 20 Then
-                Dim target = m_levels(m_level).Map(m_heroY + coord.Y, m_heroX + coord.X)
+              If Not Hero.Y + coord.Y > 20 Then
+                Dim target = m_levels(m_level).Map(Hero.Y + coord.Y, Hero.X + coord.X)
                 If target.Type = Core.TileType.Floor Then
                   ' found it...
-                  DrawRoom(m_heroX + coord.X, m_heroY + coord.Y)
+                  DrawRoom(Hero.X + coord.X, Hero.Y + coord.Y)
                   m_levels(m_level).Lights(zone) = False
                   Exit For
                 End If
@@ -1416,9 +1472,9 @@ Module Program
           Else
             For yy = -1 To 1
               For xx = -1 To 1
-                Dim foundStairs = DrawRoomTile(m_heroX + xx, m_heroY + yy)
+                Dim foundStairs = DrawRoomTile(Hero.X + xx, Hero.Y + yy)
                 If foundStairs Then
-                  m_holeFound = True
+                  m_stairsDownFound = True
                 End If
               Next
             Next
@@ -1428,21 +1484,29 @@ Module Program
 
       'End If
 
-      If m_levels(m_level).Map(m_heroY, m_heroX).Gold > 0 Then
-        DisplayMessage($"You found {m_levels(m_level).Map(m_heroY, m_heroX).Gold} gold pieces")
-        m_heroGold += m_levels(m_level).Map(m_heroY, m_heroX).Gold
-        m_levels(m_level).Map(m_heroY, m_heroX).Gold = 0
-        result = True
-      End If
+      Select Case m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType
+        Case Core.ObjectType.Gold
+          DisplayMessage($"You found {m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount} gold pieces")
+          Hero.Gold += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          result = True
+        Case Core.ObjectType.Food
+          Hero.Rations += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
+          DisplayMessage($"You now have {Hero.Rations} rations of food (a)")
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          result = True
+        Case Else
+          ' Floor
+      End Select
 
-      If m_levels(m_level).Map(m_heroY, m_heroX).Type = Core.TileType.Hole Then
+      If m_levels(m_level).Map(Hero.Y, Hero.X).Type = Core.TileType.Hole Then
         result = True
         BackgroundColor = ConsoleColor.Green
       Else
         BackgroundColor = ConsoleColor.Black
       End If
       ForegroundColor = ConsoleColor.Yellow
-      SetCursorPosition(m_heroX, m_heroY + 1)
+      SetCursorPosition(Hero.X, Hero.Y + 1)
       Write("☺")
 
     End If
@@ -1480,7 +1544,7 @@ Module Program
       Do
         Dim foundStairs = DrawRoomTile(xxx, yyy)
         If foundStairs Then
-          m_holeFound = True
+          m_stairsDownFound = True
         End If
         xxx += 1
         If xxx > 79 Then Exit Do
@@ -1526,12 +1590,16 @@ Module Program
         fg = ConsoleColor.Black : bg = ConsoleColor.Green
         result = True
       Case Core.TileType.Floor
-        If tile.Gold > 0 Then
-          fg = ConsoleColor.Yellow
-          output = "*"
-        Else
-          fg = ConsoleColor.DarkGreen
-        End If
+        Select Case tile.ObjectType
+          Case Core.ObjectType.Gold
+            fg = ConsoleColor.Yellow
+            output = "*"
+          Case Core.ObjectType.Food
+            fg = ConsoleColor.Red
+            output = "♣"
+          Case Else
+            fg = ConsoleColor.DarkGreen
+        End Select
       Case Core.TileType.Tunnel
         'Case "@"c : output = QBChar(1) : fg = ConsoleColor.Yellow
         'Case "!"c : output = QBChar(173) : fg = ConsoleColor.DarkMagenta

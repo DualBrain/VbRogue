@@ -47,7 +47,23 @@ Namespace Global.Rogue.Core
     Public ReadOnly Property Secret As Boolean
     Private Property SearchCount As Integer
 
-    Public Property Gold As Integer
+    'Public Property Gold As Integer
+
+    Private m_objectType As Core.ObjectType = ObjectType.Empty
+
+    Public Property ObjectType As Core.ObjectType
+      Get
+        Return m_objectType
+      End Get
+      Set(value As Core.ObjectType)
+        m_objectType = value
+        If value = ObjectType.Empty Then
+          ObjectCount = 0
+        End If
+      End Set
+    End Property
+
+    Public Property ObjectCount As Integer = 0
 
     Public Function FoundSecret(forced As Boolean) As Boolean
 

@@ -262,9 +262,11 @@ Start:
       '  With that said, need to restrict creating a door on a
       '  wall that would be an invalid tunnel location.
 
-      For Each rm In Rooms
-        CreateDoors(rm)
-      Next
+      If False Then
+        For Each rm In Rooms
+          CreateDoors(rm)
+        Next
+      End If
 
       ' Now that we have rooms, need we need to genrate connections between each room:
       '
@@ -338,7 +340,7 @@ Start:
 
       End If
 
-      If 1 = 1 Then
+      If True Then
 
         ' The following code will draw what we've done thus far.
 
@@ -374,9 +376,27 @@ Start:
           Next
         Next
 
-        ' Create the tunnels between rooms...
-        ' Expects that there are at least two rooms (entry and exit)...
-        CreateRandomTunnels()
+        If False Then
+          ' Create the tunnels between rooms...
+          ' Expects that there are at least two rooms (entry and exit)...
+          CreateRandomTunnels()
+        End If
+
+        If True Then
+
+          ' Now that we have the rooms... go through each room/region and connect it with another room/region.
+          ' 
+
+          ' 2,2 -> 1,2
+          ' 2,2 -> 2,3
+          ' 2,2 -> 3,2
+          ' 2,2 -> 2,1
+
+          ' If room, create random door on facing walls between two rooms.
+          '
+
+
+        End If
 
         Console.ReadLine()
 
