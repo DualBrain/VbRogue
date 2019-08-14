@@ -25,14 +25,14 @@ Namespace Global.Rogue.Core
     Public Overrides Function Equals(obj As Object) As Boolean
       If TypeOf obj Is Coordinate Then
         Dim o = DirectCast(obj, Coordinate)
-        Return Me.X = o.X AndAlso Me.Y = o.Y
+        Return X = o.X AndAlso Y = o.Y
       Else
         Return False
       End If
     End Function
 
     Public Overrides Function ToString() As String
-      Return $"({Me.X},{Me.Y})"
+      Return $"({X},{Y})"
     End Function
 
   End Class

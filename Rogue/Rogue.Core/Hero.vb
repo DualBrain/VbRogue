@@ -10,17 +10,17 @@ Namespace Global.Rogue.Core
     Public Sub New()
 
       'for prototype set the variables that will be displayed
-      Me.Armor = 5
+      Armor = 5
 
-      Me.Level = 1
+      Level = 1
 
-      Me.MaxStrength = 16
-      Me.CurrentStrength = 16
+      MaxStrength = 16
+      CurrentStrength = 16
 
-      Me.MaxHitPoints = 21
-      Me.CurrentHitPoints = 21
+      MaxHitPoints = 21
+      CurrentHitPoints = 21
 
-      Me.Gold = 0
+      Gold = 0
 
     End Sub
 

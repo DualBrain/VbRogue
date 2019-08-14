@@ -42,8 +42,8 @@
   Public Structure Damage
 
     Public Sub New(count%, type%)
-      Me.DieCount = count
-      Me.DieType = type
+      DieCount = count
+      DieType = type
     End Sub
 
     Public DieCount As Integer
@@ -57,8 +57,8 @@
             melee As Damage,
             thrown As Damage)
       Me.Name = name
-      Me.MeleeDamage = melee
-      Me.ThrownDamage = thrown
+      MeleeDamage = melee
+      ThrownDamage = thrown
     End Sub
 
     Public Name As String

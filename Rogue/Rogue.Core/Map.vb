@@ -22,7 +22,7 @@ Namespace Global.Rogue.Core
     Public Sub New() 'depth%)
       'Me.m_TestMode = generate
       'Me.CurrentMapLevel = depth
-      Me.Initialize() 'generate)
+      Initialize() 'generate)
     End Sub
 
     '''' <summary>
@@ -198,12 +198,12 @@ Namespace Global.Rogue.Core
 
 Start:
 
-      Me.Rooms = New List(Of Room)
-      Me.RoomConnections = New List(Of Coordinate)
+      Rooms = New List(Of Room)
+      RoomConnections = New List(Of Coordinate)
 
       ' Generate 1 or more random rooms in random locations (1-9)
 
-      Me.ClearMapData()
+      ClearMapData()
 
       ' Create a list of possible grid locations (1-9)...
       Dim grid = {New Coordinate(1, 1),
@@ -229,7 +229,7 @@ Start:
         ' placed... if so, then we will place it as we will always
         ' have at least one room.
 
-        Dim place = Me.Rooms.Count = 0
+        Dim place = Rooms.Count = 0
 
         If Not place Then
 
@@ -245,7 +245,7 @@ Start:
           ' We've determined that we are placing this room...
           Dim c = grid(number)
           ' So we will actually generate the room parameters (and doors).
-          Me.CreateRoom(c.Y, c.X)
+          CreateRoom(c.Y, c.X)
           ' And remove it from the list of possible locations before we
           ' try for the next pass.  Yes, this means that it is possible
           ' that the same room (at random) could try again in another
@@ -262,8 +262,8 @@ Start:
       '  With that said, need to restrict creating a door on a
       '  wall that would be an invalid tunnel location.
 
-      For Each rm In Me.Rooms
-        Me.CreateDoors(rm)
+      For Each rm In Rooms
+        CreateDoors(rm)
       Next
 
       ' Now that we have rooms, need we need to genrate connections between each room:
@@ -284,20 +284,20 @@ Start:
       '     After moving, attempt (again) to move in the direction of the target.
       '     If blocked, repeat...
 
-      For Each rm In Me.Rooms
-        Me.UpdateMap(rm)
+      For Each rm In Rooms
+        UpdateMap(rm)
       Next
 
       ' Generate the random start location within one of the rooms at random.
 
-      Dim heroRow = 0
-      Dim heroColumn = 0
+      Dim heroRow As Integer
+      Dim heroColumn As Integer
 
       If True Then
 
-        Dim n = Param.Randomizer.Next(0, Me.Rooms.Count)
+        Dim n = Param.Randomizer.Next(0, Rooms.Count)
 
-        Dim rm = Me.Rooms(n)
+        Dim rm = Rooms(n)
 
         Dim x = Param.Randomizer.Next(1, rm.Width - 1)
         Dim y = Param.Randomizer.Next(1, rm.Height - 1)
@@ -305,7 +305,7 @@ Start:
         heroRow = rm.ActualMapTopLocation + y
         heroColumn = rm.ActualMapLeftLocation + x
 
-        Me.MapCellData(heroRow, heroColumn) = CellType.Hero
+        MapCellData(heroRow, heroColumn) = CellType.Hero
 
       End If
 
@@ -315,9 +315,9 @@ Start:
 
       If True Then
 
-        Dim n = Param.Randomizer.Next(0, Me.Rooms.Count)
+        Dim n = Param.Randomizer.Next(0, Rooms.Count)
 
-        Dim rm = Me.Rooms(n)
+        Dim rm = Rooms(n)
 
         Do
 
@@ -330,7 +330,7 @@ Start:
           If r = heroRow AndAlso c = heroColumn Then
             ' Try again...
           Else
-            Me.MapCellData(r, c) = CellType.StructureStairsDown
+            MapCellData(r, c) = CellType.StructureStairsDown
             Exit Do
           End If
 
@@ -347,10 +347,10 @@ Start:
         For y = 0 To Param.MapHeight - 1
           For x = 0 To Param.MapWidth - 1
 
-            Dim ch = "?"c
+            Dim ch As Char '= "?"c
             Dim fg = ConsoleColor.Gray
 
-            Select Case Me.Tile(x, y)
+            Select Case Tile(x, y)
               Case CellType.Void : ch = " "c
               Case CellType.Hero : ch = "@"c : fg = ConsoleColor.Yellow
               Case CellType.StructureDoor : ch = "+"c : fg = ConsoleColor.White
@@ -376,8 +376,7 @@ Start:
 
         ' Create the tunnels between rooms...
         ' Expects that there are at least two rooms (entry and exit)...
-        Me.CreateRandomTunnels()
-
+        CreateRandomTunnels()
 
         Console.ReadLine()
 
@@ -447,7 +446,7 @@ Start:
         currentY = Param.CellStartY(gridY) + currentY
         currentX = Param.CellStartX(gridX) + currentX
 
-        Me.EntryStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
+        EntryStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
         'Me.EntryStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
 
         ' Pick a random location within the grid for the actual stairs making 
@@ -483,12 +482,12 @@ Start:
         currentY = Param.CellStartY(gridY) + currentY
         currentX = Param.CellStartX(gridX) + currentX
 
-        Me.ExitStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
+        ExitStairLocation = New Coordinate(currentX, currentY) ' Me.GetCoordinateString(currentY, currentX)
         'Me.ExitStairGrid = New Coordinate(gridX, gridY) ' gridY.ToString & gridX.ToString
 
         'End If
 
-        Me.CreateRandomLevel()
+        CreateRandomLevel()
 
       End If
 
@@ -535,11 +534,11 @@ Start:
       For light = 0 To 8
         'TESTING:
         Dim isLit = True 'False
-        For room = 0 To Me.Rooms.Count - 1
-          Dim grid = ((Me.Rooms(room).MapGridRowLocation - 1) * 3) + Me.Rooms(room).MapGridColumnLocation
+        For room = 0 To Rooms.Count - 1
+          Dim grid = ((Rooms(room).MapGridRowLocation - 1) * 3) + Rooms(room).MapGridColumnLocation
           If grid = light + 1 Then
             ' This room is at the currently pointed at location in the map grid...
-            isLit = Me.Rooms(room).IsLit
+            isLit = Rooms(room).IsLit
             Exit For
           End If
         Next
@@ -548,7 +547,7 @@ Start:
 
       For r = 0 To Param.MapHeight - 1
         For c = 0 To Param.MapWidth - 1
-          Dim ch = Me.MapCellTypeToChar(Me.MapCellData(r, c))
+          Dim ch = MapCellTypeToChar(MapCellData(r, c))
           result.Map(r, c) = New Tile(ch) With {.Explored = True}
         Next
       Next
@@ -559,35 +558,35 @@ Start:
 
     Private Function CheckIfRandomRoomExists(gridRow%, gridColumn%) As String
 
-      Dim entryRow As Integer = 0
-      Dim entryColumn As Integer = 0
-      Dim entryRowPointer As Integer = 0
-      Dim entryColumnPointer As Integer = 0
-      Dim exitRow As Integer = 0
-      Dim exitColumn As Integer = 0
-      Dim exitRowPointer As Integer = 0
-      Dim exitColumnPointer As Integer = 0
-      Dim roomRowOffset As Integer = 0 'offset from top side of cell
-      Dim roomColumnOffset As Integer = 0 'offset from left side of cell
+      Dim entryRow As Integer '= 0
+      Dim entryColumn As Integer '= 0
+      Dim entryRowPointer As Integer '= 0
+      Dim entryColumnPointer As Integer '= 0
+      Dim exitRow As Integer '= 0
+      Dim exitColumn As Integer '= 0
+      Dim exitRowPointer As Integer '= 0
+      Dim exitColumnPointer As Integer '= 0
+      'Dim roomRowOffset As Integer '= 0 'offset from top side of cell
+      'Dim roomColumnOffset As Integer '= 0 'offset from left side of cell
       Dim isOK As Boolean = False
-      Dim isEntryCell As Boolean = False ' Default to false and set true if found
-      Dim isExitCell As Boolean = False ' Default to false and set true if found
-      Dim fromX As Integer = 0 'These will hold the allowable random range that the top left corner of the room can be created in
-      Dim toX As Integer = 0
-      Dim fromY As Integer = 0
-      Dim toY As Integer = 0
-      Dim aString As String = ""
+      'Dim isEntryCell As Boolean '= False ' Default to false and set true if found
+      'Dim isExitCell As Boolean '= False ' Default to false and set true if found
+      'Dim fromX As Integer '= 0 'These will hold the allowable random range that the top left corner of the room can be created in
+      'Dim toX As Integer '= 0
+      'Dim fromY As Integer '= 0
+      'Dim toY As Integer '= 0
+      'Dim aString As String '= ""
 
       'NOTE; MUST MAKE SURE TO INITIALIZE EntryStairGrid
 
-      entryRow = Me.EntryStairLocation.Y
-      entryColumn = Me.EntryStairLocation.X
-      exitRow = Me.ExitStairLocation.Y
-      exitColumn = Me.ExitStairLocation.X
-      entryRowPointer = Me.EntryStairLocation.Y
-      entryColumnPointer = Me.EntryStairLocation.X
-      exitRowPointer = Me.ExitStairLocation.Y
-      exitColumnPointer = Me.ExitStairLocation.X
+      entryRow = EntryStairLocation.Y
+      entryColumn = EntryStairLocation.X
+      exitRow = ExitStairLocation.Y
+      exitColumn = ExitStairLocation.X
+      entryRowPointer = EntryStairLocation.Y
+      entryColumnPointer = EntryStairLocation.X
+      exitRowPointer = ExitStairLocation.Y
+      exitColumnPointer = ExitStairLocation.X
 
       ' If a room has an entry or exit point, then the room must surround that point
       ' else it can be anywhere in the grid cell...
@@ -612,12 +611,12 @@ Start:
       Dim result = "" '$"{aString}{roomHeight}-{roomWidth}|"
 
       If entryRow = gridRow AndAlso entryColumn = gridColumn Then
-        result &= Me.CreateRandomEntryRoom(gridRow, gridColumn) ', entryRowPointer, entryColumnPointer)
+        result &= CreateRandomEntryRoom(gridRow, gridColumn) ', entryRowPointer, entryColumnPointer)
         isOK = True ' This is the cell for the entry into the level...
       End If
 
       If exitRow = gridRow AndAlso exitColumn = gridColumn Then
-        result &= Me.CreateRandomExitRoom(gridRow, gridColumn) ', exitRowPointer, exitColumnPointer)
+        result &= CreateRandomExitRoom(gridRow, gridColumn) ', exitRowPointer, exitColumnPointer)
         isOK = True ' This is the cell for the exit from the level...
       End If
 
@@ -627,7 +626,7 @@ Start:
 
         Dim randomNumber = Param.Randomizer.Next(0, 100) + 1
         If randomNumber <= Param.MinHasRoomPercentage Then
-          result &= Me.CreateRandomRoom(gridRow, gridColumn)
+          result &= CreateRandomRoom(gridRow, gridColumn)
           isOK = True
         End If
 
@@ -645,7 +644,7 @@ Start:
 
       For y = 0 To Param.MapHeight - 1
         For x = 0 To Param.MapWidth - 1
-          Me.MapCellData(y, x) = 0
+          MapCellData(y, x) = 0
           'Me.MapCellVisibility(y, x) = False
         Next
       Next
@@ -660,10 +659,10 @@ Start:
 
       If rm.Height > 0 Then
 
-        Me.Rooms.Add(rm)
+        Rooms.Add(rm)
         'result = rm.ToString
 
-        Me.UpdateMap(rm)
+        UpdateMap(rm)
 
         Dim x = Param.Randomizer.Next(1, rm.Width - 1)
         Dim y = Param.Randomizer.Next(1, rm.Height - 1)
@@ -671,7 +670,7 @@ Start:
         Dim r = rm.ActualMapTopLocation + y
         Dim c = rm.ActualMapLeftLocation + x
 
-        Me.MapCellData(r, c) = CellType.Hero 'CellType.StructureStairsUp
+        MapCellData(r, c) = CellType.Hero 'CellType.StructureStairsUp
         'Me.MapCellVisibility(r, c) = Not Me.m_IsFogOfWarActive
 
       End If
@@ -714,9 +713,9 @@ Start:
 
       If rm.Height > 0 Then
 
-        Me.Rooms.Add(rm)
+        Rooms.Add(rm)
 
-        Me.UpdateMap(rm)
+        UpdateMap(rm)
 
         Dim x = Param.Randomizer.Next(1, rm.Width - 1)
         Dim y = Param.Randomizer.Next(1, rm.Height - 1)
@@ -724,7 +723,7 @@ Start:
         Dim r = rm.ActualMapTopLocation + y
         Dim c = rm.ActualMapLeftLocation + x
 
-        Me.MapCellData(r, c) = CellType.StructureStairsDown
+        MapCellData(r, c) = CellType.StructureStairsDown
         'Me.MapCellVisibility(r, c) = Not Me.m_IsFogOfWarActive
 
       End If
@@ -769,45 +768,45 @@ Start:
     ''' </summary>
     Private Sub CreateRandomLevel()
 
-      Dim m_hasRoomFlag As Boolean = False
-      Dim m_entryRow As Integer = 0
-      Dim m_entryColumn As Integer = 0
-      Dim m_entryRowPointer As Integer = 0
-      Dim m_entryColumnPointer As Integer = 0
-      Dim m_exitRow As Integer = 0
-      Dim m_exitColumn As Integer = 0
-      Dim m_exitRowPointer As Integer = 0
-      Dim m_exitColumnPointer As Integer = 0
-      Dim m_roomHeight As Integer = 0
-      Dim m_roomWidth As Integer = 0
-      Dim m_roomRowOffset As Integer = 0 ' Offset from top side of cell
-      Dim m_roomColumnOffset As Integer = 0 ' Offset from left side of cell
+      Dim m_hasRoomFlag As Boolean '= False
+      Dim m_entryRow As Integer '= 0
+      Dim m_entryColumn As Integer '= 0
+      Dim m_entryRowPointer As Integer '= 0
+      Dim m_entryColumnPointer As Integer ' = 0
+      Dim m_exitRow As Integer '= 0
+      Dim m_exitColumn As Integer '= 0
+      Dim m_exitRowPointer As Integer '= 0
+      Dim m_exitColumnPointer As Integer '= 0
+      'Dim m_roomHeight As Integer '= 0
+      'Dim m_roomWidth As Integer '= 0
+      'Dim m_roomRowOffset As Integer '= 0 ' Offset from top side of cell
+      'Dim m_roomColumnOffset As Integer '= 0 ' Offset from left side of cell
       Dim m_randomNumber As Integer = Param.Randomizer.Next()
-      Dim m_mapCharacterValue As Integer = 0
-      Dim m_ISOK As Boolean = False
-      Dim m_ISEntryCell As Boolean = False
-      Dim m_ISExitCell As Boolean = False
-      Dim m_FromX As Integer = 0 ' These will hold the allowable random range that the top left corner of the room can be created in
-      Dim m_ToX As Integer = 0
-      Dim m_FromY As Integer = 0
-      Dim m_ToY As Integer = 0
-      Dim aString As String = ""
+      'Dim m_mapCharacterValue As Integer '= 0
+      'Dim m_ISOK As Boolean '= False
+      'Dim m_ISEntryCell As Boolean '= False
+      'Dim m_ISExitCell As Boolean '= False
+      'Dim m_FromX As Integer '= 0 ' These will hold the allowable random range that the top left corner of the room can be created in
+      'Dim m_ToX As Integer '= 0
+      'Dim m_FromY As Integer '= 0
+      'Dim m_ToY As Integer '= 0
+      Dim aString As String '= ""
 
-      Me.ClearMapData()
+      ClearMapData()
 
-      m_entryRow = Me.EntryStairLocation.Y
-      m_entryColumn = Me.EntryStairLocation.X
-      m_exitRow = Me.ExitStairLocation.Y
-      m_exitColumn = Me.ExitStairLocation.X
+      m_entryRow = EntryStairLocation.Y
+      m_entryColumn = EntryStairLocation.X
+      m_exitRow = ExitStairLocation.Y
+      m_exitColumn = ExitStairLocation.X
 
-      m_entryRowPointer = Me.EntryStairLocation.Y
-      m_entryColumnPointer = Me.EntryStairLocation.X
-      m_exitRowPointer = Me.ExitStairLocation.Y
-      m_exitColumnPointer = Me.ExitStairLocation.X
+      m_entryRowPointer = EntryStairLocation.Y
+      m_entryColumnPointer = EntryStairLocation.X
+      m_exitRowPointer = ExitStairLocation.Y
+      m_exitColumnPointer = ExitStairLocation.X
 
       For gridRow = 1 To Param.GridRowCount
         For gridColumn = 1 To Param.GridColumnCount
-          aString = Me.CheckIfRandomRoomExists(gridRow, gridColumn)
+          aString = CheckIfRandomRoomExists(gridRow, gridColumn)
           ' Keep track of which grid cells have rooms for tunnel creation...
           'astring will in the form of height-width|top-left or BLANK if no room exists
           'Me.MapCellHasRoom(gridRow, gridColumn) = aString
@@ -819,7 +818,7 @@ Start:
       For y = 0 To Param.MapHeight - 1
         For x = 0 To Param.MapWidth - 1
           Console.SetCursorPosition(x, y + 1)
-          Select Case Me.Tile(x, y)
+          Select Case Tile(x, y)
             Case CellType.Void : Console.Write(" "c)
             Case CellType.StructureDoor : Console.Write("+")
             Case CellType.StructureFloor : Console.Write(".")
@@ -831,7 +830,7 @@ Start:
 
       ' Create the tunnels between rooms...
       ' Expects that there are at least two rooms (entry and exit)...
-      Me.CreateRandomTunnels()
+      CreateRandomTunnels()
 
     End Sub
 
@@ -840,7 +839,7 @@ Start:
       Dim rm = Room.CreateRoom(gridRow, gridColumn)
 
       If rm.Height > 0 Then
-        Me.Rooms.Add(rm)
+        Rooms.Add(rm)
       Else
         Stop
       End If
@@ -926,11 +925,11 @@ Start:
       Dim rm = Room.CreateRandomRoom(gridRow, gridColumn)
 
       If rm.Height > 0 Then
-        Me.Rooms.Add(rm)
+        Rooms.Add(rm)
         result = rm.ToString
       End If
 
-      Me.UpdateMap(rm)
+      UpdateMap(rm)
 
       Return result
 
@@ -960,15 +959,15 @@ Start:
     ''' </returns>
     Private Sub CreateRandomTunnels()
 
-      For position = 0 To Me.Rooms.Count - 1
+      For position = 0 To Rooms.Count - 1
 
-        Dim rm = Me.Rooms(position)
+        Dim rm = Rooms(position)
 
         For d = 0 To rm.Doors.Count - 1
 
           Dim door = rm.Doors(d)
 
-          Dim mat = Me.FindDoormat(door.X, door.Y)
+          Dim mat = FindDoormat(door.X, door.Y)
           If Me.Tile(mat.X, mat.Y) = CellType.StructureTunnel Then
             ' Already dug..
             Continue For
@@ -977,7 +976,7 @@ Start:
           Dim startDoorY = door.Y
           Dim startDoorX = door.X
 
-          Dim coord = Me.FindNearestDoor(rm, door)
+          Dim coord = FindNearestDoor(rm, door)
 
           If coord Is Nothing Then Stop
 
@@ -989,7 +988,7 @@ Start:
             ' Set to tunnel to start just outside of the from door and 
             ' to end just outside of the target door...
 
-            coord = Me.FindDoormat(startDoorX, startDoorY)
+            coord = FindDoormat(startDoorX, startDoorY)
 
             If coord Is Nothing Then Stop
 
@@ -998,11 +997,11 @@ Start:
               Dim startY = coord.Y
               Dim startX = coord.X
 
-              Me.Dig(startX, startY, 0)
+              Dig(startX, startY, 0)
 
               ' Set tunnel to end just outside target door...
 
-              coord = Me.FindDoormat(targetDoorX, targetDoorY)
+              coord = FindDoormat(targetDoorX, targetDoorY)
 
               If coord Is Nothing Then Stop
 
@@ -1011,12 +1010,12 @@ Start:
                 Dim targetY = coord.Y
                 Dim targetX = coord.X
 
-                Dim createdStepCount = Me.CreateUtilityTunnel(startX, startY, targetX, targetY)
+                Dim createdStepCount = CreateUtilityTunnel(startX, startY, targetX, targetY)
                 If createdStepCount > 0 Then
                   ' Add tunnel to room connections...
                   coord = rm.GetConnectionNumber(startDoorY, startDoorX, targetDoorY, targetDoorX)
                   If coord Is Nothing Then Stop
-                  Me.RoomConnections.Add(coord)
+                  RoomConnections.Add(coord)
                 Else
                   Stop
                 End If
@@ -1034,7 +1033,7 @@ Start:
       'make sure that each room is accessible somehow.
 
       If 1 = 0 Then
-        Me.VerifyAllRoomsAccessible()
+        VerifyAllRoomsAccessible()
       End If
 
     End Sub
@@ -1099,7 +1098,7 @@ Start:
           secondary = If(diffX > 0, Direction.Left, Direction.Right)
         End If
 
-        Dim possible = Me.DigDirections(cx, cy)
+        Dim possible = DigDirections(cx, cy)
 
         For index = possible.Count - 1 To 0 Step -1
           If possible(index) = OppositeDirection(previous) Then
@@ -1137,7 +1136,7 @@ Start:
 
         If Me.Tile(cx, cy) = CellType.StructureTunnel Then Exit Do
 
-        Me.Dig(cx, cy, 1)
+        Dig(cx, cy, 1)
 
         count += 1
 
@@ -1200,7 +1199,7 @@ Start:
 
       For result = 1 To (Param.MapHeight * Param.MapWidth)
 
-        Dim currentData = Me.DigDirections(aCurrentColumn, aCurrentRow)
+        Dim currentData = DigDirections(aCurrentColumn, aCurrentRow)
 
         If aCurrentRow = targetY Then
           If aCurrentColumn - targetX > 0 Then
@@ -1236,7 +1235,7 @@ Start:
           If tunnelDirection = alternateDirection Then
             'If 1 = 0 Then
             'need to tunnel around object
-            Dim coord = Me.TunnelAroundObstacle(aCurrentRow, aCurrentColumn, targetY, targetX, tunnelDirection)
+            Dim coord = TunnelAroundObstacle(aCurrentRow, aCurrentColumn, tunnelDirection)
             If coord IsNot Nothing Then
               aSeekRow = coord.Y
               aSeekColumn = coord.X
@@ -1269,7 +1268,7 @@ Start:
           End If
         End If
 
-        Me.Dig(aSeekColumn, aSeekRow, 1)
+        Dig(aSeekColumn, aSeekRow, 1)
 
         aCurrentColumn = aSeekColumn
         aCurrentRow = aSeekRow
@@ -1344,7 +1343,7 @@ Start:
           Throw New ArgumentOutOfRangeException("y")
         End If
 
-        Return Me.MapCellData(y, x)
+        Return MapCellData(y, x)
 
       End Get
       Set(value As CellType)
@@ -1357,7 +1356,7 @@ Start:
           Throw New ArgumentOutOfRangeException("y")
         End If
 
-        Me.MapCellData(y, x) = value
+        MapCellData(y, x) = value
 
       End Set
     End Property
@@ -1380,23 +1379,23 @@ Start:
 
       Dim result = New List(Of Direction)
 
-      Dim modifiers = {Me.ModifierUp,
-                       Me.ModifierDown,
-                       Me.ModifierLeft,
-                       Me.ModifierRight}
+      Dim modifiers = {ModifierUp,
+                       ModifierDown,
+                       ModifierLeft,
+                       ModifierRight}
 
       For Each modifier In modifiers
         Dim seekX = x + modifier.X
         Dim seekY = y + modifier.Y
         If seekX.Between(0, Param.MapWidth - 1) AndAlso
            seekY.Between(0, Param.MapHeight - 1) Then
-          Select Case Me.Tile(seekX, seekY)
+          Select Case Tile(seekX, seekY)
             Case CellType.Void, CellType.StructureTunnel
               Select Case modifier
-                Case Me.ModifierUp : result.Add(Direction.Up)
-                Case Me.ModifierDown : result.Add(Direction.Down)
-                Case Me.ModifierLeft : result.Add(Direction.Left)
-                Case Me.ModifierRight : result.Add(Direction.Right)
+                Case ModifierUp : result.Add(Direction.Up)
+                Case ModifierDown : result.Add(Direction.Down)
+                Case ModifierLeft : result.Add(Direction.Left)
+                Case ModifierRight : result.Add(Direction.Right)
                 Case Else
                   Stop
               End Select
@@ -1419,7 +1418,7 @@ Start:
         Throw New ArgumentOutOfRangeException("y")
       End If
 
-      Me.Tile(x, y) = CellType.StructureTunnel
+      Tile(x, y) = CellType.StructureTunnel
 
       If Debugger.IsAttached Then
 
@@ -1435,8 +1434,8 @@ Start:
 
         Console.SetCursorPosition(x, y + 1)
 
-        Me.SpinnerIndex += 1 : If Me.SpinnerIndex > Me.SpinnerChar.Length - 1 Then Me.SpinnerIndex = 0
-        Console.Write(Me.SpinnerChar(Me.SpinnerIndex))
+        SpinnerIndex += 1 : If SpinnerIndex > SpinnerChar.Length - 1 Then SpinnerIndex = 0
+        Console.Write(SpinnerChar(SpinnerIndex))
 
         Threading.Thread.Sleep(100)
         Console.SetCursorPosition(x, y + 1)
@@ -1447,7 +1446,7 @@ Start:
     End Sub
 
     'Private SpinnerChar As String = "\|/-"
-    Private SpinnerChar As String = "|+|-+-"
+    Private ReadOnly SpinnerChar As String = "|+|-+-"
     Private SpinnerIndex As Integer = 0
 
     Private Function FindDoormat(x%, y%) As Coordinate
@@ -1460,17 +1459,17 @@ Start:
         Throw New ArgumentOutOfRangeException("y")
       End If
 
-      Dim modifiers = {Me.ModifierLeft,
-                       Me.ModifierUp,
-                       Me.ModifierRight,
-                       Me.ModifierDown}
+      Dim modifiers = {ModifierLeft,
+                       ModifierUp,
+                       ModifierRight,
+                       ModifierDown}
 
       For Each modifier In modifiers
         Dim seekX = x + modifier.X
         Dim seekY = y + modifier.Y
         If seekX.Between(0, Param.MapWidth - 1) AndAlso
            seekY.Between(0, Param.MapHeight - 1) Then
-          Select Case Me.Tile(seekX, seekY)
+          Select Case Tile(seekX, seekY)
             Case CellType.Void, CellType.StructureTunnel
               Return New Coordinate(seekX, seekY)
             Case Else
@@ -1498,7 +1497,7 @@ Start:
 
       Dim pdx = Integer.MaxValue \ 2
       Dim pdy = Integer.MaxValue \ 2
-      For Each r In Me.Rooms
+      For Each r In Rooms
         If r IsNot cell Then
           For Each d In r.Doors
             Dim dx = Math.Abs(coord.X - d.X)
@@ -1530,17 +1529,17 @@ Start:
 
               Dim toPosition = Param.GridPositionToIndex(gridColumn, gridRow - 1)
 
-              For r = 0 To Me.Rooms.Count - 1
+              For r = 0 To Rooms.Count - 1
 
-                If toPosition = Me.Rooms(r).GridPosition Then
+                If toPosition = Rooms(r).GridPosition Then
 
-                  Dim connection = New Coordinate(cell.GridPosition, Me.Rooms(r).GridPosition)
-                  Dim reverseConnection = New Coordinate(Me.Rooms(r).GridPosition, cell.GridPosition)
+                  Dim connection = New Coordinate(cell.GridPosition, Rooms(r).GridPosition)
+                  Dim reverseConnection = New Coordinate(Rooms(r).GridPosition, cell.GridPosition)
                   Dim isFound = False
 
-                  For c = 0 To Me.RoomConnections.Count - 1
-                    If connection = Me.RoomConnections(c) OrElse
-                       reverseConnection = Me.RoomConnections(c) Then
+                  For c = 0 To RoomConnections.Count - 1
+                    If connection = RoomConnections(c) OrElse
+                       reverseConnection = RoomConnections(c) Then
                       isFound = True
                       Exit For
                     End If
@@ -1548,7 +1547,7 @@ Start:
 
                   If Not isFound Then
                     ' Do not use room if already has a connection...
-                    foundList.Add(Me.Rooms(r))
+                    foundList.Add(Rooms(r))
                   End If
 
                   Exit For
@@ -1563,17 +1562,17 @@ Start:
 
               Dim toPosition = Param.GridPositionToIndex(gridColumn, gridRow + 1)
 
-              For r = 0 To Me.Rooms.Count - 1
+              For r = 0 To Rooms.Count - 1
 
-                If toPosition = Me.Rooms(r).GridPosition Then
+                If toPosition = Rooms(r).GridPosition Then
 
-                  Dim connection = New Coordinate(cell.GridPosition, Me.Rooms(r).GridPosition)
-                  Dim reverseConnection = New Coordinate(Me.Rooms(r).GridPosition, cell.GridPosition)
+                  Dim connection = New Coordinate(cell.GridPosition, Rooms(r).GridPosition)
+                  Dim reverseConnection = New Coordinate(Rooms(r).GridPosition, cell.GridPosition)
                   Dim isFound = False
 
-                  For c = 0 To Me.RoomConnections.Count - 1
-                    If connection = Me.RoomConnections(c) OrElse
-                       reverseConnection = Me.RoomConnections(c) Then
+                  For c = 0 To RoomConnections.Count - 1
+                    If connection = RoomConnections(c) OrElse
+                       reverseConnection = RoomConnections(c) Then
                       isFound = True
                       Exit For
                     End If
@@ -1581,7 +1580,7 @@ Start:
 
                   If Not isFound Then
                     ' Do not use room if already has a connection...
-                    foundList.Add(Me.Rooms(r))
+                    foundList.Add(Rooms(r))
                   End If
 
                   Exit For
@@ -1596,17 +1595,17 @@ Start:
 
               Dim toPosition = Param.GridPositionToIndex(gridColumn - 1, gridRow)
 
-              For r = 0 To Me.Rooms.Count - 1
+              For r = 0 To Rooms.Count - 1
 
-                If toPosition = Me.Rooms(r).GridPosition Then
+                If toPosition = Rooms(r).GridPosition Then
 
-                  Dim connection = New Coordinate(cell.GridPosition, Me.Rooms(r).GridPosition)
-                  Dim reverseConnection = New Coordinate(Me.Rooms(r).GridPosition, cell.GridPosition)
+                  Dim connection = New Coordinate(cell.GridPosition, Rooms(r).GridPosition)
+                  Dim reverseConnection = New Coordinate(Rooms(r).GridPosition, cell.GridPosition)
                   Dim isFound = False
 
-                  For c As Integer = 0 To Me.RoomConnections.Count - 1
-                    If connection = Me.RoomConnections(c) OrElse
-                       reverseConnection = Me.RoomConnections(c) Then
+                  For c As Integer = 0 To RoomConnections.Count - 1
+                    If connection = RoomConnections(c) OrElse
+                       reverseConnection = RoomConnections(c) Then
                       isFound = True
                       Exit For
                     End If
@@ -1614,7 +1613,7 @@ Start:
 
                   If Not isFound Then
                     ' Do not use room if already has a connection...
-                    foundList.Add(Me.Rooms(r))
+                    foundList.Add(Rooms(r))
                   End If
 
                   Exit For
@@ -1629,17 +1628,17 @@ Start:
 
               Dim toPosition = Param.GridPositionToIndex(gridColumn + 1, gridRow)
 
-              For r = 0 To Me.Rooms.Count - 1
+              For r = 0 To Rooms.Count - 1
 
-                If toPosition = Me.Rooms(r).GridPosition Then
+                If toPosition = Rooms(r).GridPosition Then
 
-                  Dim connection = New Coordinate(cell.GridPosition, Me.Rooms(r).GridPosition)
-                  Dim reverseConnection = New Coordinate(Me.Rooms(r).GridPosition, cell.GridPosition)
+                  Dim connection = New Coordinate(cell.GridPosition, Rooms(r).GridPosition)
+                  Dim reverseConnection = New Coordinate(Rooms(r).GridPosition, cell.GridPosition)
                   Dim isFound = False
 
-                  For connect = 0 To Me.RoomConnections.Count - 1
-                    If connection = Me.RoomConnections(connect) OrElse
-                       reverseConnection = Me.RoomConnections(connect) Then
+                  For connect = 0 To RoomConnections.Count - 1
+                    If connection = RoomConnections(connect) OrElse
+                       reverseConnection = RoomConnections(connect) Then
                       isFound = True
                       Exit For
                     End If
@@ -1647,7 +1646,7 @@ Start:
 
                   If Not isFound Then
                     ' Do not use room if already has a connection...
-                    foundList.Add(Me.Rooms(r))
+                    foundList.Add(Rooms(r))
                   End If
 
                   Exit For
@@ -1671,9 +1670,9 @@ Start:
       Else
         ' Need to pick any random room...
         For pass = 0 To 10
-          Dim toPosition = Param.Randomizer.Next(Me.Rooms.Count)
-          If Not Me.Rooms(toPosition).GridPosition = cell.GridPosition Then
-            Return Me.Rooms(toPosition).Doors(0)
+          Dim toPosition = Param.Randomizer.Next(Rooms.Count)
+          If Not Rooms(toPosition).GridPosition = cell.GridPosition Then
+            Return Rooms(toPosition).Doors(0)
           End If
         Next
       End If
@@ -1692,21 +1691,21 @@ Start:
 
     'End Function
 
-    Private Function GetRoom(number%) As Room
+    'Private Function GetRoom(number%) As Room
 
-      If Not number.Between(1, Param.GridRowCount * Param.GridColumnCount) Then
-        Throw New ArgumentOutOfRangeException("number")
-      End If
+    '  If Not number.Between(1, Param.GridRowCount * Param.GridColumnCount) Then
+    '    Throw New ArgumentOutOfRangeException("number")
+    '  End If
 
-      For Each rm In Me.Rooms
-        If rm.GridPosition = number Then
-          Return rm
-        End If
-      Next
+    '  For Each rm In Rooms
+    '    If rm.GridPosition = number Then
+    '      Return rm
+    '    End If
+    '  Next
 
-      Return Nothing
+    '  Return Nothing
 
-    End Function
+    'End Function
 
     Private Function GetRoom(x%, y%) As Room
 
@@ -1730,7 +1729,7 @@ Start:
 
         Dim number = ((row - 1) * Param.GridColumnCount) + col
 
-        For Each rm In Me.Rooms
+        For Each rm In Rooms
           If rm.GridPosition = number Then
             Return rm
           End If
@@ -1837,11 +1836,11 @@ Start:
     ''' </summary>
     ''' <param name="currentRow"></param>
     ''' <param name="currentColumn"></param>
-    ''' <param name="targetRow"></param>
-    ''' <param name="targetColumn"></param>
     ''' <param name="direction"></param>
+    ''' 
+    ''' 
     ''' <returns></returns>
-    Private Function TunnelAroundObstacle(currentRow%, currentColumn%, targetRow%, targetColumn%, direction As Direction) As Coordinate
+    Private Function TunnelAroundObstacle(currentRow%, currentColumn%, direction As Direction) As Coordinate
 
       Dim aReturnValue As Coordinate
       'Dim isFound As Boolean = True
@@ -1849,8 +1848,8 @@ Start:
       'Dim aAvoidanceDirection As Direction
       'Dim aBlockingRoomNumber As Integer = 0
       'Dim aBlockingRoom As New Room
-      Dim aDistanceOne As Integer = 0
-      Dim aDistanceTwo As Integer = 0
+      Dim aDistanceOne As Integer '= 0
+      Dim aDistanceTwo As Integer '= 0
       Dim aStatus As String = "B" ' B = going around block, C = continuing past block
 
       'Dim availableDirections = Me.DigDirections(currentColumn, currentRow)
@@ -1882,22 +1881,22 @@ Start:
 
       Dim tile = Me.Tile(seekX, seekY)
 
-      Dim isFound = True
+      Dim isFound As Boolean '= True
 
       If tile = CellType.Void OrElse tile = CellType.StructureTunnel Then
 
         ' Original direction clear...
-        Me.Dig(seekX, seekY, 2)
+        Dig(seekX, seekY, 2)
 
         ' Take the step in that direction then...
-        isFound = False ' The way is clear so exit...
+        'isFound = False ' The way is clear so exit...
         aCurrentY = seekY
         aCurrentX = seekX
         aReturnValue = New Coordinate(aCurrentX, aCurrentY)
 
       Else
 
-        Dim aBlockingRoom = Me.GetRoom(seekX, seekY)
+        Dim aBlockingRoom = GetRoom(seekX, seekY)
 
         Dim aAvoidanceDirection As Direction
 
@@ -1933,7 +1932,7 @@ Start:
             Stop
           End If
 
-          Dim availableDirections = Me.DigDirections(aCurrentX, aCurrentY)
+          Dim availableDirections = DigDirections(aCurrentX, aCurrentY)
 
           If availableDirections.Count > 0 Then
             'there are available moves from here
@@ -1988,7 +1987,7 @@ Start:
                   Case Else
                     Stop
                 End Select
-                Me.Dig(seekX, seekY, 2)
+                Dig(seekX, seekY, 2)
                 aCurrentX = seekX
                 aCurrentY = seekY
               End If
@@ -2021,7 +2020,7 @@ Start:
                   Case Else
                     Stop
                 End Select
-                Me.Dig(seekX, seekY, 2)
+                Dig(seekX, seekY, 2)
                 aCurrentX = seekX
                 aCurrentY = seekY
               Else
@@ -2050,23 +2049,23 @@ Start:
     ''' <returns>A string with the top and left point of the room encoded as T-L</returns>
     Private Function UpdateMap$(rm As Room)
 
-      Dim aReturnValue As String = ""
-      Dim isDoorTop As Boolean = False
-      Dim isDoorLeft As Boolean = False
-      Dim isDoorRight As Boolean = False
-      Dim isDoorBottom As Boolean = False
-      Dim isAnyDoor As Boolean = False
-      Dim rNumber As Integer = 0
-      Dim xNumber As Integer = 0
+      Dim aReturnValue As String '= ""
+      'Dim isDoorTop As Boolean '= False
+      'Dim isDoorLeft As Boolean '= False
+      'Dim isDoorRight As Boolean '= False
+      'Dim isDoorBottom As Boolean '= False
+      'Dim isAnyDoor As Boolean '= False
+      'Dim rNumber As Integer '= 0
+      'Dim xNumber As Integer '= 0
       Dim aDataArray() As String = {""}
-      Dim aFirstPtr As Integer = 0
-      Dim aSecondPtr As Integer = 0
+      'Dim aFirstPtr As Integer '= 0
+      'Dim aSecondPtr As Integer '= 0
       Dim aTopPtr As Integer = Param.MapHeight
       Dim aLeftPtr As Integer = Param.MapWidth
-      Dim aDirectionPtr As String = ""
-      Dim aDoorCharacter As Integer = 0
-      Dim x As Integer = 0
-      Dim y As Integer = 0
+      'Dim aDirectionPtr As String '= ""
+      'Dim aDoorCharacter As Integer '= 0
+      Dim x As Integer '= 0
+      Dim y As Integer '= 0
 
       If 1 = 0 Then
 
@@ -2112,7 +2111,7 @@ Start:
             y = (r + rm.MapTopLocation + ((rm.MapGridRowLocation - 1) * 7)) - 1
             x = (c + rm.MapLeftLocation + ((rm.MapGridColumnLocation - 1) * 26)) - 1
 
-            Me.MapCellData(y, x) = CType(ch, CellType)
+            MapCellData(y, x) = CType(ch, CellType)
             'Me.MapCellVisibility(y, x) = Not Me.m_IsFogOfWarActive ' testing m_TestMode 'testing true makes all visible
 
             If y < aTopPtr Then
@@ -2162,7 +2161,7 @@ Start:
             'yPtr = (r + rm.MapTopLocation + ((rm.MapGridRowLocation - 1) * 7)) - 1
             'xPtr = (c + rm.MapLeftLocation + ((rm.MapGridColumnLocation - 1) * 26)) - 1
 
-            Me.MapCellData(y, x) = cell
+            MapCellData(y, x) = cell
             'Me.MapCellVisibility(y, x) = Not Me.m_IsFogOfWarActive
 
             ' ?????
@@ -2185,7 +2184,7 @@ Start:
           y = doorData.Y
           x = doorData.X
           'Dim ct = doorData.Type
-          Me.MapCellData(y, x) = CellType.StructureDoor ' ct
+          MapCellData(y, x) = CellType.StructureDoor ' ct
           'Me.MapCellVisibility(y, x) = Not Me.m_IsFogOfWarActive ' testing m_TestMode 'testing true makes all visible
 
         Next
@@ -2220,7 +2219,7 @@ Start:
 
       Dim connectionList As New List(Of Coordinate)
 
-      For Each connection In Me.RoomConnections
+      For Each connection In RoomConnections
         connectionList.Add(connection)
         If Not connection.X = connection.Y Then
           connectionList.Add(New Coordinate(connection.Y, connection.X))
@@ -2347,7 +2346,7 @@ Start:
             Dim fromRoom = stepList(0)
             Dim toRoom = 0
 
-            For Each foundRoom In Me.Rooms
+            For Each foundRoom In Rooms
               If foundRoom.GridPosition = fromRoom Then
                 ' Get a door in this room to start from...
                 fromDoorY = foundRoom.Doors(0).Y
@@ -2359,7 +2358,7 @@ Start:
             ' Now find a room not in stepList to connect to...
             ' Try rooms next door first...
 
-            For Each foundRoom As Room In Me.Rooms
+            For Each foundRoom As Room In Rooms
 
               Dim isFound = False
 
@@ -2389,7 +2388,7 @@ Start:
 
               ' If could not find room next door then take any room...
 
-              For Each foundRoom In Me.Rooms
+              For Each foundRoom In Rooms
 
                 Dim isFound = False
 
@@ -2412,7 +2411,7 @@ Start:
 
             End If
 
-            Dim createdStepCount = Me.CreateUtilityTunnel(fromDoorX, fromDoorY, toDoorX, toDoorY)
+            Dim createdStepCount = CreateUtilityTunnel(fromDoorX, fromDoorY, toDoorX, toDoorY)
 
             If createdStepCount > 0 Then
               ' Add new tunnel to connectionslist and continue..

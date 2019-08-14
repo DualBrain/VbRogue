@@ -18,24 +18,24 @@ Namespace Global.Rogue.Core
       Select Case type
         Case TileType.Hero
           Me.Type = TileType.Floor
-          Me.HeroStart = True
+          HeroStart = True
         Case Else
       End Select
 
       ' Is the tile "pass through"...
       Select Case type
         Case TileType.Hero, TileType.Door, TileType.Tunnel, TileType.Floor, TileType.Hole
-          Me.PassThrough = True
+          PassThrough = True
         Case Else
-          Me.PassThrough = False
+          PassThrough = False
       End Select
 
       ' Is the tile "secret"...
       Select Case type
         Case TileType.SecretHorizontal, TileType.SecretVertical
-          Me.Secret = True
+          Secret = True
         Case Else
-          Me.Secret = False
+          Secret = False
       End Select
 
     End Sub
@@ -51,13 +51,13 @@ Namespace Global.Rogue.Core
 
     Public Function FoundSecret(forced As Boolean) As Boolean
 
-      If Me.Secret Then
+      If Secret Then
 
-        Me.SearchCount += 1
+        SearchCount += 1
 
         Dim probMiss As Double
 
-        Select Case Me.SearchCount
+        Select Case SearchCount
           Case 1 : probMiss = 0.8
           Case 2 : probMiss = 0.64
           Case 3 : probMiss = 0.512
@@ -75,8 +75,8 @@ Namespace Global.Rogue.Core
         Dim v = Param.Randomizer.NextDouble
 
         If forced OrElse v > probMiss Then
-          Me._Secret = False
-          Me._PassThrough = True
+          _Secret = False
+          _PassThrough = True
           Return True
         End If
 
@@ -87,7 +87,7 @@ Namespace Global.Rogue.Core
     End Function
 
     Public Overrides Function ToString() As String
-      Select Case Me.Type
+      Select Case Type
         Case TileType.Void : Return " "
         Case TileType.Floor : Return "."
         Case TileType.Tunnel : Return "▓"
@@ -100,13 +100,13 @@ Namespace Global.Rogue.Core
         Case TileType.Door : Return "╬"
         Case TileType.Hole : Return "≡"
         Case TileType.SecretHorizontal
-          If Me.Secret Then
+          If Secret Then
             Return "═"
           Else
             Return "╬"
           End If
         Case TileType.SecretVertical
-          If Me.Secret Then
+          If Secret Then
             Return "║"
           Else
             Return "╬"

@@ -89,7 +89,7 @@ Module Program
 
   Private m_accumulator$
 
-  Private m_messages As New Queue(Of String)
+  Private ReadOnly m_messages As New Queue(Of String)
 
   Private Enum HungerStage
     Healthy
@@ -113,27 +113,27 @@ Module Program
     Public ReadOnly Property HealRate As Integer
   End Class
 
-  Private ReadOnly XpTable As XP() = {New XP(0, 0, 1, 18),
-                               New XP(1, 10, 1, 17),
-                               New XP(2, 20, 1, 15),
-                               New XP(3, 40, 1, 13),
-                               New XP(4, 80, 1, 11),
-                               New XP(5, 160, 1, 9),
-                               New XP(6, 320, 1, 7),
-                               New XP(7, 640, 1, 3),
-                               New XP(8, 1280, 2, 3),
-                               New XP(9, 2560, 3, 3),
-                               New XP(10, 5120, 4, 3),
-                               New XP(11, 10240, 5, 3),
-                               New XP(12, 20480, 6, 3),
-                               New XP(13, 40960, 7, 3),
-                               New XP(14, 81920, 8, 3),
-                               New XP(15, 163840, 9, 3),
-                               New XP(16, 327680, 10, 3),
-                               New XP(17, 655360, 11, 3),
-                               New XP(18, 1310720, 12, 3),
-                               New XP(19, 2621440, 13, 3),
-                               New XP(20, 5242880, 14, 3)}
+  'Private ReadOnly XpTable As XP() = {New XP(0, 0, 1, 18),
+  '                             New XP(1, 10, 1, 17),
+  '                             New XP(2, 20, 1, 15),
+  '                             New XP(3, 40, 1, 13),
+  '                             New XP(4, 80, 1, 11),
+  '                             New XP(5, 160, 1, 9),
+  '                             New XP(6, 320, 1, 7),
+  '                             New XP(7, 640, 1, 3),
+  '                             New XP(8, 1280, 2, 3),
+  '                             New XP(9, 2560, 3, 3),
+  '                             New XP(10, 5120, 4, 3),
+  '                             New XP(11, 10240, 5, 3),
+  '                             New XP(12, 20480, 6, 3),
+  '                             New XP(13, 40960, 7, 3),
+  '                             New XP(14, 81920, 8, 3),
+  '                             New XP(15, 163840, 9, 3),
+  '                             New XP(16, 327680, 10, 3),
+  '                             New XP(17, 655360, 11, 3),
+  '                             New XP(18, 1310720, 12, 3),
+  '                             New XP(19, 2621440, 13, 3),
+  '                             New XP(20, 5242880, 14, 3)}
 
   'Private Enum Display
   '  Level
@@ -691,7 +691,9 @@ Module Program
     ResetColor()
     Clear()
 
+#Disable Warning IDE0028 ' Simplify collection initialization
     Dim commands = New List(Of KeyCommand)
+#Enable Warning IDE0028 ' Simplify collection initialization
 
     ' Page 1
 
@@ -837,33 +839,32 @@ Module Program
     ResetColor()
     Clear()
 
-    Dim symbols = New List(Of Symbol)
-
     ' Page 1
-
-    symbols.Add(New Symbol(".", "the floor", ConsoleColor.DarkGreen))
-    symbols.Add(New Symbol("☺", "the hero", ConsoleColor.Yellow))
-    symbols.Add(New Symbol("♣", "some food", ConsoleColor.Red))
-    symbols.Add(New Symbol("♀", "the amulet of yendor", ConsoleColor.Blue))
-    symbols.Add(New Symbol("♪", "a scroll", ConsoleColor.Blue))
-    symbols.Add(New Symbol("↑", "a weapon", ConsoleColor.Blue))
-    symbols.Add(New Symbol("◘", "a piece of armor", ConsoleColor.Blue))
-    symbols.Add(New Symbol("✶", "some gold", ConsoleColor.Yellow))
-    symbols.Add(New Symbol("¥", "a magic staff", ConsoleColor.Blue))
-    symbols.Add(New Symbol("¡", "a potion", ConsoleColor.Blue))
-    symbols.Add(New Symbol("○", "a magic ring", ConsoleColor.Blue))
-    symbols.Add(New Symbol("▓", "a passage", ConsoleColor.Gray))
-    symbols.Add(New Symbol("╬", "a door", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("╔", "an upper left corner", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("♦", "a trap", ConsoleColor.Magenta))
-    symbols.Add(New Symbol("═", "a horizontal wall", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("╝", "a lower right corner", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("╚", "a lower left corner", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("║", "a vertical wall", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("╗", "an upper right corner", ConsoleColor.DarkYellow))
-    symbols.Add(New Symbol("≡", "a stair case", ConsoleColor.Green))
-    symbols.Add(New Symbol("$,+", "safe and perilous magic", ConsoleColor.Gray))
-    symbols.Add(New Symbol("A-Z", "26 different monsters", ConsoleColor.Gray))
+    Dim symbols = New List(Of Symbol) From {
+      New Symbol(".", "the floor", ConsoleColor.DarkGreen),
+      New Symbol("☺", "the hero", ConsoleColor.Yellow),
+      New Symbol("♣", "some food", ConsoleColor.Red),
+      New Symbol("♀", "the amulet of yendor", ConsoleColor.Blue),
+      New Symbol("♪", "a scroll", ConsoleColor.Blue),
+      New Symbol("↑", "a weapon", ConsoleColor.Blue),
+      New Symbol("◘", "a piece of armor", ConsoleColor.Blue),
+      New Symbol("✶", "some gold", ConsoleColor.Yellow),
+      New Symbol("¥", "a magic staff", ConsoleColor.Blue),
+      New Symbol("¡", "a potion", ConsoleColor.Blue),
+      New Symbol("○", "a magic ring", ConsoleColor.Blue),
+      New Symbol("▓", "a passage", ConsoleColor.Gray),
+      New Symbol("╬", "a door", ConsoleColor.DarkYellow),
+      New Symbol("╔", "an upper left corner", ConsoleColor.DarkYellow),
+      New Symbol("♦", "a trap", ConsoleColor.Magenta),
+      New Symbol("═", "a horizontal wall", ConsoleColor.DarkYellow),
+      New Symbol("╝", "a lower right corner", ConsoleColor.DarkYellow),
+      New Symbol("╚", "a lower left corner", ConsoleColor.DarkYellow),
+      New Symbol("║", "a vertical wall", ConsoleColor.DarkYellow),
+      New Symbol("╗", "an upper right corner", ConsoleColor.DarkYellow),
+      New Symbol("≡", "a stair case", ConsoleColor.Green),
+      New Symbol("$,+", "safe and perilous magic", ConsoleColor.Gray),
+      New Symbol("A-Z", "26 different monsters", ConsoleColor.Gray)
+    }
 
     Dim page = 0
     Dim index = 0
@@ -1047,7 +1048,7 @@ Module Program
     ForegroundColor = ConsoleColor.Black
     BackgroundColor = ConsoleColor.Gray
     SetCursorPosition(74, 24)
-    Write($"{DateTime.Now:h:mm}".PadLeft(5))
+    Write($"{Date.Now:h:mm}".PadLeft(5))
   End Sub
 
   Private Sub DrawHud()

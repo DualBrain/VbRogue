@@ -27,7 +27,7 @@ Namespace Global.Rogue.Core
   Public NotInheritable Class Room
 
     Public Sub New()
-      Me.Initialize() 'Sets the room to empty
+      Initialize() 'Sets the room to empty
     End Sub
 
     ''' <summary>
@@ -44,15 +44,15 @@ Namespace Global.Rogue.Core
 
     Public ReadOnly Property ActualMapTopLocation() As Integer
       Get
-        Dim sy = If(Me.MapGridRowLocation = 1, 0, If(Me.MapGridRowLocation = 2, 7, 15))
-        Return sy + Me.MapTopLocation '+ ((Me.MapGridRowLocation - 1) * Param.MapGridCellHeight)
+        Dim sy = If(MapGridRowLocation = 1, 0, If(MapGridRowLocation = 2, 7, 15))
+        Return sy + MapTopLocation '+ ((Me.MapGridRowLocation - 1) * Param.MapGridCellHeight)
       End Get
     End Property
 
     Public ReadOnly Property ActualMapLeftLocation() As Integer
       Get
-        Dim sx = If(Me.MapGridColumnLocation = 1, 0, If(Me.MapGridColumnLocation = 2, 27, 54))
-        Return sx + Me.MapLeftLocation '+ ((Me.MapGridColumnLocation - 1) * Param.MapGridCellWidth)
+        Dim sx = If(MapGridColumnLocation = 1, 0, If(MapGridColumnLocation = 2, 27, 54))
+        Return sx + MapLeftLocation '+ ((Me.MapGridColumnLocation - 1) * Param.MapGridCellWidth)
       End Get
     End Property
 
@@ -64,19 +64,19 @@ Namespace Global.Rogue.Core
 
     Public Sub Initialize()
 
-      Me.Depth = 0
-      Me.MapGridRowLocation = 0
-      Me.MapGridColumnLocation = 0
-      Me.MapTopLocation = 0
-      Me.MapLeftLocation = 0
-      Me.Height = 0
-      Me.Width = 0
-      Me.GridPosition = 0
-      Me.Doors = New List(Of Door)
-      Me.IsLit = False
+      Depth = 0
+      MapGridRowLocation = 0
+      MapGridColumnLocation = 0
+      MapTopLocation = 0
+      MapLeftLocation = 0
+      Height = 0
+      Width = 0
+      GridPosition = 0
+      Doors = New List(Of Door)
+      IsLit = False
       Dim possibilityLit = Param.Randomizer.NextDouble()
       If possibilityLit >= 0.8 Then
-        Me.IsLit = True
+        IsLit = True
       End If
 
     End Sub
@@ -423,7 +423,7 @@ Namespace Global.Rogue.Core
     End Function
 
     Public Overrides Function ToString$()
-      Return $"{Me.GridPosition}={Me.MapTopLocation}-{Me.MapLeftLocation}|{Me.Height}-{Me.Width}{vbCrLf}"
+      Return $"{GridPosition}={MapTopLocation}-{MapLeftLocation}|{Height}-{Width}{vbCrLf}"
     End Function
 
   End Class

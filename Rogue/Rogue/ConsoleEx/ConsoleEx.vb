@@ -49,7 +49,7 @@ Namespace Global
       Friend FontWeight As Integer
       Friend FaceName() As Char
       Public Sub Initialize()
-        ReDim Me.FaceName(LF_FACESIZE)
+        ReDim FaceName(LF_FACESIZE)
       End Sub
     End Structure
 
@@ -67,19 +67,19 @@ Namespace Global
       Friend ColorDWORD As UInteger
 
       Friend Sub New(color As Drawing.Color)
-        Me.ColorDWORD = CUInt(color.R) + ((CUInt(color.G)) << 8) + ((CUInt(color.B)) << 16)
+        ColorDWORD = CUInt(color.R) + ((CUInt(color.G)) << 8) + ((CUInt(color.B)) << 16)
       End Sub
 
       Friend Sub New(r As UInteger, g As UInteger, b As UInteger)
-        Me.ColorDWORD = r + (g << 8) + (b << 16)
+        ColorDWORD = r + (g << 8) + (b << 16)
       End Sub
 
       Friend Function GetColor() As Drawing.Color
-        Return Drawing.Color.FromArgb(CInt(&HFFUI And Me.ColorDWORD), CInt(&HFF00UI And Me.ColorDWORD) >> 8, CInt(&HFF0000UI And Me.ColorDWORD) >> 16)
+        Return Drawing.Color.FromArgb(CInt(&HFFUI And ColorDWORD), CInt(&HFF00UI And ColorDWORD) >> 8, CInt(&HFF0000UI And ColorDWORD) >> 16)
       End Function
 
       Friend Sub SetColor(color As Drawing.Color)
-        Me.ColorDWORD = CUInt(color.R) + ((CUInt(color.G)) << 8) + ((CUInt(color.B)) << 16)
+        ColorDWORD = CUInt(color.R) + ((CUInt(color.G)) << 8) + ((CUInt(color.B)) << 16)
       End Sub
 
     End Structure

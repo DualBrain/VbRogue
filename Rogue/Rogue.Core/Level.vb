@@ -7,16 +7,16 @@ Namespace Global.Rogue.Core
   Public NotInheritable Class Level
 
     Public Sub New()
-      Me.Depth = 0
-      ReDim Me.Map(20, 79)
-      ReDim Me.Lights(8)
+      Depth = 0
+      ReDim Map(20, 79)
+      ReDim Lights(8)
     End Sub
 
     Public Sub New(depth%)
       Me.Depth = depth
-      ReDim Me.Map(20, 79)
-      ReDim Me.Lights(8)
-      Me.Generate()
+      ReDim Map(20, 79)
+      ReDim Lights(8)
+      Generate()
     End Sub
 
     Public Property Name As String
@@ -27,7 +27,7 @@ Namespace Global.Rogue.Core
     Private Sub Generate()
       Dim map = New Map() 'Me.Depth)
       Dim level = map.ToDungeonLevel
-      Me.Lights = level.Lights
+      Lights = level.Lights
       Me.Map = level.Map
     End Sub
 
