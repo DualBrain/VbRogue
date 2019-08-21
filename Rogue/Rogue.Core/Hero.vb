@@ -7,6 +7,8 @@ Namespace Global.Rogue.Core
   Public NotInheritable Class Hero
     Inherits Entity
 
+    Private m_hungerCount As Integer
+
     Public Sub New()
 
       'for prototype set the variables that will be displayed
@@ -30,7 +32,6 @@ Namespace Global.Rogue.Core
       MoveCount = 0
 
       HungerCount = 0
-      HungerStage = HungerStage.Healthy
 
       Inventory.Add(New InventoryItem() With {.Object = New Armor(ArmorType.RingMail) With {.Magic = 1}, .Equiped = True})
       Inventory.Add(New InventoryItem() With {.Object = New Weapon(WeaponType.Mace) With {.Magic = 1, .MagicThrown = 1}, .Equiped = True})
@@ -50,7 +51,30 @@ Namespace Global.Rogue.Core
     Public Property MoveCount As Integer
 
     Public Property HungerCount As Integer
-    Public Property HungerStage As HungerStage
+      Get
+        Return m_hungerCount
+      End Get
+      Set(value As Integer)
+        m_hungercount = value
+        If m_hungercount < 0 Then
+          m_hungercount = 0
+        End If
+      End Set
+    End Property
+
+    Public ReadOnly Property HungerStage As HungerStage
+      Get
+        Select Case HungerCount
+          Case <= 1000 : Return HungerStage.Healthy
+          Case <= 2000 : Return HungerStage.Hungry
+          Case <= 3000 : Return HungerStage.Weak
+          Case <= 4000 : Return HungerStage.Faint
+          Case <= 5000 : Return HungerStage.Hungry3
+          Case Else
+            Return Core.HungerStage.Dead
+        End Select
+      End Get
+    End Property
 
     Public Property HealCount As Integer ' Tracks the number of turns that have transpired toward regneration (see HealTurns).
     Public Property HealTurns As Integer = 18 ' TODO: Need to change to a full property; returning amount based on hero level.

@@ -268,6 +268,10 @@ Module Program
 
           Select Case key
 
+            Case ConsoleKey.Backspace
+
+              ' ??????
+
             Case ConsoleKey.Escape
 
               m_accumulator = ""
@@ -287,7 +291,7 @@ Module Program
             Case ConsoleKey.Insert
 
               If Hero.X = m_stairsDownX AndAlso
-                               Hero.Y = m_stairsDownY Then
+                 Hero.Y = m_stairsDownY Then
                 m_level += 1
                 If m_level > m_levels.Count - 1 Then
                   Exit Do
@@ -295,10 +299,17 @@ Module Program
                 InitializeLevel()
               End If
 
+            Case ConsoleKey.D, ConsoleKey.E
+
+              ItemInteraction(ki)
+
             Case ConsoleKey.I
 
-              DrawInventory()
+              DrawInventory(Nothing)
               DrawLevel()
+
+            Case ConsoleKey.O
+              DisplayMessage("I don't have any options, oh my!")
 
             Case ConsoleKey.Q
               If ki.Modifiers = ConsoleModifiers.Shift Then
@@ -358,22 +369,28 @@ Module Program
               InitializeLevel()
 
             Case ConsoleKey.UpArrow,
-                             ConsoleKey.DownArrow,
-                             ConsoleKey.LeftArrow,
-                             ConsoleKey.RightArrow,
-                             ConsoleKey.Home,
-                             ConsoleKey.End,
-                             ConsoleKey.PageUp,
-                             ConsoleKey.PageDown,
-                             ConsoleKey.S,
-                             ConsoleKey.Y, ConsoleKey.U, ConsoleKey.H, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L, ConsoleKey.B, ConsoleKey.N,
-                             ConsoleKey.Delete
+                 ConsoleKey.DownArrow,
+                 ConsoleKey.LeftArrow,
+                 ConsoleKey.RightArrow,
+                 ConsoleKey.Home,
+                 ConsoleKey.End,
+                 ConsoleKey.PageUp,
+                 ConsoleKey.PageDown,
+                 ConsoleKey.S,
+                 ConsoleKey.Y, ConsoleKey.U, ConsoleKey.H, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L, ConsoleKey.B, ConsoleKey.N,
+                 ConsoleKey.Delete
 
               isAction = True
 
             Case Else
               ' Do nothing...
-              'Stop
+              Dim c = ki.KeyChar
+              Select Case ki.Key
+                Case ConsoleKey.Enter, ConsoleKey.Backspace
+                  c = " "c
+                Case Else
+              End Select
+              DisplayMessage($"Illegal command '{c}'")
           End Select
 
           If isAction Then
@@ -498,6 +515,8 @@ Module Program
 
               If actions > 0 Then
 
+                Dim currentHungerStage = Hero.HungerStage
+
                 Hero.MoveCount += actions
                 Hero.HungerCount += actions
 
@@ -518,8 +537,7 @@ Module Program
                 End If
 
                 ' Handle "hunger" (transition)...
-                Dim currentHungerStage = Hero.HungerStage
-                SetHungerStage()
+
                 If currentHungerStage <> Hero.HungerStage Then
                   DisplayMessage("You are starting to get hungry")
                 End If
@@ -635,16 +653,112 @@ Module Program
 
   End Sub
 
-  Private Sub DrawInventory()
+  Private Sub ItemInteraction(ki As ConsoleKeyInfo)
+
+    Dim action As String = Nothing
+    Dim filter As Core.ObjectType? = Nothing
+
+    Select Case ki.Key
+      Case ConsoleKey.D
+
+        Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
+
+        Dim canDrop = tile.Type = Core.TileType.Floor AndAlso
+                      tile.ObjectType = Core.ObjectType.None
+
+        If Not canDrop Then
+
+          ' Can't drop where we just dropped an item as only one item can be
+          ' on the floor tile at a given time.  If we move off of the tile we
+          ' just dropped something and move back, we automatically pick it back
+          ' up which clears the tile for another drop.
+
+          DisplayMessage("There is something there already")
+
+          Return
+
+        End If
+
+        action = "drop"
+        filter = Core.ObjectType.None
+
+      Case ConsoleKey.E
+        action = "eat"
+        filter = Core.ObjectType.Food
+    End Select
+
+    If action Is Nothing Then
+      Return
+    End If
+
+Start:
+
+    ClearMessage(True)
+    SetCursorPosition(0, 0)
+    ForegroundColor = ConsoleColor.Gray
+    BackgroundColor = ConsoleColor.Black
+    Write($"Which object do you want to {action}? (* for list):")
+
+    Do
+      If KeyAvailable Then
+
+        ki = ReadKey(True)
+
+        Dim kc As Char? = ki.KeyChar
+
+        Select Case kc
+          Case "*"c
+            If filter = Core.ObjectType.Food AndAlso Hero.Rations = 0 Then
+              ClearMessage(True)
+              DisplayMessage("You don't have anything appropriate")
+              Exit Do
+            Else
+              kc = DrawInventory(filter)
+              DrawLevel()
+            End If
+          Case Else
+        End Select
+
+        'Dim low = 0
+        Dim high = If(Hero.Rations > 0, 1, 0) + Hero.Inventory.Count
+
+        Select Case kc
+          Case "a"c To ChrW(AscW("a"c) + high - 1)
+            Select Case filter
+              Case Core.ObjectType.Food
+                EatFood(kc)
+              Case Else
+                DropItem(kc)
+            End Select
+            Exit Do
+          Case ChrW(AscW("a"c) + high) To "z"c
+            ClearMessage(True)
+            SetCursorPosition(0, 0)
+            Write($"Please specify a letter between 'a' and '{ChrW(AscW("a"c) + high - 1)}'")
+            'Swap ForegroundColor, BackgroundColor
+            ForegroundColor = ConsoleColor.Black
+            BackgroundColor = ConsoleColor.Gray
+            Write(" More ")
+            Do
+              If KeyAvailable Then
+                ki = ReadKey(True)
+                If ki.Key = ConsoleKey.Spacebar Then
+                  Exit Do
+                End If
+              End If
+            Loop
+            GoTo Start
+          Case Else
+        End Select
+      End If
+    Loop
+
+  End Sub
+
+  Private Function DrawInventory(filter As Core.ObjectType?) As Char?
+
     ResetColor()
     Clear()
-
-    'WriteLine("a) Some food")
-    'WriteLine("b) A scroll titled 'cir celxev goszur'")
-    'WriteLine("c) +1 ring mail [armor class 5) (being worn)")
-    'WriteLine("d) A +1,+1 mace (weapon in hand)")
-    'WriteLine("e) A +1,+0 short bow")
-    'WriteLine("f) 30 +0,+0 arrows")
 
     Dim page = 0
     Dim index = 0
@@ -657,37 +771,48 @@ Module Program
 
       Dim letter = 0
 
-      If Hero.Rations > 0 Then
-        If Hero.Rations = 1 Then
-          Console.Write($"{ChrW(CInt(AscW("a") + letter))}) Some food")
-        Else
-          Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Rations} rations of food")
+      If filter Is Nothing OrElse
+         filter = Core.ObjectType.None OrElse
+         filter = Core.ObjectType.Food Then
+        If Hero.Rations > 0 Then
+          If Hero.Rations = 1 Then
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) Some food")
+          Else
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Rations} rations of food")
+          End If
+          letter += 1
+          row += 1
         End If
-        letter += 1
-        row += 1
       End If
 
       Do Until index > 21
 
-        Console.SetCursorPosition(0, row)
+        If filter Is Nothing OrElse
+           filter = Core.ObjectType.None OrElse
+           Hero.Inventory(index).Object.Type = filter Then
 
-        Select Case Hero.Inventory(index).Object.Type
-          Case Core.ObjectType.Armor
-            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(being worn)", "")}")
-          Case Core.ObjectType.Weapon
-            If Hero.Inventory(index).Object.Name.Contains("arrow") OrElse
-               Hero.Inventory(index).Object.Name.Contains("bolt") Then
-              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).Count} {Hero.Inventory(index).ToString}s {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
-            Else
-              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {If(Hero.Inventory(index).Count = 1, "A", "????")} {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
-            End If
-          Case Else
-            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString}")
-        End Select
+          Console.SetCursorPosition(0, row)
+
+          Select Case Hero.Inventory(index).Object.Type
+            Case Core.ObjectType.Armor
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(being worn)", "")}")
+            Case Core.ObjectType.Weapon
+              If Hero.Inventory(index).Object.Name.Contains("arrow") OrElse
+                 Hero.Inventory(index).Object.Name.Contains("bolt") Then
+                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).Count} {Hero.Inventory(index).ToString}s {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+              Else
+                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {If(Hero.Inventory(index).Count = 1, "A", "????")} {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+              End If
+            Case Else
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString}")
+          End Select
+
+          row += 1
+          letter += 1
+
+        End If
 
         index += 1
-        row += 1
-        letter += 1
 
         If (page * 21) + index > Hero.Inventory.Count - 1 Then
           Exit Do
@@ -698,19 +823,80 @@ Module Program
       page += 1
       index = 0
 
-      If (page * 21) + index < Hero.Inventory.Count Then
-        ' Still more items left, prompt as if there is another page to be viewed...
-        Dim result = PressSpaceForMoreEscToContinue()
-        If result Then
-          Return
-        End If
-      Else
-        ' This the last of this content, so prompt to "return to game".
-        PressSpaceToContinue()
-        Return
-      End If
+      Select Case filter
+
+        Case Core.ObjectType.None
+          Return SelectItemEscToContinue("drop")
+        Case Core.ObjectType.Food
+          Return SelectItemEscToContinue("eat")
+
+        Case Else
+
+          If (page * 21) + index < Hero.Inventory.Count Then
+            ' Still more items left, prompt as if there is another page to be viewed...
+            Dim result = PressSpaceForMoreEscToContinue()
+            If result Then
+              Return Nothing
+            End If
+          Else
+            ' This the last of this content, so prompt to "return to game".
+            PressSpaceToContinue()
+            Return Nothing
+          End If
+
+      End Select
 
     Loop
+
+  End Function
+
+  Private Sub DropItem(item As Char?)
+
+    If item Is Nothing Then Return
+
+    ClearMessage(True)
+
+    If item = "a"c AndAlso Hero.Rations > 0 Then
+      Hero.Rations -= 1
+      m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.Food
+      m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount = 1
+      Return
+    End If
+
+    Dim index = (AscW(CChar(item)) - AscW("a"c)) - (If(Hero.Rations > 0, 1, 0))
+
+    Hero.Inventory(index).Equiped = False
+    Dim description = Hero.Inventory(index).ToString
+    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Hero.Inventory(index).Object.Type
+    m_levels(m_level).Map(Hero.Y, Hero.X).Object = Hero.Inventory(index).Object
+    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount = Hero.Inventory(index).Count
+    Hero.Inventory.RemoveAt(index)
+
+    DisplayMessage($"Dropped {description}")
+
+  End Sub
+
+  Private Sub EatFood(item As Char?)
+
+    ClearMessage(True)
+
+    Select Case item
+      Case "a"c
+        If Hero.Rations > 0 Then
+          Hero.HungerCount -= 1000
+          Hero.Rations -= 1
+          DisplayMessage("Yum, that tasted good")
+          Return
+        Else
+          ' Fall through...
+        End If
+      Case "b"c To "e"c
+        ' Fall through...
+      Case Else
+        Stop ' Should never land here...
+    End Select
+
+    DisplayMessage("Ugh, you would get ill if you ate that")
 
   End Sub
 
@@ -764,8 +950,8 @@ Module Program
     commands.Add(New KeyCommand(">", "go down a staircase", True))
     commands.Add(New KeyCommand("<", "go up the staircase"))
     commands.Add(New KeyCommand("Esc", "cancel command", True))
-    commands.Add(New KeyCommand("d", "drop Object"))
-    commands.Add(New KeyCommand("e", "eat food"))
+    commands.Add(New KeyCommand("d", "drop object", True))
+    commands.Add(New KeyCommand("e", "eat food", True))
     commands.Add(New KeyCommand("f", "<dir> find something"))
     commands.Add(New KeyCommand("q", "quaff potion"))
     commands.Add(New KeyCommand("r", "read paper"))
@@ -992,12 +1178,12 @@ Module Program
     End If
   End Sub
 
-  Private Sub ClearMessage()
+  Private Sub ClearMessage(Optional clearOnly As Boolean = False)
     ResetColor()
     SetCursorPosition(0, 0)
     Write(New String(" "c, 80))
     m_displayingMessage = False
-    If m_messages.Count > 0 Then
+    If Not clearOnly AndAlso m_messages.Count > 0 Then
       Dim message = m_messages.Dequeue()
       DisplayMessage(message)
     End If
@@ -1125,20 +1311,6 @@ Module Program
 
   End Sub
 
-  Private Sub SetHungerStage()
-
-    Select Case Hero.HungerCount
-      Case <= 1000 : Hero.HungerStage = Core.HungerStage.Healthy
-      Case <= 2000 : Hero.HungerStage = Core.HungerStage.Hungry
-      Case <= 3000 : Hero.HungerStage = Core.HungerStage.Weak
-      Case <= 4000 : Hero.HungerStage = Core.HungerStage.Faint
-      Case <= 5000 : Hero.HungerStage = Core.HungerStage.Hungry3
-      Case Else
-        Hero.HungerStage = Core.HungerStage.Dead
-    End Select
-
-  End Sub
-
   Private Function GetCharacterName() As String
 
     Clear()
@@ -1168,7 +1340,7 @@ Module Program
     Center("and", 7, ConsoleColor.Gray)
     Center("Kenneth C.R.C. Arnold", 8, ConsoleColor.White)
 
-    Center("Adapted for the .NET Core by:", 10, ConsoleColor.Magenta)
+    Center("Adapted for .NET Core by:", 10, ConsoleColor.Magenta)
     Center("Cory Smith", 12, ConsoleColor.White)
     Center("Significant design contributions by:", 14, ConsoleColor.Magenta)
     Center("Glenn Wichman and scores of others", 16, ConsoleColor.White)
@@ -1287,7 +1459,7 @@ Module Program
 
     Dim foodCount = Randomizer.Next(0, 3)
 
-    For gold = 1 To goldCount
+    For food = 1 To foodCount
       If floors.Count > 0 Then
         Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
         floors(tileNumber).ObjectType = Core.ObjectType.Food
@@ -1495,6 +1667,13 @@ Module Program
           DisplayMessage($"You now have {Hero.Rations} rations of food (a)")
           m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
           result = True
+        Case Core.ObjectType.Weapon
+          'TODO: Needs more work. Additionally, how should items be added to inventory (sort)?
+          Hero.Inventory.Add(New Core.InventoryItem() With {.[Object] = m_levels(m_level).Map(Hero.Y, Hero.X).[Object], .Count = m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount})
+          Dim index = Hero.Inventory.Count - 1
+          DisplayMessage($"You now have {Hero.Inventory(index).ToString} ({ChrW(AscW("a"c) + index + (If(Hero.Rations > 0, 1, 0)))})")
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          result = True
         Case Else
           ' Floor
       End Select
@@ -1597,6 +1776,9 @@ Module Program
           Case Core.ObjectType.Food
             fg = ConsoleColor.Red
             output = "♣"
+          Case Core.ObjectType.Weapon
+            fg = ConsoleColor.Blue
+            output = "↑"
           Case Else
             fg = ConsoleColor.DarkGreen
         End Select
@@ -1665,6 +1847,23 @@ Module Program
       End If
     Loop
   End Sub
+
+  Private Function SelectItemEscToContinue(phrase As String) As Char?
+    SetCursorPosition(0, 24)
+    Write($"-Select item to {phrase}. Esc to cancel-")
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.A To ConsoleKey.Z
+            Return key.KeyChar
+          Case ConsoleKey.Escape
+            Return Nothing
+          Case Else
+        End Select
+      End If
+    Loop
+  End Function
 
   Private Function PressSpaceForMoreEscToContinue() As Boolean
     SetCursorPosition(0, 24)

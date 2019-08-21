@@ -1,7 +1,7 @@
 ﻿Namespace Global.Rogue.Core
 
   Public Enum ObjectType
-    Empty
+    None
     Gold
     Food
     Armor

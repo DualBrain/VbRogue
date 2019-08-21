@@ -49,7 +49,7 @@ Namespace Global.Rogue.Core
 
     'Public Property Gold As Integer
 
-    Private m_objectType As Core.ObjectType = ObjectType.Empty
+    Private m_objectType As Core.ObjectType = ObjectType.None
 
     Public Property ObjectType As Core.ObjectType
       Get
@@ -57,11 +57,14 @@ Namespace Global.Rogue.Core
       End Get
       Set(value As Core.ObjectType)
         m_objectType = value
-        If value = ObjectType.Empty Then
+        If value = ObjectType.None Then
           ObjectCount = 0
+          [Object] = Nothing
         End If
       End Set
     End Property
+
+    Public Property [Object] As Core.ObjectBase
 
     Public Property ObjectCount As Integer = 0
 
