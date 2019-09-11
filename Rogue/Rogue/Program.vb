@@ -1468,6 +1468,17 @@ Start:
       End If
     Next
 
+    Dim trapCount = Randomizer.Next(0, 2)
+
+    For trap = 1 To trapCount
+      If floors.Count > 0 Then
+        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        floors(tileNumber).ObjectType = Core.ObjectType.Trap
+        'TODO: Need to determine a trap at random; right now only the teleport trap is working.
+        floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Teleport)
+        floors.RemoveAt(tileNumber)
+      End If
+    Next
 
     DrawLevel()
 
@@ -1657,22 +1668,65 @@ Start:
       'End If
 
       Select Case m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType
+        Case Core.ObjectType.Trap
+          Dim trap = DirectCast(m_levels(m_level).Map(Hero.Y, Hero.X).[Object], Core.Trap)
+          Select Case trap.TrapType
+            Case Core.TrapType.Teleport
+
+              DisplayMessage($"You stumbled upon a {trap.Name}") 'TODO: Need to determine the actual verbiage.
+
+              Dim floors As New List(Of Core.Tile)
+
+              For yy = 0 To 20
+                For xx = 0 To 79
+                  If Hero.X = xx AndAlso Hero.Y = yy Then Continue For
+                  Dim t = m_levels(m_level).Map(yy, xx)
+                  If t.Type = Core.TileType.Floor AndAlso
+                     t.ObjectType = Core.ObjectType.None Then
+                    floors.Add(t)
+                  End If
+                Next
+              Next
+
+              Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+
+              For yy = 0 To 20
+                For xx = 0 To 79
+                  If floors(tileNumber) Is m_levels(m_level).Map(yy, xx) Then
+                    ' Remove the trap...
+                    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+                    DrawRoomTile(Hero.X, Hero.Y)
+                    ' Move hero to a new (random) location...
+                    Hero.X = xx
+                    Hero.Y = yy
+                    ' Call PlaceHero() again since we've updated the hero's location.
+                    PlaceHero()
+                    ' Randomly placed hero should not (ie. can't) be on a stair, so return false.
+                    Return False
+                  End If
+                Next
+              Next
+
+            Case Else
+              Stop
+          End Select
+
         Case Core.ObjectType.Gold
           DisplayMessage($"You found {m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount} gold pieces")
           Hero.Gold += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Core.ObjectType.Food
           Hero.Rations += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
           DisplayMessage($"You now have {Hero.Rations} rations of food (a)")
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Core.ObjectType.Weapon
           'TODO: Needs more work. Additionally, how should items be added to inventory (sort)?
           Hero.Inventory.Add(New Core.InventoryItem() With {.[Object] = m_levels(m_level).Map(Hero.Y, Hero.X).[Object], .Count = m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount})
           Dim index = Hero.Inventory.Count - 1
           DisplayMessage($"You now have {Hero.Inventory(index).ToString} ({ChrW(AscW("a"c) + index + (If(Hero.Rations > 0, 1, 0)))})")
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Nothing
+          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Else
           ' Floor
@@ -1770,6 +1824,9 @@ Start:
         result = True
       Case Core.TileType.Floor
         Select Case tile.ObjectType
+          Case Core.ObjectType.Trap
+            fg = ConsoleColor.Red
+            output = "♦"
           Case Core.ObjectType.Gold
             fg = ConsoleColor.Yellow
             output = "*"

@@ -4,6 +4,7 @@
     None
     Gold
     Food
+    Trap
     Armor
     Weapon
     Scroll
@@ -78,6 +79,43 @@
 
   End Class
 
+  Public NotInheritable Class Trap
+    Inherits ObjectBase
+
+    Private Sub New(trapType As TrapType, name As String, damage As Dice)
+      MyBase.New(ObjectType.Trap, name)
+      Me.TrapType = trapType
+      Me.Damage = damage
+    End Sub
+
+    Public Sub New(type As TrapType)
+      MyBase.New(ObjectType.Trap, Weapon.Template(type).Name)
+      Me.TrapType = TrapType
+      Damage = Weapon.Template(type).Damage
+    End Sub
+
+    Public ReadOnly Property TrapType As TrapType
+    Public ReadOnly Property Damage As Dice
+
+    Public Shared Function Template(type As TrapType) As Trap
+      Select Case type
+        Case TrapType.Hole : Return New Trap(type, "trap door", Nothing)
+        Case TrapType.Bear : Return New Trap(type, "bear trap", New Dice(3, 4))
+        Case TrapType.SleepingGas : Return New Trap(type, "sleeping-gas trap", Nothing)
+        Case TrapType.Arrow : Return New Trap(type, "arrow trap", New Dice(2, 3))
+        Case TrapType.PoisonDart : Return New Trap(type, "pioson dart trap", New Dice(1, 4))
+        Case TrapType.Teleport : Return New Trap(type, "teleport trap", Nothing)
+        Case Else
+          Return Nothing
+      End Select
+    End Function
+
+    Public Overrides Function ToString() As String
+      Return $"{Name}"
+    End Function
+
+  End Class
+
   Public NotInheritable Class Weapon
     Inherits ObjectBase
 
@@ -119,6 +157,15 @@
     End Function
 
   End Class
+
+  Public Enum TrapType
+    Hole
+    Bear
+    SleepingGas
+    Arrow
+    PoisonDart
+    Teleport
+  End Enum
 
   Public Enum WeaponType
     Mace
