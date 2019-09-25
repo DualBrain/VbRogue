@@ -1,6 +1,7 @@
 ﻿Option Explicit On
 Option Strict On
 Option Infer On
+
 Imports System.Runtime.CompilerServices
 
 Namespace Global.Rogue.Core
@@ -62,42 +63,42 @@ Namespace Global.Rogue.Core
     End Function
 
     Public Shared Function CellStartX%(column%)
-      Select Case column%
+      Select Case column
         Case 1 : Return GridColumnStart1
         Case 2 : Return GridColumnStart2
         Case 3 : Return GridColumnStart3
         Case Else
-          Stop
+          Throw New ArgumentOutOfRangeException(NameOf(column))
       End Select
     End Function
 
     Public Shared Function CellStartY%(row%)
-      Select Case row%
+      Select Case row
         Case 1 : Return GridRowStart1
         Case 2 : Return GridRowStart2
         Case 3 : Return GridRowStart3
         Case Else
-          Stop
+          Throw New ArgumentOutOfRangeException(NameOf(row))
       End Select
     End Function
 
     Public Shared Function CellHeight%(row%)
-      Select Case row%
+      Select Case row
         Case 1 : Return GridHeight1
         Case 2 : Return GridHeight2
         Case 3 : Return GridHeight3
         Case Else
-          Stop
+          Throw New ArgumentOutOfRangeException(NameOf(row))
       End Select
     End Function
 
     Public Shared Function CellWidth%(column%)
-      Select Case column%
+      Select Case column
         Case 1 : Return GridWidth1
         Case 2 : Return GridWidth2
         Case 3 : Return GridWidth3
         Case Else
-          Stop
+          Throw New ArgumentOutOfRangeException(NameOf(column))
       End Select
     End Function
 

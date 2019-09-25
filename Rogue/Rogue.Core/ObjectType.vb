@@ -181,16 +181,4 @@
     Spear
   End Enum
 
-  Public NotInheritable Class Dice
-
-    Public Sub New(count As Integer, sides As Integer)
-      Me.Count = count
-      Me.Sides = sides
-    End Sub
-
-    Public Property Count As Integer
-    Public Property Sides As Integer
-
-  End Class
-
 End Namespace

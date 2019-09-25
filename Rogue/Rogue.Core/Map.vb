@@ -788,7 +788,6 @@ Start:
     ''' </summary>
     Private Sub CreateRandomLevel()
 
-      Dim m_hasRoomFlag As Boolean '= False
       Dim m_entryRow As Integer '= 0
       Dim m_entryColumn As Integer '= 0
       Dim m_entryRowPointer As Integer '= 0
@@ -1862,7 +1861,7 @@ Start:
     ''' <returns></returns>
     Private Function TunnelAroundObstacle(currentRow%, currentColumn%, direction As Direction) As Coordinate
 
-      Dim aReturnValue As Coordinate
+      Dim aReturnValue As Coordinate = New Coordinate(0, 0)
       'Dim isFound As Boolean = True
       'Dim aStepCtr As Integer = 0
       'Dim aAvoidanceDirection As Direction

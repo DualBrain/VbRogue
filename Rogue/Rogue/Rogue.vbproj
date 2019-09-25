@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Include="..\Rogue.Core\CellType.vb" Link="Core\CellType.vb" />
+    <Compile Include="..\Rogue.Core\Dice.vb" Link="Core\Dice.vb" />
     <Compile Include="..\Rogue.Core\Door.vb" Link="Core\Door.vb" />
     <Compile Include="..\Rogue.Core\Entity.vb" Link="Core\Entity.vb" />
     <Compile Include="..\Rogue.Core\Hero.vb" Link="Core\Hero.vb" />

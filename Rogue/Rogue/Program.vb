@@ -2,16 +2,13 @@
 Option Strict On
 Option Infer On
 
+Imports ConsoleEx
+
 Imports System.Console
 Imports System.Runtime.InteropServices
 Imports System.Text
-Imports ConsoleEx
-Imports QB
-Imports Rogue.Core
 
 Module Program
-
-  Friend Randomizer As New Random()
 
   'Sub Main(args As String())
   '  ' The following is from a sample by Lucian... 
@@ -19,63 +16,10 @@ Module Program
   '  MainAsync(args).GetAwaiter().GetResult()
   'End Sub
 
-  'Private Enum Objects
-  '  Void = 0
-
-  '  Floor = 1
-  '  Tunnel = 2
-  '  Door = 3
-  '  Stairs = 10
-  '  Trap = 11
-
-  '  WallTopLeft = 4
-  '  WallTopRight = 5
-  '  WallHorizontal = 6
-  '  WallVertical = 7
-  '  WallBottomLeft = 8
-  '  WallBottomRight = 9
-
-  '  Character = 20
-
-  '  Bat = 35
-  '  Emu = 34
-  '  Hobgoblin = 33
-  '  Imp = 30
-  '  Kestral = 31
-  '  Orc = 36
-  '  RattleSnake = 37
-  '  Snake = 32
-  '  Zombie = 38
-
-  '  Gold = 50
-
-  '  Potion = 51
-  '  Ring = 53
-  '  Armor = 54
-  '  Scroll = 55
-  '  Weapon = 56
-  '  Food = 57
-  '  Staff = 58
-  '  Amulet = 59
-  '  SafeMagic = 60 ' $
-  '  PerilousMagic = 61 ' +
-
-  'End Enum
-
-  Private m_levels As List(Of Core.Level)
-  Private m_level As Integer
-
-  Private m_stairsDownX% = -1
-  Private m_stairsDownY% = -1
-  Private m_stairsDownFound As Boolean = False
-
   Private ReadOnly Hero As New Core.Hero
+  Private m_levels As List(Of Core.Level)
 
-  Private m_accumulator$
-
-  Private ReadOnly m_messages As New Queue(Of String)
-
-  Private m_endGame As Boolean
+#Region "XP Table"
 
   'Private Class XP
   '  Public Sub New(level%, points%, dice%, healRate%)
@@ -112,36 +56,10 @@ Module Program
   '                             New XP(19, 2621440, 13, 3),
   '                             New XP(20, 5242880, 14, 3)}
 
-  'Private Enum Display
-  '  Level
-  '  Inventory
-  '  Help
-  'End Enum
+#End Region
 
   'Private Async Function MainAsync(args As String()) As Task
   Public Sub Main() 'args As String())
-
-    'Dim r0 = 0
-    'Dim r1 = 0
-    'Dim r2 = 0
-    'Dim r3 = 0
-
-    'For x = 1 To 1000
-    '  Select Case Rogue.Core.Param.Randomizer.Next(0, 3)
-    '    Case 0 : r0 += 1
-    '    Case 1 : r1 += 1
-    '    Case 2 : r2 += 1
-    '    Case 3 : r3 += 1
-    '    Case Else
-    '  End Select
-    'Next
-
-    'Console.WriteLine(r0)
-    'Console.WriteLine(r1)
-    'Console.WriteLine(r2)
-    'Console.WriteLine(r3)
-
-    'Console.ReadLine()
 
 #Region "Configure Console Window"
 
@@ -198,45 +116,37 @@ Module Program
 
       Hero.Name = GetCharacterName()
 
-      ' Holds the current location of the "stairs" (aka hole).
-
       InitializeLevel()
 
       DisplayMessage($"Hello {Hero.Name}.  Are you prepared to die?.")
 
       ' "Game Loop"
 
-      Dim alt = True
-
+#Region "Variables to handle 'blink'"
+      Dim blink = True
       Dim cycles = 0
-
-      'Dim displaying = Display.Level
+#End Region
 
       Do
 
         Threading.Thread.Sleep(1)
 
-        'If m_holeFound AndAlso
-        '   cycles > 250 AndAlso
-        '   (m_holeY > -1 AndAlso m_holeX > -1) AndAlso
-        '   Not (Hero.Y = m_holeY AndAlso Hero.X = m_holeX) AndAlso
-        '   displaying = Display.Level Then
-        If m_stairsDownFound AndAlso
+        If m_levels(Hero.DungeonLevel).StairsFound AndAlso
            cycles > 250 AndAlso
-           (m_stairsDownY > -1 AndAlso m_stairsDownX > -1) AndAlso
-           Not (Hero.Y = m_stairsDownY AndAlso Hero.X = m_stairsDownX) Then
+           (m_levels(Hero.DungeonLevel).StairCoords.Y > -1 AndAlso m_levels(Hero.DungeonLevel).StairCoords.X > -1) AndAlso
+           Not (Hero.Y = m_levels(Hero.DungeonLevel).StairCoords.Y AndAlso Hero.X = m_levels(Hero.DungeonLevel).StairCoords.X) Then
           cycles = 0
           ' Draw stairway...
           ForegroundColor = ConsoleColor.Black
           BackgroundColor = ConsoleColor.Green
-          SetCursorPosition(m_stairsDownX, m_stairsDownY + 1)
-          If alt Then
+          SetCursorPosition(m_levels(Hero.DungeonLevel).StairCoords.X, m_levels(Hero.DungeonLevel).StairCoords.Y + 1)
+          If blink Then
             Write(" ")
           Else
             Write("≡")
           End If
           ResetColor()
-          alt = Not alt
+          blink = Not blink
         End If
 
         If KeyAvailable Then
@@ -293,8 +203,8 @@ Module Program
 
             Case ConsoleKey.Insert
 
-              If Hero.X = m_stairsDownX AndAlso
-                 Hero.Y = m_stairsDownY Then
+              If Hero.X = m_levels(Hero.DungeonLevel).StairCoords.X AndAlso
+                 Hero.Y = m_levels(Hero.DungeonLevel).StairCoords.Y Then
                 TravelDownAction()
               End If
 
@@ -364,7 +274,7 @@ Module Program
 
             Case ConsoleKey.F12
               'TEST:
-              m_levels(m_level) = New Core.Level(m_level)
+              m_levels(Hero.DungeonLevel) = New Core.Level(Hero.DungeonLevel)
               InitializeLevel()
 
             Case ConsoleKey.UpArrow,
@@ -434,7 +344,7 @@ Module Program
 
                 Case ConsoleKey.S, ConsoleKey.Delete
                   actions += 1
-                  If PerformSearch() Then
+                  If SearchAction() Then
                     abort = True
                   End If
 
@@ -445,7 +355,7 @@ Module Program
               End Select
 
               If dirX <> 0 OrElse
-                               dirY <> 0 Then
+                 dirY <> 0 Then
 
                 ' If running and find "something", abort...
 
@@ -461,7 +371,7 @@ Module Program
                     If encounter OrElse Not run Then
                       Exit Do
                     Else
-                      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
+                      Dim tile = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X)
                       If tile.Type = Core.TileType.Door Then
                         Exit Do
                       End If
@@ -469,7 +379,7 @@ Module Program
                   Else
 
                     If Not initialMove Then
-                      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
+                      Dim tile = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X)
                       If tile.Type = Core.TileType.Tunnel Then
 
                         If dirX = 0 Then
@@ -526,7 +436,7 @@ Module Program
                     If Hero.HealAmount = 1 Then
                       Hero.HP += Hero.HealAmount
                     Else
-                      Hero.HP += Randomizer.Next(1, Hero.HealAmount + 1)
+                      Hero.HP += Core.Param.Randomizer.Next(1, Hero.HealAmount + 1)
                     End If
                     If Hero.HP > Hero.MaxHP Then
                       Hero.HP = Hero.MaxHP
@@ -561,40 +471,26 @@ Module Program
 
         End If
 
-        cycles += 1
-
-        'If displaying = Display.Level Then
         DrawHud()
         DrawClock()
-        'End If
 
-        ' DEBUG numbers...
-        SetCursorPosition(0, 24)
-        BackgroundColor = ConsoleColor.Black
-        ForegroundColor = ConsoleColor.White
-        Write($"{Hero.MoveCount}")
-        ForegroundColor = ConsoleColor.Gray
-        Write(",")
-        ForegroundColor = ConsoleColor.Red
-        Write($"{Hero.HungerCount}".PadRight(4))
-
-        If Hero.HP < 1 Then
-          ' DEATH!
-          m_endGame = True
-        End If
-
-        If m_endGame Then
+        If Hero.Dead Then
+          ' Exit game loop.
           Exit Do
         End If
 
+        cycles += 1
+
       Loop
+
+      ' Handle end-of-game stuff.
 
       ResetColor()
       Clear()
 
       SetCursorPosition(0, 0)
       If Hero.HP < 1 Then
-        Write($"You DIED!")
+        Write($"You DIED!") 'TODO: Need to determine message - play the original.
       Else
         Write($"You quit with {Hero.Gold} gold pieces")
       End If
@@ -649,7 +545,6 @@ Module Program
       End If
 
       ResetColor()
-      'CLS()
 
       CursorVisible = True
 
@@ -665,14 +560,7 @@ Module Program
 
   End Sub
 
-  Private Sub TravelDownAction()
-    m_level += 1
-    If m_level > m_levels.Count - 1 Then
-      m_endGame = True
-    Else
-      InitializeLevel()
-    End If
-  End Sub
+#Region "Actions"
 
   Private Sub ItemInteraction(ki As ConsoleKeyInfo)
 
@@ -682,7 +570,7 @@ Module Program
     Select Case ki.Key
       Case ConsoleKey.D
 
-        Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
+        Dim tile = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X)
 
         Dim canDrop = tile.Type = Core.TileType.Floor AndAlso
                       tile.ObjectType = Core.ObjectType.None
@@ -747,9 +635,9 @@ Start:
           Case "a"c To ChrW(AscW("a"c) + high - 1)
             Select Case filter
               Case Core.ObjectType.Food
-                EatFood(kc)
+                EatFoodAction(kc)
               Case Else
-                DropItem(kc)
+                DropItemAction(kc)
             End Select
             Exit Do
           Case ChrW(AscW("a"c) + high) To "z"c
@@ -776,102 +664,7 @@ Start:
 
   End Sub
 
-  Private Function DrawInventory(filter As Core.ObjectType?) As Char?
-
-    ResetColor()
-    Clear()
-
-    Dim page = 0
-    Dim index = 0
-
-    Do
-
-      Console.Clear()
-
-      Dim row = 0
-
-      Dim letter = 0
-
-      If filter Is Nothing OrElse
-         filter = Core.ObjectType.None OrElse
-         filter = Core.ObjectType.Food Then
-        If Hero.Rations > 0 Then
-          If Hero.Rations = 1 Then
-            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) Some food")
-          Else
-            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Rations} rations of food")
-          End If
-          letter += 1
-          row += 1
-        End If
-      End If
-
-      Do Until index > 21
-
-        If filter Is Nothing OrElse
-           filter = Core.ObjectType.None OrElse
-           Hero.Inventory(index).Object.Type = filter Then
-
-          Console.SetCursorPosition(0, row)
-
-          Select Case Hero.Inventory(index).Object.Type
-            Case Core.ObjectType.Armor
-              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(being worn)", "")}")
-            Case Core.ObjectType.Weapon
-              If Hero.Inventory(index).Object.Name.Contains("arrow") OrElse
-                 Hero.Inventory(index).Object.Name.Contains("bolt") Then
-                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).Count} {Hero.Inventory(index).ToString}s {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
-              Else
-                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {If(Hero.Inventory(index).Count = 1, "A", "????")} {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
-              End If
-            Case Else
-              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString}")
-          End Select
-
-          row += 1
-          letter += 1
-
-        End If
-
-        index += 1
-
-        If (page * 21) + index > Hero.Inventory.Count - 1 Then
-          Exit Do
-        End If
-
-      Loop
-
-      page += 1
-      index = 0
-
-      Select Case filter
-
-        Case Core.ObjectType.None
-          Return SelectItemEscToContinue("drop")
-        Case Core.ObjectType.Food
-          Return SelectItemEscToContinue("eat")
-
-        Case Else
-
-          If (page * 21) + index < Hero.Inventory.Count Then
-            ' Still more items left, prompt as if there is another page to be viewed...
-            Dim result = PressSpaceForMoreEscToContinue()
-            If result Then
-              Return Nothing
-            End If
-          Else
-            ' This the last of this content, so prompt to "return to game".
-            PressSpaceToContinue()
-            Return Nothing
-          End If
-
-      End Select
-
-    Loop
-
-  End Function
-
-  Private Sub DropItem(item As Char?)
+  Private Sub DropItemAction(item As Char?)
 
     If item Is Nothing Then Return
 
@@ -879,8 +672,8 @@ Start:
 
     If item = "a"c AndAlso Hero.Rations > 0 Then
       Hero.Rations -= 1
-      m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.Food
-      m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount = 1
+      m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.Food
+      m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount = 1
       Return
     End If
 
@@ -888,16 +681,16 @@ Start:
 
     Hero.Inventory(index).Equiped = False
     Dim description = Hero.Inventory(index).ToString
-    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Hero.Inventory(index).Object.Type
-    m_levels(m_level).Map(Hero.Y, Hero.X).Object = Hero.Inventory(index).Object
-    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount = Hero.Inventory(index).Count
+    m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Hero.Inventory(index).Object.Type
+    m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).Object = Hero.Inventory(index).Object
+    m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount = Hero.Inventory(index).Count
     Hero.Inventory.RemoveAt(index)
 
     DisplayMessage($"Dropped {description}")
 
   End Sub
 
-  Private Sub EatFood(item As Char?)
+  Private Sub EatFoodAction(item As Char?)
 
     ClearMessage(True)
 
@@ -920,6 +713,317 @@ Start:
     DisplayMessage("Ugh, you would get ill if you ate that")
 
   End Sub
+
+  Private Function SearchAction() As Boolean
+
+    Dim result = False
+
+    For yy = -1 To 1
+      For xx = -1 To 1
+        Dim tile = m_levels(Hero.DungeonLevel).Map(Hero.Y + yy, Hero.X + xx)
+        If tile.FoundSecret(False) Then
+          DrawRoomTile(Hero.X + xx, Hero.Y + yy)
+          result = True
+        End If
+      Next
+    Next
+
+    Return result
+
+  End Function
+
+  Private Sub TravelDownAction()
+    Hero.DungeonLevel += 1
+    If Hero.DungeonLevel > m_levels.Count - 1 Then
+      Hero.Dead = True 'HACK: We are killing of the hero because we have no more levels.
+    Else
+      InitializeLevel()
+    End If
+  End Sub
+
+#End Region
+
+#Region "'Screens'"
+
+#Region "Intro Screen"
+
+  Private Function GetCharacterName() As String
+
+    Clear()
+
+    ForegroundColor = ConsoleColor.DarkYellow
+
+    Write($"╔{New System.String("═"c, 78)}╗")
+    For r = 1 To 21
+      SetCursorPosition(0, r)
+      Write($"║{New String(" "c, 78)}║")
+    Next
+    SetCursorPosition(0, 22)
+    Write($"╠{New System.String("═"c, 78)}╣")
+    SetCursorPosition(0, 23)
+    Write($"║{New String(" "c, 78)}║")
+    SetCursorPosition(0, 24)
+    'Write($"╚{New System.String("═"c, 78)}╝")
+    Write($"╚{New System.String("═"c, 78)}")
+
+    BackgroundColor = ConsoleColor.Gray
+    Center("ROGUE: The Adventure Game", 2, ConsoleColor.Black)
+
+    ResetColor()
+
+    Center("The game of Rogue was originated by:", 4, ConsoleColor.Magenta)
+    Center("Michael C. Toy", 6, ConsoleColor.White)
+    Center("and", 7, ConsoleColor.Gray)
+    Center("Kenneth C.R.C. Arnold", 8, ConsoleColor.White)
+
+    Center("Adapted for .NET Core by:", 10, ConsoleColor.Magenta)
+    Center("Cory Smith", 12, ConsoleColor.White)
+    Center("Significant design contributions by:", 14, ConsoleColor.Magenta)
+    Center("Glenn Wichman and scores of others", 16, ConsoleColor.White)
+
+    Center("(C) Copyright 2019", 18, ConsoleColor.Yellow)
+    Center("Cory Smith", 19, ConsoleColor.White)
+    Center("Made available as open source under the MIT license.", 20, ConsoleColor.Yellow)
+
+    ResetColor()
+
+    SetCursorPosition(2, 23)
+    Write("Rogue's Name?")
+
+    CursorVisible = True
+
+    Try
+
+      'TODO: If player presses ESC (regardless of what was typed) while entering the name...
+      '      If player presses ENTER with a blank name...
+      '      The name is set to Whimp.
+
+      Dim accumulator = ""
+
+      SetCursorPosition(16, 23)
+
+      Do
+
+        If KeyAvailable Then
+          Dim k = ReadKey(True)
+          Select Case k.Key
+            Case ConsoleKey.Escape
+              Return "Whimp"
+            Case ConsoleKey.Enter
+              If accumulator = "" Then
+                Return "Whimp"
+              Else
+                Return accumulator
+              End If
+            Case ConsoleKey.Backspace
+              If accumulator <> "" Then
+                'SetCursorPosition(CursorTop, CursorLeft - 1)
+                CursorLeft -= 1
+                Write(" "c)
+                CursorLeft -= 1
+                accumulator = accumulator.Substring(0, accumulator.Length - 1)
+              End If
+            Case ConsoleKey.Spacebar, ConsoleKey.A To ConsoleKey.Z, ConsoleKey.D0 To ConsoleKey.D9
+              Write(k.KeyChar)
+              accumulator += k.KeyChar
+            Case Else
+          End Select
+        End If
+
+      Loop
+
+    Finally
+      CursorVisible = False
+    End Try
+
+  End Function
+
+#End Region
+
+#Region "Main Screen"
+
+  Private Sub DrawLevel()
+
+    ResetColor()
+    Clear()
+
+    For x = 0 To 79
+      For y = 0 To 20
+        If m_levels(Hero.DungeonLevel).Map(y, x).Explored Then
+          DrawRoomTile(x, y)
+        End If
+      Next
+    Next
+
+    Dim zone = Core.Level.DetermineZone(Hero.X, Hero.Y)
+    Dim lit = If(zone > -1, m_levels(Hero.DungeonLevel).Lights(zone), False)
+    If lit Then
+      DrawRoom(Hero.X, Hero.Y)
+    End If
+
+    PlaceHero()
+
+  End Sub
+
+  Private Sub DrawClock()
+    ForegroundColor = ConsoleColor.Black
+    BackgroundColor = ConsoleColor.Gray
+    SetCursorPosition(74, 24)
+    Write($"{Date.Now:h:mm}".PadLeft(5))
+  End Sub
+
+  Private Sub DrawHud()
+
+    ResetColor()
+
+    ForegroundColor = ConsoleColor.Yellow
+
+    SetCursorPosition(0, 23)
+
+    Dim level = $"{Hero.DungeonLevel + 1}".PadRight(5)
+    Dim hits = $"{Hero.HP}({Hero.MaxHP})".PadRight(8)
+    Dim str = $"{Hero.Str}({Hero.MaxStr})".PadRight(8)
+    Dim gold = $"{Hero.Gold}".PadRight(6)
+    Dim armor = $"{Hero.AC}".PadRight(7)
+
+    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{Core.Hero.HeroLevel(Hero.ExperienceLevel).PadRight(12)}")
+
+    ' Handle "hunger"
+
+    ResetColor()
+    SetCursorPosition(57, 24)
+    Write("".PadRight(8))
+
+    If Hero.HungerStage > Core.HungerStage.Healthy Then
+      SetCursorPosition(57, 24)
+      Dim hunger$ = Hero.HungerStage.ToString
+      ForegroundColor = ConsoleColor.Black
+      BackgroundColor = ConsoleColor.Gray
+      Write(hunger)
+      ResetColor()
+    End If
+
+  End Sub
+
+  Private Sub DrawRoom(x As Integer, y As Integer)
+
+    ' Find the top / left floor tile in this room.
+
+    Dim xx = x
+    Dim yy = y
+    Do
+      If m_levels(Hero.DungeonLevel).Map(yy, xx - 1).Type = Core.TileType.Floor Then
+        xx -= 1
+      Else
+        Exit Do
+      End If
+    Loop
+    Do
+      If m_levels(Hero.DungeonLevel).Map(yy - 1, xx).Type = Core.TileType.Floor Then
+        yy -= 1
+      Else
+        Exit Do
+      End If
+    Loop
+
+    Dim xxx = xx - 1
+    Dim yyy = yy - 1
+
+    Do
+
+      Do
+        Dim foundStairs = DrawRoomTile(xxx, yyy)
+        If foundStairs Then
+          m_levels(Hero.DungeonLevel).StairsFound = True
+        End If
+        xxx += 1
+        If xxx > 79 Then Exit Do
+        Select Case m_levels(Hero.DungeonLevel).Map(yyy, xxx).Type
+          Case Core.TileType.Void, Core.TileType.Tunnel
+            Exit Do
+          Case Else
+        End Select
+      Loop
+
+      xxx = xx - 1
+      yyy += 1
+      If yyy > 20 Then Exit Do
+      Select Case m_levels(Hero.DungeonLevel).Map(yyy, xxx).Type
+        Case Core.TileType.Void, Core.TileType.Tunnel
+          Exit Do
+        Case Else
+      End Select
+
+    Loop
+
+  End Sub
+
+  Private Function DrawRoomTile(x%, y%) As Boolean
+    If y > 20 Then Return False
+    Dim result = False
+    Dim tile = m_levels(Hero.DungeonLevel).Map(y, x)
+    tile.Explored = True
+    Dim output = tile.ToString
+    Dim fg = ConsoleColor.DarkGray
+    Dim bg = ConsoleColor.Black
+    Select Case tile.Type
+      Case Core.TileType.WallTopLeft : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallTopRight : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallHorizontal : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallVertical : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallBottomLeft : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.WallBottomRight : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.SecretHorizontal : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.SecretVertical : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.Door : fg = ConsoleColor.DarkYellow
+      Case Core.TileType.Hole
+        fg = ConsoleColor.Black : bg = ConsoleColor.Green
+        result = True
+      Case Core.TileType.Floor
+        Dim t = If(Not If(tile.Object?.Hidden, False), tile.ObjectType, Nothing)
+        Select Case t 'tile.ObjectType
+          Case Core.ObjectType.Trap
+            fg = ConsoleColor.Red
+            output = "♦"
+          Case Core.ObjectType.Gold
+            fg = ConsoleColor.Yellow
+            output = "*"
+          Case Core.ObjectType.Food
+            fg = ConsoleColor.Red
+            output = "♣"
+          Case Core.ObjectType.Weapon
+            fg = ConsoleColor.Blue
+            output = "↑"
+          Case Else
+            fg = ConsoleColor.DarkGreen
+        End Select
+      Case Core.TileType.Tunnel
+        'Case "@"c : output = QBChar(1) : fg = ConsoleColor.Yellow
+        'Case "!"c : output = QBChar(173) : fg = ConsoleColor.DarkMagenta
+        'Case "%"c : output = QBChar(4) : fg = ConsoleColor.Magenta
+        'Case "$"c : output = QBChar(15) : fg = ConsoleColor.Yellow
+        'Case "^"c : output = QBChar(24) : fg = ConsoleColor.DarkMagenta
+        'Case "\"c : output = QBChar(8) : fg = ConsoleColor.DarkMagenta
+        'Case "*"c : output = QBChar(5) : fg = ConsoleColor.Red
+        'Case "#"c : output = TUNNEL
+        'Case "@"c, "."c : output = "."c : fg = ConsoleColor.DarkGreen
+        'Case "0"c : output = QBChar(248) : fg = ConsoleColor.DarkMagenta
+        'Case "9"c : output = QBChar(13) : fg = ConsoleColor.DarkMagenta
+      Case Else
+    End Select
+    If BackgroundColor <> bg Then
+      BackgroundColor = bg
+    End If
+    If ForegroundColor <> fg Then
+      ForegroundColor = fg
+    End If
+    SetCursorPosition(x, y + 1) : Write(output)
+    Return result
+  End Function
+
+#End Region
+
+#Region "Help Screen"
 
   Private Class KeyCommand
 
@@ -1068,19 +1172,125 @@ Start:
 
   End Sub
 
-  Private Class Symbol
+#End Region
 
-    Public Sub New(symbol As String, description As String, color As ConsoleColor)
-      Me.Symbol = symbol
-      Me.Description = description
-      Me.Color = color
-    End Sub
+#Region "Inventory Screen"
 
-    Public ReadOnly Property Symbol As String
-    Public ReadOnly Property Description As String
-    Public ReadOnly Property Color As ConsoleColor
+  Private Function DrawInventory(filter As Core.ObjectType?) As Char?
 
-  End Class
+    ResetColor()
+    Clear()
+
+    Dim page = 0
+    Dim index = 0
+
+    Do
+
+      Console.Clear()
+
+      Dim row = 0
+
+      Dim letter = 0
+
+      If filter Is Nothing OrElse
+         filter = Core.ObjectType.None OrElse
+         filter = Core.ObjectType.Food Then
+        If Hero.Rations > 0 Then
+          If Hero.Rations = 1 Then
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) Some food")
+          Else
+            Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Rations} rations of food")
+          End If
+          letter += 1
+          row += 1
+        End If
+      End If
+
+      Do Until index > 21
+
+        If filter Is Nothing OrElse
+           filter = Core.ObjectType.None OrElse
+           Hero.Inventory(index).Object.Type = filter Then
+
+          Console.SetCursorPosition(0, row)
+
+          Select Case Hero.Inventory(index).Object.Type
+            Case Core.ObjectType.Armor
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(being worn)", "")}")
+            Case Core.ObjectType.Weapon
+              If Hero.Inventory(index).Object.Name.Contains("arrow") OrElse
+                 Hero.Inventory(index).Object.Name.Contains("bolt") Then
+                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).Count} {Hero.Inventory(index).ToString}s {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+              Else
+                Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {If(Hero.Inventory(index).Count = 1, "A", "????")} {Hero.Inventory(index).ToString} {If(Hero.Inventory(index).Equiped, "(weapon in hand)", "")}")
+              End If
+            Case Else
+              Console.Write($"{ChrW(CInt(AscW("a") + letter))}) {Hero.Inventory(index).ToString}")
+          End Select
+
+          row += 1
+          letter += 1
+
+        End If
+
+        index += 1
+
+        If (page * 21) + index > Hero.Inventory.Count - 1 Then
+          Exit Do
+        End If
+
+      Loop
+
+      page += 1
+      index = 0
+
+      Select Case filter
+
+        Case Core.ObjectType.None
+          Return SelectItemEscToContinue("drop")
+        Case Core.ObjectType.Food
+          Return SelectItemEscToContinue("eat")
+
+        Case Else
+
+          If (page * 21) + index < Hero.Inventory.Count Then
+            ' Still more items left, prompt as if there is another page to be viewed...
+            Dim result = PressSpaceForMoreEscToContinue()
+            If result Then
+              Return Nothing
+            End If
+          Else
+            ' This the last of this content, so prompt to "return to game".
+            PressSpaceToContinue()
+            Return Nothing
+          End If
+
+      End Select
+
+    Loop
+
+  End Function
+
+  Private Function SelectItemEscToContinue(phrase As String) As Char?
+    SetCursorPosition(0, 24)
+    Write($"-Select item to {phrase}. Esc to cancel-")
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.A To ConsoleKey.Z
+            Return key.KeyChar
+          Case ConsoleKey.Escape
+            Return Nothing
+          Case Else
+        End Select
+      End If
+    Loop
+  End Function
+
+#End Region
+
+#Region "Symbol Screen"
 
   Private Sub DrawSymbols()
 
@@ -1171,6 +1381,60 @@ Start:
 
   End Sub
 
+  Private Class Symbol
+
+    Public Sub New(symbol As String, description As String, color As ConsoleColor)
+      Me.Symbol = symbol
+      Me.Description = description
+      Me.Color = color
+    End Sub
+
+    Public ReadOnly Property Symbol As String
+    Public ReadOnly Property Description As String
+    Public ReadOnly Property Color As ConsoleColor
+
+  End Class
+
+#End Region
+
+  Private Sub PressSpaceToContinue()
+    SetCursorPosition(0, 24)
+    Write("--press space to continue--")
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.A To ConsoleKey.Z, ConsoleKey.Spacebar
+            Exit Do
+          Case Else
+        End Select
+      End If
+    Loop
+  End Sub
+
+  Private Function PressSpaceForMoreEscToContinue() As Boolean
+    SetCursorPosition(0, 24)
+    Write("--Press space for more, Esc to continue--")
+    Do
+      If KeyAvailable Then
+        Dim key = ReadKey(True)
+        Select Case key.Key
+          Case ConsoleKey.Spacebar
+            Return False
+          Case ConsoleKey.Escape
+            Return True
+          Case Else
+        End Select
+      End If
+    Loop
+  End Function
+
+#End Region
+
+#Region "Message Handling"
+
+  Private ReadOnly m_messages As New Queue(Of String) ' Holds "list" of messages; allowing for a stack.
+
   Private m_displayingMessage As Boolean
   Private m_messageLength As Integer = 0
 
@@ -1210,6 +1474,12 @@ Start:
     End If
   End Sub
 
+#End Region
+
+#Region "Accumulator Handling"
+
+  Private m_accumulator$ ' Holds the "keys" (numbers) pressed in order to do the "repeat" functionality.
+
   Private Sub Accumulate(c As Char)
     If m_accumulator Is Nothing Then
       m_accumulator = c
@@ -1231,23 +1501,9 @@ Start:
     DrawAccumulator()
   End Sub
 
-  Private Function PerformSearch() As Boolean
+#End Region
 
-    Dim result = False
-
-    For yy = -1 To 1
-      For xx = -1 To 1
-        Dim tile = m_levels(m_level).Map(Hero.Y + yy, Hero.X + xx)
-        If tile.FoundSecret(False) Then
-          DrawRoomTile(Hero.X + xx, Hero.Y + yy)
-          result = True
-        End If
-      Next
-    Next
-
-    Return result
-
-  End Function
+#Region "Helper Methods"
 
   Private Function LoadDungeon(path As String) As List(Of Core.Level)
 
@@ -1284,6 +1540,7 @@ Start:
           Next
           lineIndex += 1
         Next
+        result(level - 1).DetermineCoords()
       End If
 
     Loop
@@ -1292,151 +1549,9 @@ Start:
 
   End Function
 
-  Private Sub DrawClock()
-    ForegroundColor = ConsoleColor.Black
-    BackgroundColor = ConsoleColor.Gray
-    SetCursorPosition(74, 24)
-    Write($"{Date.Now:h:mm}".PadLeft(5))
-  End Sub
-
-  Private Sub DrawHud()
-
-    ResetColor()
-
-    ForegroundColor = ConsoleColor.Yellow
-
-    SetCursorPosition(0, 23)
-
-    Dim level = $"{m_level + 1}".PadRight(5)
-    Dim hits = $"{Hero.HP}({Hero.MaxHP})".PadRight(8)
-    Dim str = $"{Hero.Str}({Hero.MaxStr})".PadRight(8)
-    Dim gold = $"{Hero.Gold}".PadRight(6)
-    Dim armor = $"{Hero.AC}".PadRight(7)
-
-    Write($"Level:{level} Hits:{hits} Str:{str} Gold:{gold} Armor:{armor}{HeroLevel(Hero.Level).PadRight(12)}")
-
-    ' Handle "hunger"
-
-    ResetColor()
-    SetCursorPosition(57, 24)
-    Write("".PadRight(8))
-
-    If Hero.HungerStage > Core.HungerStage.Healthy Then
-      SetCursorPosition(57, 24)
-      Dim hunger$ = Hero.HungerStage.ToString
-      ForegroundColor = ConsoleColor.Black
-      BackgroundColor = ConsoleColor.Gray
-      Write(hunger)
-      ResetColor()
-    End If
-
-  End Sub
-
-  Private Function GetCharacterName() As String
-
-    Clear()
-
-    ForegroundColor = ConsoleColor.DarkYellow
-
-    Write($"╔{New System.String("═"c, 78)}╗")
-    For r = 1 To 21
-      SetCursorPosition(0, r)
-      Write($"║{New String(" "c, 78)}║")
-    Next
-    SetCursorPosition(0, 22)
-    Write($"╠{New System.String("═"c, 78)}╣")
-    SetCursorPosition(0, 23)
-    Write($"║{New String(" "c, 78)}║")
-    SetCursorPosition(0, 24)
-    'Write($"╚{New System.String("═"c, 78)}╝")
-    Write($"╚{New System.String("═"c, 78)}")
-
-    BackgroundColor = ConsoleColor.Gray
-    Center("ROGUE: The Adventure Game", 2, ConsoleColor.Black)
-
-    ResetColor()
-
-    Center("The game of Rogue was originated by:", 4, ConsoleColor.Magenta)
-    Center("Michael C. Toy", 6, ConsoleColor.White)
-    Center("and", 7, ConsoleColor.Gray)
-    Center("Kenneth C.R.C. Arnold", 8, ConsoleColor.White)
-
-    Center("Adapted for .NET Core by:", 10, ConsoleColor.Magenta)
-    Center("Cory Smith", 12, ConsoleColor.White)
-    Center("Significant design contributions by:", 14, ConsoleColor.Magenta)
-    Center("Glenn Wichman and scores of others", 16, ConsoleColor.White)
-
-    Center("(C) Copyright 2019", 18, ConsoleColor.Yellow)
-    Center("Cory Smith", 19, ConsoleColor.White)
-    Center("Made available as open source under the MIT license.", 20, ConsoleColor.Yellow)
-
-    ResetColor()
-
-    SetCursorPosition(2, 23)
-    Write("Rogue's Name?")
-
-    CursorVisible = True
-
-    Try
-
-      'TODO: If player presses ESC (regardless of what was typed) while entering the name...
-      '      If player presses ENTER with a blank name...
-      '      The name is set to Whimp.
-
-      Dim accumulator = ""
-
-      SetCursorPosition(16, 23)
-
-      Do
-
-        If KeyAvailable Then
-          Dim k = ReadKey(True)
-          Select Case k.Key
-            Case ConsoleKey.Escape
-              Return "Whimp"
-            Case ConsoleKey.Enter
-              If accumulator = "" Then
-                Return "Whimp"
-              Else
-                Return accumulator
-              End If
-            Case ConsoleKey.Backspace
-              If accumulator <> "" Then
-                'SetCursorPosition(CursorTop, CursorLeft - 1)
-                CursorLeft -= 1
-                Write(" "c)
-                CursorLeft -= 1
-                accumulator = accumulator.Substring(0, accumulator.Length - 1)
-              End If
-            Case ConsoleKey.Spacebar, ConsoleKey.A To ConsoleKey.Z, ConsoleKey.D0 To ConsoleKey.D9
-              Write(k.KeyChar)
-              accumulator += k.KeyChar
-            Case Else
-          End Select
-        End If
-
-      Loop
-
-    Finally
-      CursorVisible = False
-    End Try
-
-  End Function
-
-  Private Sub Center(text As String, row As Integer, fg As ConsoleColor)
-    ForegroundColor = fg
-    Dim c = (80 - text.Length) \ 2
-    SetCursorPosition(c, row)
-    Write(text)
-  End Sub
-
   Private Sub InitializeLevel()
 
     m_accumulator = Nothing
-
-    m_stairsDownX = -1
-    m_stairsDownY = -1
-    m_stairsDownFound = False
 
     Hero.MoveCount = 0
     Hero.X = -1
@@ -1448,20 +1563,17 @@ Start:
 
     Dim floors As New List(Of Core.Tile)
 
+    Hero.X = m_levels(Hero.DungeonLevel).StartCoords.X
+    Hero.Y = m_levels(Hero.DungeonLevel).StartCoords.Y
+
     For y = 0 To 20
       For x = 0 To 79
 
-        Dim tile = m_levels(m_level).Map(y, x)
+        Dim tile = m_levels(Hero.DungeonLevel).Map(y, x)
 
         If Not tile.HeroStart AndAlso
            tile.Type = Core.TileType.Floor Then
           floors.Add(tile)
-        End If
-
-        If tile.HeroStart Then
-          Hero.X = x : Hero.Y = y
-        ElseIf tile.Type = Core.TileType.Hole Then
-          m_stairsDownX = x : m_stairsDownY = y
         End If
 
       Next
@@ -1471,14 +1583,14 @@ Start:
     Dim maxGoldCount = 3
     If minGoldCount > maxGoldCount Then minGoldCount = maxGoldCount
 
-    Dim goldCount = Randomizer.Next(minGoldCount, maxGoldCount + 1)
+    Dim goldCount = Core.Param.Randomizer.Next(minGoldCount, maxGoldCount + 1)
 
     For gold = 1 To goldCount
       If floors.Count > 0 Then
-        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        Dim tileNumber = Core.Param.Randomizer.Next(0, floors.Count - 1)
         'floors(tileNumber).Gold = Randomizer.Next(1, 100)
         floors(tileNumber).ObjectType = Core.ObjectType.Gold
-        floors(tileNumber).ObjectCount = Randomizer.Next(1, 100)
+        floors(tileNumber).ObjectCount = Core.Param.Randomizer.Next(1, 100)
         floors.RemoveAt(tileNumber)
       End If
     Next
@@ -1487,11 +1599,11 @@ Start:
     Dim maxFoodCount = 3
     If minFoodCount > maxFoodCount Then minFoodCount = maxFoodCount
 
-    Dim foodCount = Randomizer.Next(minFoodCount, maxFoodCount + 1)
+    Dim foodCount = Core.Param.Randomizer.Next(minFoodCount, maxFoodCount + 1)
 
     For food = 1 To foodCount
       If floors.Count > 0 Then
-        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        Dim tileNumber = Core.Param.Randomizer.Next(0, floors.Count - 1)
         floors(tileNumber).ObjectType = Core.ObjectType.Food
         floors(tileNumber).ObjectCount = 1
         floors.RemoveAt(tileNumber)
@@ -1502,13 +1614,13 @@ Start:
     Dim maxTrapCount = 2 'If(Debugger.IsAttached, 10, 2)
     If minTrapCount > maxTrapCount Then minTrapCount = maxTrapCount
 
-    Dim trapCount = Randomizer.Next(minTrapCount, maxTrapCount + 1)
+    Dim trapCount = Core.Param.Randomizer.Next(minTrapCount, maxTrapCount + 1)
 
     For trap = 1 To trapCount
       If floors.Count > 0 Then
-        Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+        Dim tileNumber = Core.Param.Randomizer.Next(0, floors.Count - 1)
         floors(tileNumber).ObjectType = Core.ObjectType.Trap
-        Dim trapType = Randomizer.Next(0, 3)
+        Dim trapType = Core.Param.Randomizer.Next(0, 3)
         Select Case trapType
           Case 0 : floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Hole)
           Case 1 : floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Teleport)
@@ -1525,104 +1637,18 @@ Start:
 
   End Sub
 
-  Private Sub DrawLevel()
-
-    ResetColor()
-    Clear()
-
-    For x = 0 To 79
-      For y = 0 To 20
-        Dim explored = m_levels(m_level).Map(y, x).Explored
-        If explored Then
-          DrawRoomTile(x, y)
-        End If
-      Next
-    Next
-
-    'SetCursorPosition(0, 7)
-    'Write(New String("-"c, 80))
-
-    'SetCursorPosition(0, 15)
-    'Write(New String("-"c, 80))
-
-    'For y = 0 To 20
-    '  SetCursorPosition(26, y + 1) : Write("|")
-    '  SetCursorPosition(53, y + 1) : Write("|")
-    'Next
-
-    Dim zone = DetermineZone(Hero.X, Hero.Y)
-    Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
-    If lit Then
-      DrawRoom(Hero.X, Hero.Y)
-    End If
-
-    PlaceHero()
-
-  End Sub
-
   Private Function CanMove(x%, y%) As Boolean
     If x < 0 OrElse y < 0 OrElse x > 79 OrElse y > 20 Then Return False
-    Return m_levels(m_level).Map(y, x).PassThrough
+    Return m_levels(Hero.DungeonLevel).Map(y, x).PassThrough
   End Function
-
-  Private Function DetermineZone(x%, y%) As Integer
-    '     |    |
-    '   0 | 1  | 2
-    '     |    |
-    '  ------------
-    '     |    |
-    '   3 | 4  | 5
-    '     |    |
-    '  ------------
-    '     |    |
-    '   6 | 7  | 8
-    '     |    |
-    '
-    '  26 columns per horizontal zone with 2 columns of separation.
-    '  Row 1: 6 lines
-    '  Row 2: 7 lines
-    '  Row 3: 6 lines
-
-    Dim row = -1
-    Select Case y
-      Case 0 To 5 : row = 0
-      Case 7 To 13 : row = 1
-      Case 15 To 20 : row = 2
-      Case Else
-    End Select
-
-    If row > -1 Then
-      Select Case x
-        Case 0 To 25 ' 0, 1, 2
-          Return (row * 3)
-        Case 27 To 53 ' 3, 4, 5
-          Return (row * 3) + 1
-        Case 55 To 80 ' 6, 7, 8
-          Return (row * 3) + 2
-        Case Else
-      End Select
-    End If
-
-    Return -1
-
-  End Function
-
-  Private Class Coord
-    Public Sub New(x As Integer, y As Integer)
-      Me.X = x
-      Me.Y = y
-    End Sub
-    Public ReadOnly Property X As Integer
-    Public ReadOnly Property Y As Integer
-  End Class
 
   Private Function PlaceHero() As Boolean
 
     Dim result = False
 
-    Dim zone = DetermineZone(Hero.X, Hero.Y)
-    Dim lit = If(zone > -1, m_levels(m_level).Lights(zone), False)
-    Dim floor = If(zone > -1, m_levels(m_level).Map(Hero.Y, Hero.X).Type = Core.TileType.Floor, False)
+    Dim zone = Core.Level.DetermineZone(Hero.X, Hero.Y)
+    Dim lit = If(zone > -1, m_levels(Hero.DungeonLevel).Lights(zone), False)
+    Dim floor = If(zone > -1, m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).Type = Core.TileType.Floor, False)
 
     'If lit AndAlso floor Then
 
@@ -1647,7 +1673,7 @@ Start:
 
     If Hero.Y > -1 AndAlso Hero.X > -1 Then
 
-      Dim tile = m_levels(m_level).Map(Hero.Y, Hero.X)
+      Dim tile = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X)
 
       Select Case tile.Type
         Case Core.TileType.Floor
@@ -1655,7 +1681,7 @@ Start:
             For xx = -1 To 1
               Dim foundStairs = DrawRoomTile(Hero.X + xx, Hero.Y + yy)
               If foundStairs Then
-                m_stairsDownFound = True
+                m_levels(Hero.DungeonLevel).StairsFound = True
               End If
             Next
           Next
@@ -1666,7 +1692,7 @@ Start:
             For xx = -1 To 1
               If Hero.X + xx > 79 Then Continue For
               If Hero.X + xx < 0 Then Continue For
-              Dim target = m_levels(m_level).Map(Hero.Y + yy, Hero.X + xx)
+              Dim target = m_levels(Hero.DungeonLevel).Map(Hero.Y + yy, Hero.X + xx)
               Select Case target.Type
                 Case Core.TileType.Tunnel, Core.TileType.Door
                   DrawRoomTile(Hero.X + xx, Hero.Y + yy)
@@ -1678,17 +1704,17 @@ Start:
           If lit Then
             ' In the doorway, determine the floor to the left, right, top or bottom.
             ' Once found, use "paint" routine above...
-            Dim coords = {New Coord(0, -1),
-                                    New Coord(1, 0),
-                                    New Coord(0, 1),
-                                    New Coord(-1, 0)}
+            Dim coords = {New Core.Coordinate(0, -1),
+                          New Core.Coordinate(1, 0),
+                          New Core.Coordinate(0, 1),
+                          New Core.Coordinate(-1, 0)}
             For Each coord In coords
               If Not Hero.Y + coord.Y > 20 Then
-                Dim target = m_levels(m_level).Map(Hero.Y + coord.Y, Hero.X + coord.X)
+                Dim target = m_levels(Hero.DungeonLevel).Map(Hero.Y + coord.Y, Hero.X + coord.X)
                 If target.Type = Core.TileType.Floor Then
                   ' found it...
                   DrawRoom(Hero.X + coord.X, Hero.Y + coord.Y)
-                  m_levels(m_level).Lights(zone) = False
+                  m_levels(Hero.DungeonLevel).Lights(zone) = False
                   Exit For
                 End If
               End If
@@ -1698,7 +1724,7 @@ Start:
               For xx = -1 To 1
                 Dim foundStairs = DrawRoomTile(Hero.X + xx, Hero.Y + yy)
                 If foundStairs Then
-                  m_stairsDownFound = True
+                  m_levels(Hero.DungeonLevel).StairsFound = True
                 End If
               Next
             Next
@@ -1708,9 +1734,9 @@ Start:
 
       'End If
 
-      Select Case m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType
+      Select Case m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType
         Case Core.ObjectType.Trap
-          Dim trap = DirectCast(m_levels(m_level).Map(Hero.Y, Hero.X).[Object], Core.Trap)
+          Dim trap = DirectCast(m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).[Object], Core.Trap)
 
           DisplayMessage($"You stumbled upon a {trap.Name}") 'TODO: Need to determine the actual verbiage.
 
@@ -1718,7 +1744,7 @@ Start:
 
             Case Core.TrapType.Hole
 
-              m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+              m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
 
               TravelDownAction()
 
@@ -1727,11 +1753,11 @@ Start:
 
             Case Core.TrapType.Arrow
 
-              Dim t = DirectCast(m_levels(m_level).Map(Hero.Y, Hero.X).Object, Core.Trap)
+              Dim t = DirectCast(m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).Object, Core.Trap)
 
-              m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+              m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
 
-              Dim dmg = RollDamage(t.Damage)
+              Dim dmg = Core.dice.RollDamage(t.Damage)
               Hero.HP -= dmg
               DisplayMessage($"You've lost {dmg} hit point{If(dmg > 1, "s", "")}.")
 
@@ -1742,18 +1768,18 @@ Start:
               Dim floors As New List(Of Core.Tile)
 
               ' Determine "room" excluded so that we ensure teleporting to a different room.
-              Dim excludeZone = DetermineZone(Hero.X, Hero.Y)
+              Dim excludeZone = Core.Level.DetermineZone(Hero.X, Hero.Y)
 
               ' Do a two-pass review; first pass looking for unexplored areas - second pass, all areas.
               For pass = 0 To 1
                 For yy = 0 To 20
                   For xx = 0 To 79
                     If Hero.X = xx AndAlso Hero.Y = yy Then Continue For
-                    Dim t = m_levels(m_level).Map(yy, xx)
+                    Dim t = m_levels(Hero.DungeonLevel).Map(yy, xx)
                     If t.Type = Core.TileType.Floor AndAlso
                        t.ObjectType = Core.ObjectType.None AndAlso
                        (Not t.Explored OrElse pass = 1) AndAlso
-                       DetermineZone(xx, yy) <> excludeZone Then
+                       Core.Level.DetermineZone(xx, yy) <> excludeZone Then
                       floors.Add(t)
                     End If
                   Next
@@ -1762,14 +1788,14 @@ Start:
               Next
 
               ' Determine target location...
-              Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
+              Dim tileNumber = Core.Param.Randomizer.Next(0, floors.Count - 1)
 
               ' Move, redraw.
               For yy = 0 To 20
                 For xx = 0 To 79
-                  If floors(tileNumber) Is m_levels(m_level).Map(yy, xx) Then
+                  If floors(tileNumber) Is m_levels(Hero.DungeonLevel).Map(yy, xx) Then
                     ' Remove the trap...
-                    m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+                    m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
                     DrawRoomTile(Hero.X, Hero.Y)
                     ' Move hero to a new (random) location...
                     Hero.X = xx
@@ -1787,27 +1813,27 @@ Start:
           End Select
 
         Case Core.ObjectType.Gold
-          DisplayMessage($"You found {m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount} gold pieces")
-          Hero.Gold += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+          DisplayMessage($"You found {m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount} gold pieces")
+          Hero.Gold += m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount
+          m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Core.ObjectType.Food
-          Hero.Rations += m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount
+          Hero.Rations += m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount
           DisplayMessage($"You now have {Hero.Rations} rations of food (a)")
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+          m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Core.ObjectType.Weapon
           'TODO: Needs more work. Additionally, how should items be added to inventory (sort)?
-          Hero.Inventory.Add(New Core.InventoryItem() With {.[Object] = m_levels(m_level).Map(Hero.Y, Hero.X).[Object], .Count = m_levels(m_level).Map(Hero.Y, Hero.X).ObjectCount})
+          Hero.Inventory.Add(New Core.InventoryItem() With {.[Object] = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).[Object], .Count = m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectCount})
           Dim index = Hero.Inventory.Count - 1
           DisplayMessage($"You now have {Hero.Inventory(index).ToString} ({ChrW(AscW("a"c) + index + (If(Hero.Rations > 0, 1, 0)))})")
-          m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+          m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
           result = True
         Case Else
           ' Floor
       End Select
 
-      If m_levels(m_level).Map(Hero.Y, Hero.X).Type = Core.TileType.Hole Then
+      If m_levels(Hero.DungeonLevel).Map(Hero.Y, Hero.X).Type = Core.TileType.Hole Then
         result = True
         BackgroundColor = ConsoleColor.Green
       Else
@@ -1823,205 +1849,13 @@ Start:
 
   End Function
 
-  Private Function RollDamage(damage As Dice) As Integer
-    Dim result = 0
-    For d = 1 To damage.Count ' 4
-      Dim amount = Randomizer.Next(1, damage.Sides + 1) ' 6
-      result += amount
-    Next
-    Return result
-  End Function
-
-  Private Sub DrawRoom(x As Integer, y As Integer)
-
-    ' Find the top / left floor tile in this room.
-
-    Dim xx = x
-    Dim yy = y
-    Do
-      If m_levels(m_level).Map(yy, xx - 1).Type = Core.TileType.Floor Then
-        xx -= 1
-      Else
-        Exit Do
-      End If
-    Loop
-    Do
-      If m_levels(m_level).Map(yy - 1, xx).Type = Core.TileType.Floor Then
-        yy -= 1
-      Else
-        Exit Do
-      End If
-    Loop
-
-    Dim xxx = xx - 1
-    Dim yyy = yy - 1
-
-    Do
-
-      Do
-        Dim foundStairs = DrawRoomTile(xxx, yyy)
-        If foundStairs Then
-          m_stairsDownFound = True
-        End If
-        xxx += 1
-        If xxx > 79 Then Exit Do
-        Select Case m_levels(m_level).Map(yyy, xxx).Type
-          Case Core.TileType.Void, Core.TileType.Tunnel
-            Exit Do
-          Case Else
-        End Select
-      Loop
-
-      xxx = xx - 1
-      yyy += 1
-      If yyy > 20 Then Exit Do
-      Select Case m_levels(m_level).Map(yyy, xxx).Type
-        Case Core.TileType.Void, Core.TileType.Tunnel
-          Exit Do
-        Case Else
-      End Select
-
-    Loop
-
+  Private Sub Center(text As String, row As Integer, fg As ConsoleColor)
+    ForegroundColor = fg
+    Dim c = (80 - text.Length) \ 2
+    SetCursorPosition(c, row)
+    Write(text)
   End Sub
 
-  Private Function DrawRoomTile(x%, y%) As Boolean
-    If y > 20 Then Return False
-    Dim result = False
-    Dim tile = m_levels(m_level).Map(y, x)
-    tile.Explored = True
-    Dim output = tile.ToString
-    Dim fg = ConsoleColor.DarkGray
-    Dim bg = ConsoleColor.Black
-    Select Case tile.Type
-      Case Core.TileType.WallTopLeft : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.WallTopRight : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.WallHorizontal : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.WallVertical : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.WallBottomLeft : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.WallBottomRight : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.SecretHorizontal : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.SecretVertical : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.Door : fg = ConsoleColor.DarkYellow
-      Case Core.TileType.Hole
-        fg = ConsoleColor.Black : bg = ConsoleColor.Green
-        result = True
-      Case Core.TileType.Floor
-        Dim t = If(Not If(tile.Object?.Hidden, False), tile.ObjectType, Nothing)
-        Select Case t 'tile.ObjectType
-          Case Core.ObjectType.Trap
-            fg = ConsoleColor.Red
-            output = "♦"
-          Case Core.ObjectType.Gold
-            fg = ConsoleColor.Yellow
-            output = "*"
-          Case Core.ObjectType.Food
-            fg = ConsoleColor.Red
-            output = "♣"
-          Case Core.ObjectType.Weapon
-            fg = ConsoleColor.Blue
-            output = "↑"
-          Case Else
-            fg = ConsoleColor.DarkGreen
-        End Select
-      Case Core.TileType.Tunnel
-        'Case "@"c : output = QBChar(1) : fg = ConsoleColor.Yellow
-        'Case "!"c : output = QBChar(173) : fg = ConsoleColor.DarkMagenta
-        'Case "%"c : output = QBChar(4) : fg = ConsoleColor.Magenta
-        'Case "$"c : output = QBChar(15) : fg = ConsoleColor.Yellow
-        'Case "^"c : output = QBChar(24) : fg = ConsoleColor.DarkMagenta
-        'Case "\"c : output = QBChar(8) : fg = ConsoleColor.DarkMagenta
-        'Case "*"c : output = QBChar(5) : fg = ConsoleColor.Red
-        'Case "#"c : output = TUNNEL
-        'Case "@"c, "."c : output = "."c : fg = ConsoleColor.DarkGreen
-        'Case "0"c : output = QBChar(248) : fg = ConsoleColor.DarkMagenta
-        'Case "9"c : output = QBChar(13) : fg = ConsoleColor.DarkMagenta
-      Case Else
-    End Select
-    If BackgroundColor <> bg Then
-      BackgroundColor = bg
-    End If
-    If ForegroundColor <> fg Then
-      ForegroundColor = fg
-    End If
-    SetCursorPosition(x, y + 1) : Write(output)
-    Return result
-  End Function
-
-  Private Function HeroLevel(level As Integer) As String
-    Select Case level
-      Case 1 : Return "Guild Novice"
-      Case 2 : Return "Apprentice"
-      Case 3 : Return "Journeyman"
-      Case 4 : Return "Adventurer"
-      Case 5 : Return "Fighter"
-      Case 6 : Return "Warrior"
-      Case 7 : Return "Rogue"
-      Case 8 : Return "Champion"
-      Case 9 : Return "Master Rogue"
-      Case 10 : Return "Warlord"
-      Case 11 : Return "Hero"
-      Case 12 : Return "Guild Master"
-      Case 13 : Return "Dragonlord"
-      Case 14 : Return "Wizard"
-      Case 15 : Return "Rogue Geek"
-      Case 16 : Return "Rogue Addict"
-      Case 17 : Return "Schmendrick"
-      Case 18 : Return "Gunfighter"
-      Case 19 : Return "Time Waster"
-      Case 20 : Return "Bug Chaser"
-      Case Else
-        Return ""
-    End Select
-  End Function
-
-  Private Sub PressSpaceToContinue()
-    SetCursorPosition(0, 24)
-    Write("--press space to continue--")
-    Do
-      If KeyAvailable Then
-        Dim key = ReadKey(True)
-        Select Case key.Key
-          Case ConsoleKey.A To ConsoleKey.Z, ConsoleKey.Spacebar
-            Exit Do
-          Case Else
-        End Select
-      End If
-    Loop
-  End Sub
-
-  Private Function SelectItemEscToContinue(phrase As String) As Char?
-    SetCursorPosition(0, 24)
-    Write($"-Select item to {phrase}. Esc to cancel-")
-    Do
-      If KeyAvailable Then
-        Dim key = ReadKey(True)
-        Select Case key.Key
-          Case ConsoleKey.A To ConsoleKey.Z
-            Return key.KeyChar
-          Case ConsoleKey.Escape
-            Return Nothing
-          Case Else
-        End Select
-      End If
-    Loop
-  End Function
-
-  Private Function PressSpaceForMoreEscToContinue() As Boolean
-    SetCursorPosition(0, 24)
-    Write("--Press space for more, Esc to continue--")
-    Do
-      If KeyAvailable Then
-        Dim key = ReadKey(True)
-        Select Case key.Key
-          Case ConsoleKey.Spacebar
-            Return False
-          Case ConsoleKey.Escape
-            Return True
-          Case Else
-        End Select
-      End If
-    Loop
-  End Function
+#End Region
 
 End Module

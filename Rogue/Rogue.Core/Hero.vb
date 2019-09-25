@@ -17,7 +17,8 @@ Namespace Global.Rogue.Core
 
       AC = 5
 
-      Level = 1
+      DungeonLevel = 0
+      ExperienceLevel = 1
 
       MaxStr = 16
       Str = 16
@@ -81,6 +82,35 @@ Namespace Global.Rogue.Core
     Public Property HealAmount As Integer = 1 ' TODO: Need to change to a full property; returning amount based on hero level.
 
     Public Property Inventory As New List(Of InventoryItem)
+
+    Public Shared Function HeroLevel(level As Integer) As String
+
+      Select Case level
+        Case 1 : Return "Guild Novice"
+        Case 2 : Return "Apprentice"
+        Case 3 : Return "Journeyman"
+        Case 4 : Return "Adventurer"
+        Case 5 : Return "Fighter"
+        Case 6 : Return "Warrior"
+        Case 7 : Return "Rogue"
+        Case 8 : Return "Champion"
+        Case 9 : Return "Master Rogue"
+        Case 10 : Return "Warlord"
+        Case 11 : Return "Hero"
+        Case 12 : Return "Guild Master"
+        Case 13 : Return "Dragonlord"
+        Case 14 : Return "Wizard"
+        Case 15 : Return "Rogue Geek"
+        Case 16 : Return "Rogue Addict"
+        Case 17 : Return "Schmendrick"
+        Case 18 : Return "Gunfighter"
+        Case 19 : Return "Time Waster"
+        Case 20 : Return "Bug Chaser"
+        Case Else
+          Return ""
+      End Select
+
+    End Function
 
   End Class
 
