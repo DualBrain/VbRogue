@@ -15,13 +15,15 @@
 
   Public MustInherit Class ObjectBase
 
-    Public Sub New(type As ObjectType, name As String)
+    Public Sub New(type As ObjectType, name As String, Optional hidden As Boolean = False)
       Me.Type = type
       Me.Name = name
+      Me.Hidden = hidden
     End Sub
 
     Public ReadOnly Property Type As ObjectType
     Public ReadOnly Property Name As String
+    Public Property Hidden As Boolean
 
     Public Overrides Function ToString() As String
       Return Name
@@ -88,10 +90,10 @@
       Me.Damage = damage
     End Sub
 
-    Public Sub New(type As TrapType)
-      MyBase.New(ObjectType.Trap, Weapon.Template(type).Name)
-      Me.TrapType = TrapType
-      Damage = Weapon.Template(type).Damage
+    Public Sub New(trapType As TrapType)
+      MyBase.New(ObjectType.Trap, Weapon.Template(trapType).Name)
+      Me.TrapType = trapType
+      Damage = Weapon.Template(trapType).Damage
     End Sub
 
     Public ReadOnly Property TrapType As TrapType
@@ -186,8 +188,8 @@
       Me.Sides = sides
     End Sub
 
-    Public Property Count
-    Public Property Sides
+    Public Property Count As Integer
+    Public Property Sides As Integer
 
   End Class
 

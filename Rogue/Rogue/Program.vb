@@ -7,6 +7,7 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports ConsoleEx
 Imports QB
+Imports Rogue.Core
 
 Module Program
 
@@ -73,6 +74,8 @@ Module Program
   Private m_accumulator$
 
   Private ReadOnly m_messages As New Queue(Of String)
+
+  Private m_endGame As Boolean
 
   'Private Class XP
   '  Public Sub New(level%, points%, dice%, healRate%)
@@ -292,11 +295,7 @@ Module Program
 
               If Hero.X = m_stairsDownX AndAlso
                  Hero.Y = m_stairsDownY Then
-                m_level += 1
-                If m_level > m_levels.Count - 1 Then
-                  Exit Do
-                End If
-                InitializeLevel()
+                TravelDownAction()
               End If
 
             Case ConsoleKey.D, ConsoleKey.E
@@ -579,13 +578,26 @@ Module Program
         ForegroundColor = ConsoleColor.Red
         Write($"{Hero.HungerCount}".PadRight(4))
 
+        If Hero.HP < 1 Then
+          ' DEATH!
+          m_endGame = True
+        End If
+
+        If m_endGame Then
+          Exit Do
+        End If
+
       Loop
 
       ResetColor()
       Clear()
 
       SetCursorPosition(0, 0)
-      Write($"You quit with {Hero.Gold} gold pieces")
+      If Hero.HP < 1 Then
+        Write($"You DIED!")
+      Else
+        Write($"You quit with {Hero.Gold} gold pieces")
+      End If
 
       SetCursorPosition(0, 24)
       Write($"[Press Enter to see rankings]")
@@ -651,6 +663,15 @@ Module Program
 
 #End Region
 
+  End Sub
+
+  Private Sub TravelDownAction()
+    m_level += 1
+    If m_level > m_levels.Count - 1 Then
+      m_endGame = True
+    Else
+      InitializeLevel()
+    End If
   End Sub
 
   Private Sub ItemInteraction(ki As ConsoleKeyInfo)
@@ -946,7 +967,7 @@ Start:
     commands.Add(New KeyCommand("End", "down & left", True))
     commands.Add(New KeyCommand("PgDn", "down & right", True))
     commands.Add(New KeyCommand("Scroll", "Fast Play mode"))
-    commands.Add(New KeyCommand(".", "rest"))
+    commands.Add(New KeyCommand(".", "rest", True))
     commands.Add(New KeyCommand(">", "go down a staircase", True))
     commands.Add(New KeyCommand("<", "go up the staircase"))
     commands.Add(New KeyCommand("Esc", "cancel command", True))
@@ -1432,7 +1453,8 @@ Start:
 
         Dim tile = m_levels(m_level).Map(y, x)
 
-        If tile.HeroStart OrElse tile.Type = Core.TileType.Floor Then
+        If Not tile.HeroStart AndAlso
+           tile.Type = Core.TileType.Floor Then
           floors.Add(tile)
         End If
 
@@ -1445,7 +1467,11 @@ Start:
       Next
     Next
 
-    Dim goldCount = Randomizer.Next(2, 5)
+    Dim minGoldCount = 0
+    Dim maxGoldCount = 3
+    If minGoldCount > maxGoldCount Then minGoldCount = maxGoldCount
+
+    Dim goldCount = Randomizer.Next(minGoldCount, maxGoldCount + 1)
 
     For gold = 1 To goldCount
       If floors.Count > 0 Then
@@ -1457,7 +1483,11 @@ Start:
       End If
     Next
 
-    Dim foodCount = Randomizer.Next(0, 3)
+    Dim minFoodCount = 0
+    Dim maxFoodCount = 3
+    If minFoodCount > maxFoodCount Then minFoodCount = maxFoodCount
+
+    Dim foodCount = Randomizer.Next(minFoodCount, maxFoodCount + 1)
 
     For food = 1 To foodCount
       If floors.Count > 0 Then
@@ -1468,14 +1498,25 @@ Start:
       End If
     Next
 
-    Dim trapCount = Randomizer.Next(0, 2)
+    Dim minTrapCount = 0 'If(Debugger.IsAttached, 10, 0)
+    Dim maxTrapCount = 2 'If(Debugger.IsAttached, 10, 2)
+    If minTrapCount > maxTrapCount Then minTrapCount = maxTrapCount
+
+    Dim trapCount = Randomizer.Next(minTrapCount, maxTrapCount + 1)
 
     For trap = 1 To trapCount
       If floors.Count > 0 Then
         Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
         floors(tileNumber).ObjectType = Core.ObjectType.Trap
-        'TODO: Need to determine a trap at random; right now only the teleport trap is working.
-        floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Teleport)
+        Dim trapType = Randomizer.Next(0, 3)
+        Select Case trapType
+          Case 0 : floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Hole)
+          Case 1 : floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Teleport)
+          Case 2 : floors(tileNumber).Object = Core.Trap.Template(Core.TrapType.Arrow)
+          Case Else
+            Stop
+        End Select
+        floors(tileNumber).Object.Hidden = True 'If(Debugger.IsAttached, False, True)
         floors.RemoveAt(tileNumber)
       End If
     Next
@@ -1670,26 +1711,60 @@ Start:
       Select Case m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType
         Case Core.ObjectType.Trap
           Dim trap = DirectCast(m_levels(m_level).Map(Hero.Y, Hero.X).[Object], Core.Trap)
-          Select Case trap.TrapType
-            Case Core.TrapType.Teleport
 
-              DisplayMessage($"You stumbled upon a {trap.Name}") 'TODO: Need to determine the actual verbiage.
+          DisplayMessage($"You stumbled upon a {trap.Name}") 'TODO: Need to determine the actual verbiage.
+
+          Select Case trap.TrapType
+
+            Case Core.TrapType.Hole
+
+              m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+
+              TravelDownAction()
+
+              ' Hero new level/floor start cannot contain any item, so return false.
+              result = False
+
+            Case Core.TrapType.Arrow
+
+              Dim t = DirectCast(m_levels(m_level).Map(Hero.Y, Hero.X).Object, Core.Trap)
+
+              m_levels(m_level).Map(Hero.Y, Hero.X).ObjectType = Core.ObjectType.None
+
+              Dim dmg = RollDamage(t.Damage)
+              Hero.HP -= dmg
+              DisplayMessage($"You've lost {dmg} hit point{If(dmg > 1, "s", "")}.")
+
+              result = False
+
+            Case Core.TrapType.Teleport
 
               Dim floors As New List(Of Core.Tile)
 
-              For yy = 0 To 20
-                For xx = 0 To 79
-                  If Hero.X = xx AndAlso Hero.Y = yy Then Continue For
-                  Dim t = m_levels(m_level).Map(yy, xx)
-                  If t.Type = Core.TileType.Floor AndAlso
-                     t.ObjectType = Core.ObjectType.None Then
-                    floors.Add(t)
-                  End If
+              ' Determine "room" excluded so that we ensure teleporting to a different room.
+              Dim excludeZone = DetermineZone(Hero.X, Hero.Y)
+
+              ' Do a two-pass review; first pass looking for unexplored areas - second pass, all areas.
+              For pass = 0 To 1
+                For yy = 0 To 20
+                  For xx = 0 To 79
+                    If Hero.X = xx AndAlso Hero.Y = yy Then Continue For
+                    Dim t = m_levels(m_level).Map(yy, xx)
+                    If t.Type = Core.TileType.Floor AndAlso
+                       t.ObjectType = Core.ObjectType.None AndAlso
+                       (Not t.Explored OrElse pass = 1) AndAlso
+                       DetermineZone(xx, yy) <> excludeZone Then
+                      floors.Add(t)
+                    End If
+                  Next
                 Next
+                If floors.Count > 0 Then Exit For
               Next
 
+              ' Determine target location...
               Dim tileNumber = Randomizer.Next(0, floors.Count - 1)
 
+              ' Move, redraw.
               For yy = 0 To 20
                 For xx = 0 To 79
                   If floors(tileNumber) Is m_levels(m_level).Map(yy, xx) Then
@@ -1746,6 +1821,15 @@ Start:
 
     Return result
 
+  End Function
+
+  Private Function RollDamage(damage As Dice) As Integer
+    Dim result = 0
+    For d = 1 To damage.Count ' 4
+      Dim amount = Randomizer.Next(1, damage.Sides + 1) ' 6
+      result += amount
+    Next
+    Return result
   End Function
 
   Private Sub DrawRoom(x As Integer, y As Integer)
@@ -1823,7 +1907,8 @@ Start:
         fg = ConsoleColor.Black : bg = ConsoleColor.Green
         result = True
       Case Core.TileType.Floor
-        Select Case tile.ObjectType
+        Dim t = If(Not If(tile.Object?.Hidden, False), tile.ObjectType, Nothing)
+        Select Case t 'tile.ObjectType
           Case Core.ObjectType.Trap
             fg = ConsoleColor.Red
             output = "♦"
