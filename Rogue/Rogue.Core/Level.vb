@@ -103,7 +103,6 @@ Namespace Global.Rogue.Core
 
     End Function
 
-
   End Class
 
 End Namespace

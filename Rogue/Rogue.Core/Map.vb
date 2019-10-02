@@ -209,14 +209,14 @@ Start:
 
       ' Create a list of possible grid locations (1-9)...
       Dim grid = {New Coordinate(1, 1),
-                              New Coordinate(2, 1),
-                              New Coordinate(3, 1),
-                              New Coordinate(1, 2),
-                              New Coordinate(2, 2),
-                              New Coordinate(3, 2),
-                              New Coordinate(1, 3),
-                              New Coordinate(2, 3),
-                              New Coordinate(3, 3)}.ToList
+                  New Coordinate(2, 1),
+                  New Coordinate(3, 1),
+                  New Coordinate(1, 2),
+                  New Coordinate(2, 2),
+                  New Coordinate(3, 2),
+                  New Coordinate(1, 3),
+                  New Coordinate(2, 3),
+                  New Coordinate(3, 3)}.ToList
 
       ' Now we will loop through a maximum of 9 times...
       For r = 1 To 9
@@ -535,7 +535,7 @@ Start:
 
       For light = 0 To 8
         'TESTING:
-        Dim isLit = True 'False
+        Dim isLit = False
         For room = 0 To Rooms.Count - 1
           Dim grid = ((Rooms(room).MapGridRowLocation - 1) * 3) + Rooms(room).MapGridColumnLocation
           If grid = light + 1 Then
@@ -550,7 +550,7 @@ Start:
       For r = 0 To Param.MapHeight - 1
         For c = 0 To Param.MapWidth - 1
           Dim ch = MapCellTypeToChar(MapCellData(r, c))
-          result.Map(r, c) = New Tile(ch) With {.Explored = True}
+          result.Map(r, c) = New Tile(ch) With {.Explored = False} 'True}
         Next
       Next
 

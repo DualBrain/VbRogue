@@ -114,14 +114,14 @@ Module Program
       '  Next
       'End If
 
-      If True Then
+      If False Then
         m_levels = LoadDungeon("default.rogue")
       Else
         m_levels = New List(Of Core.Level)
-        For index = 1 To Core.Param.MapLevelsMax 'Doug changed to maxlevels set to 25
+        For index = 1 To 1 'Core.Param.MapLevelsMax 'Doug changed to maxlevels set to 25
           m_levels.Add(New Core.Level(index))
         Next
-        Core.Map.SaveDungeon(m_levels)
+        'Core.Map.SaveDungeon(m_levels)
       End If
 
       Hero.Name = GetCharacterName()
