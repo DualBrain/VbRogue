@@ -21,8 +21,9 @@ Namespace Global.Rogue.Core
 
     Public Property Name As String
     Public Property Depth As Integer
-    Public Property Lights As Boolean()
-    Public Property Map As Tile(,)
+
+    Public Lights As Boolean()
+    Public Map As Tile(,)
 
     Public Property StartCoords As Coordinate = New Coordinate(-1, -1)
 

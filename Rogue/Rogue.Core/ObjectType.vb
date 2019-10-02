@@ -13,7 +13,8 @@
     Rod
   End Enum
 
-  Public MustInherit Class ObjectBase
+  'Public MustInherit Class ObjectBase
+  Public Class ObjectBase
 
     Public Sub New(type As ObjectType, name As String, Optional hidden As Boolean = False)
       Me.Type = type

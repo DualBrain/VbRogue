@@ -5,30 +5,15 @@ Imports System.Drawing
 
 Namespace Global.Rogue.Core
 
-  Public Enum Face
-    Top
-    Right
-    Bottom
-    Left
-  End Enum
-
-  Public NotInheritable Class Door
-    Inherits Coordinate
-
-    Public Sub New(x%, y%, face As Face)
-      MyBase.New(x, y)
-      Me.Face = face
-    End Sub
-
-    Public ReadOnly Property Face As Face
-
-  End Class
-
   Public NotInheritable Class Room
 
     Public Sub New()
       Initialize() 'Sets the room to empty
     End Sub
+
+    Public Property Connections As List(Of String)
+
+    Public Property HasConnections As Boolean
 
     ''' <summary>
     ''' Hold a pointer to the level of the current map
@@ -78,6 +63,9 @@ Namespace Global.Rogue.Core
       If possibilityLit >= 0.8 Then
         IsLit = True
       End If
+
+      Connections = New List(Of String)
+      HasConnections = False
 
     End Sub
 
@@ -204,6 +192,39 @@ Namespace Global.Rogue.Core
     '  Return result
 
     'End Function
+
+    ''' <summary>
+    ''' Determine if the whatRoom is connected to this room by examining the whatroom connections property
+    ''' </summary>
+    ''' <param name="whatRoom"></param>
+    ''' <returns></returns>
+    Public Function IsRoomConnected(whatRoom As Room) As Boolean
+      Dim aReturnValue = False
+      Dim aFromGrid = GridPosition
+      Dim aToGrid = whatRoom.GridPosition
+      Dim aConnection = aFromGrid.ToString & "|" & aToGrid.ToString
+
+      For Each foundConnection In whatRoom.Connections
+        If aConnection = foundConnection Then
+          aReturnValue = True
+        End If
+      Next
+      If aReturnValue = False Then
+        'switch order of connections and try again
+        aFromGrid = whatRoom.GridPosition
+        aToGrid = GridPosition
+        aConnection = $"{aFromGrid.ToString}|{aToGrid.ToString}"
+        For Each foundConnection In whatRoom.Connections
+          If aConnection = foundConnection Then
+            aReturnValue = True
+          End If
+        Next
+
+      End If
+
+      Return aReturnValue
+
+    End Function
 
     Public Shared Function CreateRoom(gridRow%, gridColumn%) As Room
 
@@ -378,7 +399,7 @@ Namespace Global.Rogue.Core
 
     End Function
 
-    Public Function GetConnectionNumber(fromDoorRow%, fromDoorColumn%, toDoorRow%, toDoorColumn%) As Coordinate
+    Public Shared Function GetConnectionNumber(fromDoorRow%, fromDoorColumn%, toDoorRow%, toDoorColumn%) As Coordinate
 
       ' Determine the grid number from the row/column information...
 

@@ -191,7 +191,7 @@ Namespace Global
         End Select
 
       Else
-        Throw New ArgumentOutOfRangeException("value")
+        Throw New ArgumentOutOfRangeException(NameOf(value))
       End If
 
     End Function

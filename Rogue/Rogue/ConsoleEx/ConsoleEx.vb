@@ -451,19 +451,19 @@ Namespace Global
     Public Shared Sub Resize(cols%, rows%)
       Try
         Console.SetWindowSize(cols%, rows%) ' Set the windows size...
-      Catch ex As Exception
+      Catch ex As ArgumentOutOfRangeException
         'Console.WriteLine("1 - " & ex.ToString)
         'Threading.Thread.Sleep(5000)
       End Try
       Try
         Console.SetBufferSize(cols%, rows%) ' Then set the buffer size to the now window size...
-      Catch ex As Exception
+      Catch ex As ArgumentOutOfRangeException
         'Console.WriteLine("2 - " & ex.ToString)
         'Threading.Thread.Sleep(5000)
       End Try
       Try
         Console.SetWindowSize(cols%, rows%) ' Then set the window size again so that the scroll bar area is removed.
-      Catch ex As Exception
+      Catch ex As ArgumentOutOfRangeException
         'Console.WriteLine("3 - " & ex.ToString)
         'Threading.Thread.Sleep(5000)
       End Try

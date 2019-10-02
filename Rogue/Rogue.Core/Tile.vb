@@ -157,6 +157,27 @@ Namespace Global.Rogue.Core
       End Select
     End Function
 
+    Public Shared Function TileTypeToCellType(c As TileType) As CellType
+      Select Case c
+        Case TileType.Void : Return CellType.Void
+        Case TileType.Floor : Return CellType.StructureFloor
+        Case TileType.Tunnel : Return CellType.StructureTunnel
+        Case TileType.WallTopLeft : Return CellType.StructureWallTopLeftCorner
+        Case TileType.WallTopRight : Return CellType.StructureWallTopRightCorner
+        Case TileType.WallHorizontal : Return CellType.StructureWallTopBottom
+        Case TileType.WallVertical : Return CellType.StructureWallSide
+        Case TileType.WallBottomLeft : Return CellType.StructureWallBottomLeftCorner
+        Case TileType.WallBottomRight : Return CellType.StructureWallBottomRightCorner
+        Case TileType.Door : Return CellType.StructureDoor
+        Case TileType.Hole : Return CellType.StructureStairsDown
+        Case TileType.Hero : Return CellType.Hero
+        Case TileType.SecretHorizontal : Return CellType.SecretHorizontal
+        Case TileType.SecretVertical : Return CellType.SecretVertical
+        Case Else
+          Throw New Exception("Unknown tile type.")
+      End Select
+    End Function
+
   End Class
 
 End Namespace

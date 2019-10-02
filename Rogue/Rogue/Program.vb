@@ -105,13 +105,23 @@ Module Program
 
       ' Load / parse the dungeon into memory...
 
-      If 1 = 1 Then
+      'If 1 = 0 Then
+      '  m_levels = LoadDungeon("default.rogue")
+      'Else
+      '  m_levels = New List(Of Core.Level)
+      '  For index = 1 To 1 '26
+      '    m_levels.Add(New Core.Level(index))
+      '  Next
+      'End If
+
+      If True Then
         m_levels = LoadDungeon("default.rogue")
       Else
         m_levels = New List(Of Core.Level)
-        For index = 1 To 1 '26
+        For index = 1 To Core.Param.MapLevelsMax 'Doug changed to maxlevels set to 25
           m_levels.Add(New Core.Level(index))
         Next
+        Core.Map.SaveDungeon(m_levels)
       End If
 
       Hero.Name = GetCharacterName()
@@ -305,7 +315,7 @@ Module Program
           If isAction Then
 
             Dim repeatCount = 1
-            If m_accumulator <> "" Then
+            If Not String.IsNullOrWhiteSpace(m_accumulator) Then
               repeatCount = CInt(m_accumulator)
             End If
 
@@ -453,7 +463,7 @@ Module Program
 
               End If
 
-              If m_accumulator <> "" Then
+              If Not String.IsNullOrWhiteSpace(m_accumulator) Then
                 m_accumulator = i.ToString
                 DrawAccumulator()
                 Threading.Thread.Sleep(10)
@@ -810,13 +820,13 @@ Start:
             Case ConsoleKey.Escape
               Return "Whimp"
             Case ConsoleKey.Enter
-              If accumulator = "" Then
+              If String.IsNullOrWhiteSpace(accumulator) Then
                 Return "Whimp"
               Else
                 Return accumulator
               End If
             Case ConsoleKey.Backspace
-              If accumulator <> "" Then
+              If Not String.IsNullOrWhiteSpace(accumulator) Then
                 'SetCursorPosition(CursorTop, CursorLeft - 1)
                 CursorLeft -= 1
                 Write(" "c)

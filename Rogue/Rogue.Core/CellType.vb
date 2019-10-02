@@ -33,6 +33,8 @@ Namespace Global.Rogue.Core
     MonsterKestrel = 301
     MonsterInvisibleStalker = 302
 
+    Unknown = 99999
+
   End Enum
 
 End Namespace

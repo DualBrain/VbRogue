@@ -10,6 +10,9 @@ Namespace Global.Rogue.Core
 
     Public Shared Randomizer As New Random()
 
+    Public Const IsDebugMode As Boolean = True ' set true to display debugging info, false for actual game play
+    Public Const MinRoomsPerLevel As Integer = 6 'each level must have at least this many rooms but may have more
+
     Public Const GridRowCount As Integer = 3 ' The highest number of level grid sections height and width
     Public Const GridColumnCount As Integer = 3 ' The highest number of level grid sections height and width
 
