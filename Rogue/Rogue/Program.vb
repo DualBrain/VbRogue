@@ -114,13 +114,12 @@ Module Program
       '  Next
       'End If
 
+      Core.Param.IsDebugMode = False
+
       If False Then
         m_levels = LoadDungeon("default.rogue")
       Else
-        m_levels = New List(Of Core.Level)
-        For index = 1 To 1 'Core.Param.MapLevelsMax 'Doug changed to maxlevels set to 25
-          m_levels.Add(New Core.Level(index))
-        Next
+        m_levels = New List(Of Core.Level) From {New Core.Level(1)}
         'Core.Map.SaveDungeon(m_levels)
       End If
 
@@ -282,8 +281,11 @@ Module Program
               DrawSymbols()
               DrawLevel()
 
+            Case ConsoleKey.F10
+              Core.Map.SaveDungeon(m_levels)
+
             Case ConsoleKey.F12
-              'TEST:
+
               m_levels(Hero.DungeonLevel) = New Core.Level(Hero.DungeonLevel)
               InitializeLevel()
 
@@ -743,12 +745,23 @@ Start:
   End Function
 
   Private Sub TravelDownAction()
+
     Hero.DungeonLevel += 1
-    If Hero.DungeonLevel > m_levels.Count - 1 Then
+
+    If Hero.DungeonLevel >= Core.Param.MapLevelsMax Then
       Hero.Dead = True 'HACK: We are killing of the hero because we have no more levels.
+      'TODO: Should modify the game state so that we now have to find the staff and go back up the levels.
     Else
+      m_levels.Add(New Core.Level(Hero.DungeonLevel))
       InitializeLevel()
     End If
+
+    'If Hero.DungeonLevel > m_levels.Count - 1 Then
+    '  Hero.Dead = True 'HACK: We are killing of the hero because we have no more levels.
+    'Else
+    '  InitializeLevel()
+    'End If
+
   End Sub
 
 #End Region

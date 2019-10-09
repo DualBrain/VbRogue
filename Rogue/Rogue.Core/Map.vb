@@ -2125,7 +2125,7 @@ Start:
       'Dim aLine As String '= ""
 
       Try
-        aReturnValue = Environment.CurrentDirectory & "/Dungeon " & Date.Today.Year.ToString & Date.Today.Month.ToString & Date.Today.Day.ToString & ".rogue"
+        aReturnValue = IO.Path.Combine(Environment.CurrentDirectory, $"Dungeon {Date.Today:yyyyMMdd}.rogue")
         If (File.Exists(aReturnValue)) Then
           File.Delete(aReturnValue)
         End If
