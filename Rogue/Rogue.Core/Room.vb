@@ -321,7 +321,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorTopBottom
             Dim r = sy + y
             Dim c = sx + x + n
-            result.Doors.Add(New Door(c, r, Core.Face.Top)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Top, False))
             doorCount += 1
             Debug.WriteLine($"  Door (Top)={c}|{r}")
           End If
@@ -338,7 +338,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorSide
             Dim c = sx + x
             Dim r = sy + y + n
-            result.Doors.Add(New Door(c, r, Core.Face.Left)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Left, False))
             doorCount += 1
             Debug.WriteLine($"  Door (Left)={c}|{r}")
           End If
@@ -357,7 +357,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorSide
             Dim c = sx + x
             Dim r = sy + y + n
-            result.Doors.Add(New Door(c, r, Core.Face.Right)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Right, False))
             doorCount += 1
             Debug.WriteLine($"  Door (Right)={c}|{r}")
           End If
@@ -374,7 +374,7 @@ Namespace Global.Rogue.Core
             'Dim type = CellType.StructureDoor ' StructureDoorTopBottom
             Dim c = sx + x + n
             Dim r = sy + y
-            result.Doors.Add(New Door(c, r, Core.Face.Bottom)) ', type))
+            result.Doors.Add(New Door(c, r, Core.Face.Bottom, False))
             doorCount += 1
             Debug.WriteLine($"  Door (Bottom)={c}|{r}")
           End If

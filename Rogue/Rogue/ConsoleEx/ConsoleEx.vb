@@ -164,8 +164,10 @@ Namespace Global
     Private Declare Function DeleteMenu Lib "user32" (hMenu As IntPtr, nPosition As Integer, wFlags As Integer) As Integer
     Private Declare Function EnableMenuItem Lib "user32" (hMenu As IntPtr, itemId As Integer, uEnable As Integer) As Integer
     'Private Declare Function InsertMenu Lib "user32" (hMenu As IntPtr, nPosition As Integer, wFlags As Integer, wIDNewItem As Integer, lpNewItem As String) As Integer
+#Disable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
     <DllImport("user32.dll", CharSet:=CharSet.Auto, SetLastError:=True)>
     Private Shared Function InsertMenu(hMenu As IntPtr, uPosition As Integer, uFlags As Integer, uIDNewItem As Integer, lpNewItem As String) As Boolean
+#Enable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
     End Function
     'Private Declare Function GetMenuString Lib "user32" (hMenu As IntPtr, itemId As Integer, <Out()> lpString As Text.StringBuilder, nMaxCount As Integer, uFlag As Integer) As Integer
     <DllImport("user32.dll", CharSet:=CharSet.Unicode)>
@@ -174,6 +176,7 @@ Namespace Global
 
     Private Declare Function GetSystemMenu Lib "user32" (hWnd As IntPtr, bRevert As Boolean) As IntPtr
     Private Declare Function GetConsoleWindow Lib "kernel32" () As IntPtr
+#Disable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
     Private Declare Function CreateFile Lib "kernel32" (fileName As String,
                                                       <MarshalAs(UnmanagedType.U4)> fileAccess As UInteger,
                                                       <MarshalAs(UnmanagedType.U4)> fileShare As UInteger,
@@ -181,11 +184,14 @@ Namespace Global
                                                       <MarshalAs(UnmanagedType.U4)> creationDisposition As IO.FileMode,
                                                       <MarshalAs(UnmanagedType.U4)> flags As Integer,
                                                       template As IntPtr) As SafeFileHandle
+#Enable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
+#Disable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
     Private Declare Function WriteConsoleOutputCharacter Lib "kernel32" (hConsoleOutput As SafeFileHandle,
                                                                        lpCharacter As String,
                                                                        nLength As Integer,
                                                                        dwWriteCoord As COORD,
                                                                        ByRef lpumberOfCharsWritten As Integer) As Boolean
+#Enable Warning CA2101 ' Specify marshaling for P/Invoke string arguments
     Private Declare Function FreeConsole Lib "kernel32" () As Boolean
     Private Declare Function ShowWindow Lib "user32" (hWnd As IntPtr, nCmdShow As Integer) As Boolean
     Private Declare Function GetStdHandle Lib "kernel32" (dwType As Integer) As IntPtr
