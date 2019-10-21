@@ -5,9 +5,10 @@
     <RootNamespace>Rogue</RootNamespace>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PublishTrimmed>true</PublishTrimmed>
-    <!--<PublishReadyToRun>true</PublishReadyToRun>-->
+    <PublishReadyToRun>true</PublishReadyToRun>
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <DebugType>None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,10 @@
     <None Update="default.rogue">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PublishReadyToRunExclude Include="System.Collections.dll" />
   </ItemGroup>
 
 </Project>

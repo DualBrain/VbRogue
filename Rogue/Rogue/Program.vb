@@ -96,13 +96,6 @@ Module Program
 
 #End Region
 
-      ' Check to see if default dungeon exists...
-
-      If Not IO.File.Exists("default.rogue") Then
-        WriteLine("Missing 'default.rogue' file.")
-        Return
-      End If
-
       ' Load / parse the dungeon into memory...
 
       'If 1 = 0 Then
@@ -114,13 +107,25 @@ Module Program
       '  Next
       'End If
 
-      Core.Param.IsDebugMode = False
-
       If False Then
+
+        ' Check to see if default dungeon exists...
+
+        If Not IO.File.Exists("default.rogue") Then
+          WriteLine("Missing 'default.rogue' file.")
+          Return
+        End If
+
         m_levels = LoadDungeon("default.rogue")
+
       Else
+
+        Core.Param.IsDebugMode = False
+
         m_levels = New List(Of Core.Level) From {New Core.Level(1)}
+
         'Core.Map.SaveDungeon(m_levels)
+
       End If
 
       Hero.Name = GetCharacterName()
